@@ -9,8 +9,116 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SuppliersRouteImport } from './routes/suppliers'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as SalesRouteImport } from './routes/sales'
+import { Route as RolesRouteImport } from './routes/roles'
+import { Route as ReportsRouteImport } from './routes/reports'
+import { Route as PurchaseOrdersRouteImport } from './routes/purchase-orders'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as ProductsRouteImport } from './routes/products'
+import { Route as PosRouteImport } from './routes/pos'
+import { Route as NotificationsRouteImport } from './routes/notifications'
+import { Route as InventoryRouteImport } from './routes/inventory'
+import { Route as FinanceRouteImport } from './routes/finance'
+import { Route as ExpensesRouteImport } from './routes/expenses'
+import { Route as EmployeesRouteImport } from './routes/employees'
+import { Route as CustomersRouteImport } from './routes/customers'
+import { Route as BranchesRouteImport } from './routes/branches'
+import { Route as AnalyticsRouteImport } from './routes/analytics'
+import { Route as ActivityRouteImport } from './routes/activity'
 import { Route as IndexRouteImport } from './routes/index'
 
+const SuppliersRoute = SuppliersRouteImport.update({
+  id: '/suppliers',
+  path: '/suppliers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SalesRoute = SalesRouteImport.update({
+  id: '/sales',
+  path: '/sales',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RolesRoute = RolesRouteImport.update({
+  id: '/roles',
+  path: '/roles',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReportsRoute = ReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PurchaseOrdersRoute = PurchaseOrdersRouteImport.update({
+  id: '/purchase-orders',
+  path: '/purchase-orders',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsRoute = ProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PosRoute = PosRouteImport.update({
+  id: '/pos',
+  path: '/pos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotificationsRoute = NotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InventoryRoute = InventoryRouteImport.update({
+  id: '/inventory',
+  path: '/inventory',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FinanceRoute = FinanceRouteImport.update({
+  id: '/finance',
+  path: '/finance',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExpensesRoute = ExpensesRouteImport.update({
+  id: '/expenses',
+  path: '/expenses',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmployeesRoute = EmployeesRouteImport.update({
+  id: '/employees',
+  path: '/employees',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CustomersRoute = CustomersRouteImport.update({
+  id: '/customers',
+  path: '/customers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BranchesRoute = BranchesRouteImport.update({
+  id: '/branches',
+  path: '/branches',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnalyticsRoute = AnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ActivityRoute = ActivityRouteImport.update({
+  id: '/activity',
+  path: '/activity',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +127,284 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/activity': typeof ActivityRoute
+  '/analytics': typeof AnalyticsRoute
+  '/branches': typeof BranchesRoute
+  '/customers': typeof CustomersRoute
+  '/employees': typeof EmployeesRoute
+  '/expenses': typeof ExpensesRoute
+  '/finance': typeof FinanceRoute
+  '/inventory': typeof InventoryRoute
+  '/notifications': typeof NotificationsRoute
+  '/pos': typeof PosRoute
+  '/products': typeof ProductsRoute
+  '/profile': typeof ProfileRoute
+  '/purchase-orders': typeof PurchaseOrdersRoute
+  '/reports': typeof ReportsRoute
+  '/roles': typeof RolesRoute
+  '/sales': typeof SalesRoute
+  '/settings': typeof SettingsRoute
+  '/suppliers': typeof SuppliersRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/activity': typeof ActivityRoute
+  '/analytics': typeof AnalyticsRoute
+  '/branches': typeof BranchesRoute
+  '/customers': typeof CustomersRoute
+  '/employees': typeof EmployeesRoute
+  '/expenses': typeof ExpensesRoute
+  '/finance': typeof FinanceRoute
+  '/inventory': typeof InventoryRoute
+  '/notifications': typeof NotificationsRoute
+  '/pos': typeof PosRoute
+  '/products': typeof ProductsRoute
+  '/profile': typeof ProfileRoute
+  '/purchase-orders': typeof PurchaseOrdersRoute
+  '/reports': typeof ReportsRoute
+  '/roles': typeof RolesRoute
+  '/sales': typeof SalesRoute
+  '/settings': typeof SettingsRoute
+  '/suppliers': typeof SuppliersRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/activity': typeof ActivityRoute
+  '/analytics': typeof AnalyticsRoute
+  '/branches': typeof BranchesRoute
+  '/customers': typeof CustomersRoute
+  '/employees': typeof EmployeesRoute
+  '/expenses': typeof ExpensesRoute
+  '/finance': typeof FinanceRoute
+  '/inventory': typeof InventoryRoute
+  '/notifications': typeof NotificationsRoute
+  '/pos': typeof PosRoute
+  '/products': typeof ProductsRoute
+  '/profile': typeof ProfileRoute
+  '/purchase-orders': typeof PurchaseOrdersRoute
+  '/reports': typeof ReportsRoute
+  '/roles': typeof RolesRoute
+  '/sales': typeof SalesRoute
+  '/settings': typeof SettingsRoute
+  '/suppliers': typeof SuppliersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/activity'
+    | '/analytics'
+    | '/branches'
+    | '/customers'
+    | '/employees'
+    | '/expenses'
+    | '/finance'
+    | '/inventory'
+    | '/notifications'
+    | '/pos'
+    | '/products'
+    | '/profile'
+    | '/purchase-orders'
+    | '/reports'
+    | '/roles'
+    | '/sales'
+    | '/settings'
+    | '/suppliers'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/activity'
+    | '/analytics'
+    | '/branches'
+    | '/customers'
+    | '/employees'
+    | '/expenses'
+    | '/finance'
+    | '/inventory'
+    | '/notifications'
+    | '/pos'
+    | '/products'
+    | '/profile'
+    | '/purchase-orders'
+    | '/reports'
+    | '/roles'
+    | '/sales'
+    | '/settings'
+    | '/suppliers'
+  id:
+    | '__root__'
+    | '/'
+    | '/activity'
+    | '/analytics'
+    | '/branches'
+    | '/customers'
+    | '/employees'
+    | '/expenses'
+    | '/finance'
+    | '/inventory'
+    | '/notifications'
+    | '/pos'
+    | '/products'
+    | '/profile'
+    | '/purchase-orders'
+    | '/reports'
+    | '/roles'
+    | '/sales'
+    | '/settings'
+    | '/suppliers'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ActivityRoute: typeof ActivityRoute
+  AnalyticsRoute: typeof AnalyticsRoute
+  BranchesRoute: typeof BranchesRoute
+  CustomersRoute: typeof CustomersRoute
+  EmployeesRoute: typeof EmployeesRoute
+  ExpensesRoute: typeof ExpensesRoute
+  FinanceRoute: typeof FinanceRoute
+  InventoryRoute: typeof InventoryRoute
+  NotificationsRoute: typeof NotificationsRoute
+  PosRoute: typeof PosRoute
+  ProductsRoute: typeof ProductsRoute
+  ProfileRoute: typeof ProfileRoute
+  PurchaseOrdersRoute: typeof PurchaseOrdersRoute
+  ReportsRoute: typeof ReportsRoute
+  RolesRoute: typeof RolesRoute
+  SalesRoute: typeof SalesRoute
+  SettingsRoute: typeof SettingsRoute
+  SuppliersRoute: typeof SuppliersRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/suppliers': {
+      id: '/suppliers'
+      path: '/suppliers'
+      fullPath: '/suppliers'
+      preLoaderRoute: typeof SuppliersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sales': {
+      id: '/sales'
+      path: '/sales'
+      fullPath: '/sales'
+      preLoaderRoute: typeof SalesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/roles': {
+      id: '/roles'
+      path: '/roles'
+      fullPath: '/roles'
+      preLoaderRoute: typeof RolesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reports': {
+      id: '/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof ReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/purchase-orders': {
+      id: '/purchase-orders'
+      path: '/purchase-orders'
+      fullPath: '/purchase-orders'
+      preLoaderRoute: typeof PurchaseOrdersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products': {
+      id: '/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pos': {
+      id: '/pos'
+      path: '/pos'
+      fullPath: '/pos'
+      preLoaderRoute: typeof PosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notifications': {
+      id: '/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof NotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inventory': {
+      id: '/inventory'
+      path: '/inventory'
+      fullPath: '/inventory'
+      preLoaderRoute: typeof InventoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/finance': {
+      id: '/finance'
+      path: '/finance'
+      fullPath: '/finance'
+      preLoaderRoute: typeof FinanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/expenses': {
+      id: '/expenses'
+      path: '/expenses'
+      fullPath: '/expenses'
+      preLoaderRoute: typeof ExpensesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/employees': {
+      id: '/employees'
+      path: '/employees'
+      fullPath: '/employees'
+      preLoaderRoute: typeof EmployeesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/customers': {
+      id: '/customers'
+      path: '/customers'
+      fullPath: '/customers'
+      preLoaderRoute: typeof CustomersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/branches': {
+      id: '/branches'
+      path: '/branches'
+      fullPath: '/branches'
+      preLoaderRoute: typeof BranchesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/analytics': {
+      id: '/analytics'
+      path: '/analytics'
+      fullPath: '/analytics'
+      preLoaderRoute: typeof AnalyticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/activity': {
+      id: '/activity'
+      path: '/activity'
+      fullPath: '/activity'
+      preLoaderRoute: typeof ActivityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +417,24 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ActivityRoute: ActivityRoute,
+  AnalyticsRoute: AnalyticsRoute,
+  BranchesRoute: BranchesRoute,
+  CustomersRoute: CustomersRoute,
+  EmployeesRoute: EmployeesRoute,
+  ExpensesRoute: ExpensesRoute,
+  FinanceRoute: FinanceRoute,
+  InventoryRoute: InventoryRoute,
+  NotificationsRoute: NotificationsRoute,
+  PosRoute: PosRoute,
+  ProductsRoute: ProductsRoute,
+  ProfileRoute: ProfileRoute,
+  PurchaseOrdersRoute: PurchaseOrdersRoute,
+  ReportsRoute: ReportsRoute,
+  RolesRoute: RolesRoute,
+  SalesRoute: SalesRoute,
+  SettingsRoute: SettingsRoute,
+  SuppliersRoute: SuppliersRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
