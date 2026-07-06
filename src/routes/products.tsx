@@ -10,22 +10,22 @@ export const Route = createFileRoute("/products")({ component: ProductsPage });
 
 function ProductsPage() {
   const [q, setQ] = useState("");
-  const [cat, setCat] = useState("All");
-  const cats = ["All", ...Array.from(new Set(products.map((p) => p.category)))];
+  const [cat, setCat] = useState("الكل");
+  const cats = ["الكل", ...Array.from(new Set(products.map((p) => p.category)))];
   const rows = products.filter(
     (p) =>
-      (cat === "All" || p.category === cat) &&
-      (p.name.toLowerCase().includes(q.toLowerCase()) || p.id.toLowerCase().includes(q.toLowerCase()))
+      (cat === "الكل" || p.category === cat) &&
+      (p.name.includes(q) || p.id.toLowerCase().includes(q.toLowerCase()))
   );
 
   return (
     <AppShell
-      title="Products"
-      subtitle={`${products.length} SKUs across 4 branches`}
+      title="المنتجات"
+      subtitle={`${products.length} صنف عبر ٤ فروع`}
       actions={
         <>
-          <Button variant="outline" size="sm"><Download className="w-4 h-4 mr-1.5" />Export CSV</Button>
-          <Button size="sm" className="bg-brand hover:bg-brand/90"><Plus className="w-4 h-4 mr-1.5" />Add product</Button>
+          <Button variant="outline" size="sm"><Download className="w-4 h-4 ml-1.5" />تصدير CSV</Button>
+          <Button size="sm" className="bg-brand hover:bg-brand/90"><Plus className="w-4 h-4 ml-1.5" />إضافة منتج</Button>
         </>
       }
     >
@@ -33,7 +33,7 @@ function ProductsPage() {
         <div className="flex flex-col md:flex-row gap-3 mb-4">
           <div className="relative flex-1">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-            <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search products or SKU…" className="pl-9 rounded-lg" />
+            <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث عن منتج أو رمز SKU…" className="pl-9 rounded-lg" />
           </div>
           <div className="flex gap-2 overflow-x-auto">
             {cats.map((c) => (
@@ -48,24 +48,24 @@ function ProductsPage() {
               </button>
             ))}
           </div>
-          <Button variant="outline" size="sm"><Filter className="w-4 h-4 mr-1.5" />Filters</Button>
+          <Button variant="outline" size="sm"><Filter className="w-4 h-4 ml-1.5" />تصفية</Button>
         </div>
 
         {rows.length === 0 ? (
-          <EmptyState icon={Package} title="No products found" description="Try adjusting search or filters." />
+          <EmptyState icon={Package} title="لا توجد منتجات" description="جرّب تعديل البحث أو التصفية." />
         ) : (
           <div className="overflow-x-auto -mx-5">
             <table className="w-full text-sm">
               <thead className="text-xs text-muted-foreground">
                 <tr className="border-b border-border">
-                  <th className="text-left font-medium px-5 py-2.5">Product</th>
-                  <th className="text-left font-medium py-2.5">SKU</th>
-                  <th className="text-left font-medium py-2.5">Category</th>
-                  <th className="text-left font-medium py-2.5">Supplier</th>
-                  <th className="text-right font-medium py-2.5">Cost</th>
-                  <th className="text-right font-medium py-2.5">Price</th>
-                  <th className="text-right font-medium py-2.5">Stock</th>
-                  <th className="text-left font-medium px-5 py-2.5">Status</th>
+                  <th className="text-left font-medium px-5 py-2.5">المنتج</th>
+                  <th className="text-left font-medium py-2.5">رمز SKU</th>
+                  <th className="text-left font-medium py-2.5">الفئة</th>
+                  <th className="text-left font-medium py-2.5">المورد</th>
+                  <th className="text-right font-medium py-2.5">التكلفة</th>
+                  <th className="text-right font-medium py-2.5">السعر</th>
+                  <th className="text-right font-medium py-2.5">المخزون</th>
+                  <th className="text-left font-medium px-5 py-2.5">الحالة</th>
                 </tr>
               </thead>
               <tbody>
