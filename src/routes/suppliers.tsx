@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AppShell } from "@/components/app-shell";
+import { AppShell, SectionCard } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { suppliers } from "@/lib/mock-data";
 import { Plus, Star, Phone, Mail } from "lucide-react";
@@ -9,9 +9,9 @@ export const Route = createFileRoute("/suppliers")({ component: SuppliersPage })
 function SuppliersPage() {
   return (
     <AppShell
-      title="الموردون"
-      subtitle="إدارة علاقات الموردين والشروط"
-      actions={<Button size="sm" className="bg-brand hover:bg-brand/90"><Plus className="w-4 h-4 ml-1.5" />مورد جديد</Button>}
+      title="Suppliers"
+      subtitle="Manage vendor relationships and terms"
+      actions={<Button size="sm" className="bg-brand hover:bg-brand/90"><Plus className="w-4 h-4 mr-1.5" />New supplier</Button>}
     >
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {suppliers.map((s) => (
@@ -38,14 +38,14 @@ function SuppliersPage() {
             </div>
             <div className="mt-4 pt-4 border-t border-border flex items-center justify-between">
               <div>
-                <div className="text-[11px] text-muted-foreground uppercase tracking-wide">الشروط</div>
+                <div className="text-[11px] text-muted-foreground uppercase tracking-wide">Terms</div>
                 <div className="text-sm font-medium">{s.terms}</div>
               </div>
               <div>
-                <div className="text-[11px] text-muted-foreground uppercase tracking-wide">أوامر مفتوحة</div>
+                <div className="text-[11px] text-muted-foreground uppercase tracking-wide">Open POs</div>
                 <div className="text-sm font-medium">{s.openPOs}</div>
               </div>
-              <Button size="sm" variant="outline" className="h-8">عرض</Button>
+              <Button size="sm" variant="outline" className="h-8">View</Button>
             </div>
           </div>
         ))}

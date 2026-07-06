@@ -10,20 +10,20 @@ export const Route = createFileRoute("/employees")({ component: EmployeesPage })
 function EmployeesPage() {
   return (
     <AppShell
-      title="الموظفون"
-      subtitle={`${employees.length} عضو فريق عبر ٤ فروع`}
-      actions={<Button size="sm" className="bg-brand hover:bg-brand/90"><Plus className="w-4 h-4 ml-1.5" />دعوة موظف</Button>}
+      title="Employees"
+      subtitle={`${employees.length} team members across 4 branches`}
+      actions={<Button size="sm" className="bg-brand hover:bg-brand/90"><Plus className="w-4 h-4 mr-1.5" />Invite employee</Button>}
     >
       <SectionCard>
         <div className="overflow-x-auto -mx-5">
           <table className="w-full text-sm">
             <thead className="text-xs text-muted-foreground">
               <tr className="border-b border-border">
-                <th className="text-left font-medium px-5 py-2.5">الموظف</th>
-                <th className="text-left font-medium py-2.5">الدور</th>
-                <th className="text-left font-medium py-2.5">الفرع</th>
-                <th className="text-left font-medium py-2.5">الوردية</th>
-                <th className="text-left font-medium px-5 py-2.5">الحالة</th>
+                <th className="text-left font-medium px-5 py-2.5">Employee</th>
+                <th className="text-left font-medium py-2.5">Role</th>
+                <th className="text-left font-medium py-2.5">Branch</th>
+                <th className="text-left font-medium py-2.5">Shift</th>
+                <th className="text-left font-medium px-5 py-2.5">Status</th>
               </tr>
             </thead>
             <tbody>
