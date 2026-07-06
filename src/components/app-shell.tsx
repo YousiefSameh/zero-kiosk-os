@@ -15,46 +15,46 @@ import { Badge } from "@/components/ui/badge";
 
 const nav = [
   {
-    label: "Overview",
+    label: "نظرة عامة",
     items: [
-      { to: "/", label: "Dashboard", icon: LayoutDashboard },
-      { to: "/analytics", label: "Analytics", icon: LineChart },
-      { to: "/reports", label: "Reports", icon: BarChart3 },
+      { to: "/", label: "لوحة التحكم", icon: LayoutDashboard },
+      { to: "/analytics", label: "التحليلات", icon: LineChart },
+      { to: "/reports", label: "التقارير", icon: BarChart3 },
     ],
   },
   {
-    label: "Sell",
+    label: "البيع",
     items: [
-      { to: "/pos", label: "Point of Sale", icon: CreditCard },
-      { to: "/sales", label: "Sales", icon: Receipt },
-      { to: "/customers", label: "Customers", icon: Users },
+      { to: "/pos", label: "نقطة البيع", icon: CreditCard },
+      { to: "/sales", label: "المبيعات", icon: Receipt },
+      { to: "/customers", label: "العملاء", icon: Users },
     ],
   },
   {
-    label: "Stock",
+    label: "المخزون",
     items: [
-      { to: "/products", label: "Products", icon: Package },
-      { to: "/inventory", label: "Inventory", icon: Boxes },
-      { to: "/purchase-orders", label: "Purchase Orders", icon: ShoppingCart },
-      { to: "/suppliers", label: "Suppliers", icon: Truck },
+      { to: "/products", label: "المنتجات", icon: Package },
+      { to: "/inventory", label: "الجرد", icon: Boxes },
+      { to: "/purchase-orders", label: "أوامر الشراء", icon: ShoppingCart },
+      { to: "/suppliers", label: "الموردون", icon: Truck },
     ],
   },
   {
-    label: "Operate",
+    label: "التشغيل",
     items: [
-      { to: "/finance", label: "Finance", icon: Wallet },
-      { to: "/expenses", label: "Expenses", icon: Receipt },
-      { to: "/branches", label: "Branches", icon: Store },
-      { to: "/employees", label: "Employees", icon: UserCog },
-      { to: "/roles", label: "Roles & Permissions", icon: Shield },
-      { to: "/activity", label: "Activity Logs", icon: ScrollText },
+      { to: "/finance", label: "المالية", icon: Wallet },
+      { to: "/expenses", label: "المصروفات", icon: Receipt },
+      { to: "/branches", label: "الفروع", icon: Store },
+      { to: "/employees", label: "الموظفون", icon: UserCog },
+      { to: "/roles", label: "الأدوار والصلاحيات", icon: Shield },
+      { to: "/activity", label: "سجل النشاط", icon: ScrollText },
     ],
   },
   {
-    label: "Account",
+    label: "الحساب",
     items: [
-      { to: "/notifications", label: "Notifications", icon: Bell },
-      { to: "/settings", label: "Settings", icon: Settings },
+      { to: "/notifications", label: "الإشعارات", icon: Bell },
+      { to: "/settings", label: "الإعدادات", icon: Settings },
     ],
   },
 ] as const;
@@ -78,17 +78,17 @@ export function AppShell({ title, subtitle, actions, children }: {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex">
-      {/* Sidebar */}
-      <aside className="hidden lg:flex w-64 shrink-0 flex-col border-r border-border bg-sidebar">
+      {/* Sidebar (right side in RTL) */}
+      <aside className="hidden lg:flex w-64 shrink-0 flex-col border-s border-border bg-sidebar">
         <div className="h-16 px-5 flex items-center gap-2.5 border-b border-sidebar-border">
           <div className="w-9 h-9 rounded-xl bg-brand grid place-items-center text-brand-foreground font-bold shadow-soft">
             Z
           </div>
           <div className="leading-tight">
-            <div className="font-display font-semibold text-[15px]">Zero Kiosk</div>
-            <div className="text-[11px] text-muted-foreground">زيرو كشك</div>
+            <div className="font-display font-semibold text-[15px]">زيرو كشك</div>
+            <div className="text-[11px] text-muted-foreground">نظام تشغيل التجزئة</div>
           </div>
-          <button className="ml-auto text-muted-foreground hover:text-foreground">
+          <button className="ms-auto text-muted-foreground hover:text-foreground">
             <ChevronsUpDown className="w-4 h-4" />
           </button>
         </div>
@@ -99,8 +99,8 @@ export function AppShell({ title, subtitle, actions, children }: {
             className="w-full flex items-center gap-2 text-sm rounded-lg border border-sidebar-border bg-background/60 px-3 py-2 text-muted-foreground hover:bg-accent transition"
           >
             <Search className="w-4 h-4" />
-            <span>Search…</span>
-            <kbd className="ml-auto text-[10px] font-medium bg-muted px-1.5 py-0.5 rounded border border-border">⌘K</kbd>
+            <span>بحث…</span>
+            <kbd className="ms-auto text-[10px] font-medium bg-muted px-1.5 py-0.5 rounded border border-border">⌘K</kbd>
           </button>
         </div>
 
@@ -136,13 +136,13 @@ export function AppShell({ title, subtitle, actions, children }: {
         <div className="border-t border-sidebar-border p-3">
           <Link to="/profile" className="flex items-center gap-2.5 rounded-lg p-2 hover:bg-sidebar-accent transition">
             <Avatar className="w-8 h-8">
-              <AvatarFallback className="bg-brand text-brand-foreground text-xs">LM</AvatarFallback>
+              <AvatarFallback className="bg-brand text-brand-foreground text-xs">ل م</AvatarFallback>
             </Avatar>
             <div className="leading-tight flex-1 min-w-0">
-              <div className="text-sm font-medium truncate">Laila Mostafa</div>
-              <div className="text-[11px] text-muted-foreground truncate">Owner · Zamalek</div>
+              <div className="text-sm font-medium truncate">ليلى مصطفى</div>
+              <div className="text-[11px] text-muted-foreground truncate">مالك · الزمالك</div>
             </div>
-            <Badge variant="secondary" className="bg-brand-soft text-brand text-[10px]">Pro</Badge>
+            <Badge variant="secondary" className="bg-brand-soft text-brand text-[10px]">برو</Badge>
           </Link>
         </div>
       </aside>
@@ -161,11 +161,11 @@ export function AppShell({ title, subtitle, actions, children }: {
                 onClick={() => setOpenCmd(true)}
                 className="hidden md:inline-flex items-center gap-2 text-xs rounded-lg border border-border bg-card px-3 py-1.5 text-muted-foreground hover:bg-accent"
               >
-                <Command className="w-3.5 h-3.5" /> Quick actions
+                <Command className="w-3.5 h-3.5" /> إجراءات سريعة
               </button>
               <Link to="/notifications" className="relative w-9 h-9 grid place-items-center rounded-lg border border-border bg-card hover:bg-accent">
                 <Bell className="w-4 h-4" />
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-coral" />
+                <span className="absolute top-1.5 start-1.5 w-2 h-2 rounded-full bg-coral" />
               </Link>
             </div>
           </div>
@@ -174,24 +174,24 @@ export function AppShell({ title, subtitle, actions, children }: {
       </div>
 
       <CommandDialog open={openCmd} onOpenChange={setOpenCmd}>
-        <CommandInput placeholder="Search products, orders, customers, actions…" />
+        <CommandInput placeholder="ابحث عن منتجات، طلبات، عملاء، إجراءات…" />
         <CommandList>
-          <CommandEmpty>No results.</CommandEmpty>
-          <CommandGroup heading="Go to">
-            <CmdLink to="/" label="Dashboard" icon={<LayoutDashboard className="w-4 h-4" />} setOpen={setOpenCmd} />
-            <CmdLink to="/pos" label="Point of Sale" icon={<CreditCard className="w-4 h-4" />} setOpen={setOpenCmd} />
-            <CmdLink to="/inventory" label="Inventory" icon={<Boxes className="w-4 h-4" />} setOpen={setOpenCmd} />
-            <CmdLink to="/purchase-orders" label="Purchase Orders" icon={<ShoppingCart className="w-4 h-4" />} setOpen={setOpenCmd} />
-            <CmdLink to="/suppliers" label="Suppliers" icon={<Truck className="w-4 h-4" />} setOpen={setOpenCmd} />
-            <CmdLink to="/customers" label="Customers" icon={<Users className="w-4 h-4" />} setOpen={setOpenCmd} />
-            <CmdLink to="/analytics" label="Analytics" icon={<LineChart className="w-4 h-4" />} setOpen={setOpenCmd} />
+          <CommandEmpty>لا توجد نتائج.</CommandEmpty>
+          <CommandGroup heading="اذهب إلى">
+            <CmdLink to="/" label="لوحة التحكم" icon={<LayoutDashboard className="w-4 h-4" />} setOpen={setOpenCmd} />
+            <CmdLink to="/pos" label="نقطة البيع" icon={<CreditCard className="w-4 h-4" />} setOpen={setOpenCmd} />
+            <CmdLink to="/inventory" label="الجرد" icon={<Boxes className="w-4 h-4" />} setOpen={setOpenCmd} />
+            <CmdLink to="/purchase-orders" label="أوامر الشراء" icon={<ShoppingCart className="w-4 h-4" />} setOpen={setOpenCmd} />
+            <CmdLink to="/suppliers" label="الموردون" icon={<Truck className="w-4 h-4" />} setOpen={setOpenCmd} />
+            <CmdLink to="/customers" label="العملاء" icon={<Users className="w-4 h-4" />} setOpen={setOpenCmd} />
+            <CmdLink to="/analytics" label="التحليلات" icon={<LineChart className="w-4 h-4" />} setOpen={setOpenCmd} />
           </CommandGroup>
           <CommandSeparator />
-          <CommandGroup heading="Quick actions">
-            <CommandItem><Sparkles className="w-4 h-4 mr-2 text-coral" />Create new purchase order</CommandItem>
-            <CommandItem><Sparkles className="w-4 h-4 mr-2 text-coral" />Add new product</CommandItem>
-            <CommandItem><Sparkles className="w-4 h-4 mr-2 text-coral" />Open cash drawer</CommandItem>
-            <CommandItem><Sparkles className="w-4 h-4 mr-2 text-coral" />Export today's sales report</CommandItem>
+          <CommandGroup heading="إجراءات سريعة">
+            <CommandItem><Sparkles className="w-4 h-4 ms-2 text-coral" />إنشاء أمر شراء جديد</CommandItem>
+            <CommandItem><Sparkles className="w-4 h-4 ms-2 text-coral" />إضافة منتج جديد</CommandItem>
+            <CommandItem><Sparkles className="w-4 h-4 ms-2 text-coral" />فتح درج النقدية</CommandItem>
+            <CommandItem><Sparkles className="w-4 h-4 ms-2 text-coral" />تصدير تقرير مبيعات اليوم</CommandItem>
           </CommandGroup>
         </CommandList>
       </CommandDialog>
@@ -202,7 +202,7 @@ export function AppShell({ title, subtitle, actions, children }: {
 function CmdLink({ to, label, icon, setOpen }: { to: string; label: string; icon: ReactNode; setOpen: (v: boolean) => void }) {
   return (
     <CommandItem onSelect={() => { setOpen(false); window.location.href = to; }}>
-      <span className="mr-2">{icon}</span>{label}
+      <span className="ms-2">{icon}</span>{label}
     </CommandItem>
   );
 }
@@ -255,20 +255,20 @@ export function SectionCard({ title, description, actions, children, className =
 
 export function StatusPill({ status }: { status: string }) {
   const map: Record<string, string> = {
-    Completed: "bg-success/10 text-success",
-    "In Stock": "bg-success/10 text-success",
-    Active: "bg-success/10 text-success",
-    Delivered: "bg-success/10 text-success",
-    Approved: "bg-brand-soft text-brand",
-    Paid: "bg-brand-soft text-brand",
-    Pending: "bg-warning/15 text-warning",
-    "Low Stock": "bg-warning/15 text-warning",
-    Onboarding: "bg-warning/15 text-warning",
-    "On Leave": "bg-warning/15 text-warning",
-    Refunded: "bg-coral/15 text-coral",
-    Critical: "bg-destructive/10 text-destructive",
-    "Out of Stock": "bg-destructive/10 text-destructive",
-    Cancelled: "bg-muted text-muted-foreground",
+    "مكتمل": "bg-success/10 text-success",
+    "متوفر": "bg-success/10 text-success",
+    "نشط": "bg-success/10 text-success",
+    "تم التسليم": "bg-success/10 text-success",
+    "معتمد": "bg-brand-soft text-brand",
+    "مدفوع": "bg-brand-soft text-brand",
+    "قيد الانتظار": "bg-warning/15 text-warning",
+    "مخزون منخفض": "bg-warning/15 text-warning",
+    "قيد التهيئة": "bg-warning/15 text-warning",
+    "في إجازة": "bg-warning/15 text-warning",
+    "مسترد": "bg-coral/15 text-coral",
+    "حرج": "bg-destructive/10 text-destructive",
+    "نفد المخزون": "bg-destructive/10 text-destructive",
+    "ملغى": "bg-muted text-muted-foreground",
   };
   return (
     <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-medium ${map[status] ?? "bg-muted text-muted-foreground"}`}>

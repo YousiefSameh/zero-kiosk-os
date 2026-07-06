@@ -10,22 +10,22 @@ function ExpensesPage() {
   const total = expenses.reduce((s, e) => s + e.amount, 0);
   return (
     <AppShell
-      title="Expenses"
-      subtitle={`${expenses.length} entries · ${currency(total)} this month`}
-      actions={<Button size="sm" className="bg-brand hover:bg-brand/90"><Plus className="w-4 h-4 mr-1.5" />New expense</Button>}
+      title="المصروفات"
+      subtitle={`${expenses.length} قيد · ${currency(total)} هذا الشهر`}
+      actions={<Button size="sm" className="bg-brand hover:bg-brand/90"><Plus className="w-4 h-4 ml-1.5" />مصروف جديد</Button>}
     >
       <SectionCard>
         <div className="overflow-x-auto -mx-5">
           <table className="w-full text-sm">
             <thead className="text-xs text-muted-foreground">
               <tr className="border-b border-border">
-                <th className="text-left font-medium px-5 py-2.5">Ref</th>
-                <th className="text-left font-medium py-2.5">Category</th>
-                <th className="text-left font-medium py-2.5">Vendor</th>
-                <th className="text-left font-medium py-2.5">Branch</th>
-                <th className="text-left font-medium py-2.5">Date</th>
-                <th className="text-right font-medium py-2.5">Amount</th>
-                <th className="text-left font-medium px-5 py-2.5">Status</th>
+                <th className="text-left font-medium px-5 py-2.5">المرجع</th>
+                <th className="text-left font-medium py-2.5">الفئة</th>
+                <th className="text-left font-medium py-2.5">المورّد</th>
+                <th className="text-left font-medium py-2.5">الفرع</th>
+                <th className="text-left font-medium py-2.5">التاريخ</th>
+                <th className="text-right font-medium py-2.5">المبلغ</th>
+                <th className="text-left font-medium px-5 py-2.5">الحالة</th>
               </tr>
             </thead>
             <tbody>

@@ -11,9 +11,9 @@ const icons = { success: CheckCircle2, warning: AlertTriangle, info: Info } as c
 function NotificationsPage() {
   return (
     <AppShell
-      title="Notifications"
-      subtitle={`${notifications.filter((n) => n.unread).length} unread`}
-      actions={<Button variant="outline" size="sm">Mark all read</Button>}
+      title="الإشعارات"
+      subtitle={`${notifications.filter((n) => n.unread).length} غير مقروءة`}
+      actions={<Button variant="outline" size="sm">تحديد الكل كمقروء</Button>}
     >
       <SectionCard>
         <ul className="divide-y divide-border">

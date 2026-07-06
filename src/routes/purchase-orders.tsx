@@ -8,39 +8,39 @@ export const Route = createFileRoute("/purchase-orders")({ component: POPage });
 
 function POPage() {
   const totals = {
-    pending: purchaseOrders.filter((p) => p.status === "Pending").length,
-    approved: purchaseOrders.filter((p) => p.status === "Approved").length,
-    delivered: purchaseOrders.filter((p) => p.status === "Delivered").length,
-    cancelled: purchaseOrders.filter((p) => p.status === "Cancelled").length,
+    pending: purchaseOrders.filter((p) => p.status === "قيد الانتظار").length,
+    approved: purchaseOrders.filter((p) => p.status === "معتمد").length,
+    delivered: purchaseOrders.filter((p) => p.status === "تم التسليم").length,
+    cancelled: purchaseOrders.filter((p) => p.status === "ملغى").length,
   };
-  const totalValue = purchaseOrders.filter((p) => p.status !== "Cancelled").reduce((s, p) => s + p.total, 0);
+  const totalValue = purchaseOrders.filter((p) => p.status !== "ملغى").reduce((s, p) => s + p.total, 0);
 
   return (
     <AppShell
-      title="Purchase Orders"
-      subtitle="Track every order from creation to receiving"
-      actions={<Button size="sm" className="bg-brand hover:bg-brand/90"><Plus className="w-4 h-4 mr-1.5" />New PO</Button>}
+      title="أوامر الشراء"
+      subtitle="تتبّع كل أمر من الإنشاء حتى الاستلام"
+      actions={<Button size="sm" className="bg-brand hover:bg-brand/90"><Plus className="w-4 h-4 ml-1.5" />أمر شراء جديد</Button>}
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-        <KpiCard label="Open orders" value={String(totals.pending + totals.approved)} delta={currency(totalValue)} icon={ShoppingCart} tone="brand" />
-        <KpiCard label="Pending approval" value={totals.pending.toString()} delta="Requires manager review" icon={Clock} tone="warning" />
-        <KpiCard label="Delivered" value={totals.delivered.toString()} delta="This month" icon={CheckCircle2} tone="success" />
-        <KpiCard label="Cancelled" value={totals.cancelled.toString()} delta="Trend stable" icon={XCircle} tone="coral" />
+        <KpiCard label="أوامر مفتوحة" value={String(totals.pending + totals.approved)} delta={currency(totalValue)} icon={ShoppingCart} tone="brand" />
+        <KpiCard label="بانتظار الاعتماد" value={totals.pending.toString()} delta="بحاجة لمراجعة المدير" icon={Clock} tone="warning" />
+        <KpiCard label="تم التسليم" value={totals.delivered.toString()} delta="هذا الشهر" icon={CheckCircle2} tone="success" />
+        <KpiCard label="ملغاة" value={totals.cancelled.toString()} delta="اتجاه مستقر" icon={XCircle} tone="coral" />
       </div>
 
-      <SectionCard className="mt-4" title="All purchase orders">
+      <SectionCard className="mt-4" title="كل أوامر الشراء">
         <div className="overflow-x-auto -mx-5">
           <table className="w-full text-sm">
             <thead className="text-xs text-muted-foreground">
               <tr className="border-b border-border">
-                <th className="text-left font-medium px-5 py-2.5">Order</th>
-                <th className="text-left font-medium py-2.5">Supplier</th>
-                <th className="text-left font-medium py-2.5">Branch</th>
-                <th className="text-right font-medium py-2.5">Items</th>
-                <th className="text-right font-medium py-2.5">Total</th>
-                <th className="text-left font-medium py-2.5">Created</th>
-                <th className="text-left font-medium py-2.5">ETA</th>
-                <th className="text-left font-medium px-5 py-2.5">Status</th>
+                <th className="text-left font-medium px-5 py-2.5">الأمر</th>
+                <th className="text-left font-medium py-2.5">المورّد</th>
+                <th className="text-left font-medium py-2.5">الفرع</th>
+                <th className="text-right font-medium py-2.5">أصناف</th>
+                <th className="text-right font-medium py-2.5">الإجمالي</th>
+                <th className="text-left font-medium py-2.5">تاريخ الإنشاء</th>
+                <th className="text-left font-medium py-2.5">الوصول المتوقع</th>
+                <th className="text-left font-medium px-5 py-2.5">الحالة</th>
               </tr>
             </thead>
             <tbody>

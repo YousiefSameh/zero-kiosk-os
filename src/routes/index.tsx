@@ -16,28 +16,28 @@ function Dashboard() {
   const delta = ((kpis.revenueToday - kpis.revenueYesterday) / kpis.revenueYesterday) * 100;
   return (
     <AppShell
-      title="Dashboard"
-      subtitle="Sunday, July 5, 2026 · Live across 4 branches"
+      title="لوحة التحكم"
+      subtitle="الأحد ٥ يوليو ٢٠٢٦ · مباشر عبر ٤ فروع"
       actions={
         <>
-          <Button variant="outline" size="sm"><Download className="w-4 h-4 mr-1.5" />Export</Button>
-          <Button size="sm" className="bg-brand hover:bg-brand/90"><Plus className="w-4 h-4 mr-1.5" />New sale</Button>
+          <Button variant="outline" size="sm"><Download className="w-4 h-4 ml-1.5" />تصدير</Button>
+          <Button size="sm" className="bg-brand hover:bg-brand/90"><Plus className="w-4 h-4 ml-1.5" />بيع جديد</Button>
         </>
       }
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-        <KpiCard label="Revenue today" value={currency(kpis.revenueToday)} delta={`▲ ${delta.toFixed(1)}% vs yesterday`} icon={Wallet} tone="brand" />
-        <KpiCard label="Transactions" value={kpis.transactionsToday.toString()} delta={`Avg basket ${currency(kpis.avgBasket)}`} icon={ShoppingBag} tone="coral" />
-        <KpiCard label="Active branches" value={kpis.activeBranches.toString()} delta="All systems normal" icon={Store} tone="success" />
-        <KpiCard label="Stock alerts" value={kpis.stockAlerts.toString()} delta={`${kpis.openPOs} open POs`} icon={AlertTriangle} tone="warning" />
+        <KpiCard label="إيرادات اليوم" value={currency(kpis.revenueToday)} delta={`▲ ${delta.toFixed(1)}٪ عن أمس`} icon={Wallet} tone="brand" />
+        <KpiCard label="عدد المعاملات" value={kpis.transactionsToday.toString()} delta={`متوسط السلة ${currency(kpis.avgBasket)}`} icon={ShoppingBag} tone="coral" />
+        <KpiCard label="الفروع النشطة" value={kpis.activeBranches.toString()} delta="كل الأنظمة تعمل" icon={Store} tone="success" />
+        <KpiCard label="تنبيهات المخزون" value={kpis.stockAlerts.toString()} delta={`${kpis.openPOs} أوامر شراء مفتوحة`} icon={AlertTriangle} tone="warning" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
         <SectionCard
           className="lg:col-span-2"
-          title="Sales this week"
-          description="Revenue and transactions across all branches"
-          actions={<div className="text-xs text-muted-foreground flex items-center gap-1"><TrendingUp className="w-3.5 h-3.5 text-success" />+18.3% WoW</div>}
+          title="المبيعات هذا الأسبوع"
+          description="الإيرادات والمعاملات عبر كل الفروع"
+          actions={<div className="text-xs text-muted-foreground flex items-center gap-1"><TrendingUp className="w-3.5 h-3.5 text-success" />+18.3٪ مقارنة بالأسبوع الماضي</div>}
         >
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
@@ -50,7 +50,7 @@ function Dashboard() {
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="oklch(0.92 0.008 190)" />
                 <XAxis dataKey="day" tickLine={false} axisLine={false} tick={{ fontSize: 12, fill: "oklch(0.52 0.02 210)" }} />
-                <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 12, fill: "oklch(0.52 0.02 210)" }} tickFormatter={(v) => `${v / 1000}k`} />
+                <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 12, fill: "oklch(0.52 0.02 210)" }} tickFormatter={(v) => `${v / 1000}k`} orientation="right" />
                 <Tooltip contentStyle={{ borderRadius: 12, border: "1px solid oklch(0.92 0.008 190)", fontSize: 12 }} />
                 <Area type="monotone" dataKey="sales" stroke="oklch(0.48 0.08 185)" strokeWidth={2.5} fill="url(#g1)" />
               </AreaChart>
@@ -58,7 +58,7 @@ function Dashboard() {
           </div>
         </SectionCard>
 
-        <SectionCard title="Category mix" description="Share of revenue today">
+        <SectionCard title="توزيع الفئات" description="حصة الإيرادات اليوم">
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -76,18 +76,18 @@ function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
-        <SectionCard className="lg:col-span-2" title="Recent sales" description="Live feed from every terminal">
+        <SectionCard className="lg:col-span-2" title="آخر المبيعات" description="بث مباشر من كل الطرفيات">
           <div className="overflow-x-auto -mx-5">
             <table className="w-full text-sm">
               <thead className="text-xs text-muted-foreground">
                 <tr className="border-b border-border">
-                  <th className="text-left font-medium px-5 py-2.5">Transaction</th>
-                  <th className="text-left font-medium py-2.5">Cashier</th>
-                  <th className="text-left font-medium py-2.5">Branch</th>
-                  <th className="text-right font-medium py-2.5">Items</th>
-                  <th className="text-right font-medium py-2.5">Total</th>
-                  <th className="text-left font-medium py-2.5">Method</th>
-                  <th className="text-left font-medium px-5 py-2.5">Status</th>
+                  <th className="text-left font-medium px-5 py-2.5">رقم المعاملة</th>
+                  <th className="text-left font-medium py-2.5">الكاشير</th>
+                  <th className="text-left font-medium py-2.5">الفرع</th>
+                  <th className="text-right font-medium py-2.5">أصناف</th>
+                  <th className="text-right font-medium py-2.5">الإجمالي</th>
+                  <th className="text-left font-medium py-2.5">طريقة الدفع</th>
+                  <th className="text-left font-medium px-5 py-2.5">الحالة</th>
                 </tr>
               </thead>
               <tbody>
@@ -107,7 +107,7 @@ function Dashboard() {
           </div>
         </SectionCard>
 
-        <SectionCard title="Activity" description="What's happening now">
+        <SectionCard title="النشاط" description="ما يحدث الآن">
           <ul className="space-y-4">
             {activity.slice(0, 6).map((a) => (
               <li key={a.id} className="flex gap-3">
@@ -125,14 +125,14 @@ function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
-        <SectionCard title="Low stock" description="Items that need reordering">
+        <SectionCard title="مخزون منخفض" description="أصناف تحتاج إعادة طلب">
           <ul className="divide-y divide-border">
-            {products.filter((p) => p.status !== "In Stock").slice(0, 5).map((p) => (
+            {products.filter((p) => p.status !== "متوفر").slice(0, 5).map((p) => (
               <li key={p.id} className="py-3 flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-muted grid place-items-center text-xs font-medium">{p.name.slice(0, 2)}</div>
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-medium truncate">{p.name}</div>
-                  <div className="text-xs text-muted-foreground">{p.supplier} · reorder at {p.reorder}</div>
+                  <div className="text-xs text-muted-foreground">{p.supplier} · إعادة طلب عند {p.reorder}</div>
                 </div>
                 <div className="text-right">
                   <div className="text-sm font-semibold">{p.stock}</div>
@@ -143,13 +143,13 @@ function Dashboard() {
           </ul>
         </SectionCard>
 
-        <SectionCard title="Top branches" description="By revenue this week">
+        <SectionCard title="أفضل الفروع" description="حسب إيرادات الأسبوع">
           <div className="space-y-3">
             {[
-              { name: "Zamalek Flagship", city: "Cairo", value: 214300, pct: 92 },
-              { name: "Maadi Corniche", city: "Cairo", value: 168400, pct: 72 },
-              { name: "Sheraton Heliopolis", city: "Cairo", value: 142800, pct: 62 },
-              { name: "Smouha", city: "Alexandria", value: 121500, pct: 52 },
+              { name: "الزمالك — الفرع الرئيسي", city: "القاهرة", value: 214300, pct: 92 },
+              { name: "المعادي كورنيش", city: "القاهرة", value: 168400, pct: 72 },
+              { name: "شيراتون هليوبوليس", city: "القاهرة", value: 142800, pct: 62 },
+              { name: "سموحة", city: "الإسكندرية", value: 121500, pct: 52 },
             ].map((b) => (
               <div key={b.name}>
                 <div className="flex items-center justify-between text-sm">
