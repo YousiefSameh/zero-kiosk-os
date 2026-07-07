@@ -9,11 +9,12 @@ export const Route = createFileRoute("/notifications")({ component: Notification
 const icons = { success: CheckCircle2, warning: AlertTriangle, info: Info } as const;
 
 function NotificationsPage() {
+  const unread = notifications.filter((n) => n.unread).length;
   return (
     <AppShell
-      title="Notifications"
-      subtitle={`${notifications.filter((n) => n.unread).length} unread`}
-      actions={<Button variant="outline" size="sm">Mark all read</Button>}
+      title="الإشعارات"
+      subtitle={`${unread} غير مقروء`}
+      actions={<Button variant="outline" size="sm">تعليم الكل كمقروء</Button>}
     >
       <SectionCard>
         <ul className="divide-y divide-border">
