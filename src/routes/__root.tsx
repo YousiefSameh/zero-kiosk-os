@@ -61,10 +61,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Zero Kiosk — Retail Operating System" },
-      { name: "description", content: "Zero Kiosk (زيرو كشك) is the operating system for modern supermarkets — POS, inventory, purchasing, and analytics unified." },
-      { property: "og:title", content: "Zero Kiosk — Retail Operating System" },
-      { property: "og:description", content: "One unified platform for supermarkets: POS, inventory, purchasing, finance, and analytics." },
+      { title: "زيرو كشك — نظام تشغيل السوبرماركت" },
+      { name: "description", content: "زيرو كشك هو نظام التشغيل المتكامل للسوبرماركت الحديث في مصر — نقطة البيع والمخزون والمشتريات والمالية والتحليلات في منصة واحدة." },
+      { property: "og:title", content: "زيرو كشك — نظام تشغيل السوبرماركت" },
+      { property: "og:description", content: "منصة موحّدة للسوبرماركت: نقطة البيع، المخزون، المشتريات، المالية والتحليلات." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -73,7 +73,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&family=Cairo:wght@400;500;600;700&display=swap" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&family=Cairo:wght@400;500;600;700;800&display=swap" },
     ],
   }),
   shellComponent: RootShell,
@@ -84,7 +84,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="ar" dir="rtl">
       <head><HeadContent /></head>
       <body>{children}<Scripts /></body>
     </html>
