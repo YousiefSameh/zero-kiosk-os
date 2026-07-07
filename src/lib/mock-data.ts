@@ -10,128 +10,130 @@ export const kpis = {
 };
 
 export const salesTrend = [
-  { day: "Mon", sales: 32400, transactions: 240 },
-  { day: "Tue", sales: 38900, transactions: 282 },
-  { day: "Wed", sales: 41200, transactions: 301 },
-  { day: "Thu", sales: 37500, transactions: 271 },
-  { day: "Fri", sales: 52300, transactions: 388 },
-  { day: "Sat", sales: 61800, transactions: 445 },
-  { day: "Sun", sales: 48210, transactions: 342 },
+  { day: "الإثنين", sales: 32400, transactions: 240 },
+  { day: "الثلاثاء", sales: 38900, transactions: 282 },
+  { day: "الأربعاء", sales: 41200, transactions: 301 },
+  { day: "الخميس", sales: 37500, transactions: 271 },
+  { day: "الجمعة", sales: 52300, transactions: 388 },
+  { day: "السبت", sales: 61800, transactions: 445 },
+  { day: "الأحد", sales: 48210, transactions: 342 },
 ];
 
 export const categoryMix = [
-  { name: "Beverages", value: 34 },
-  { name: "Snacks", value: 22 },
-  { name: "Dairy", value: 18 },
-  { name: "Household", value: 14 },
-  { name: "Personal Care", value: 12 },
+  { name: "مشروبات", value: 34 },
+  { name: "وجبات خفيفة", value: 22 },
+  { name: "ألبان", value: 18 },
+  { name: "مستلزمات منزلية", value: 14 },
+  { name: "عناية شخصية", value: 12 },
 ];
 
 export const branches = [
-  { id: "BR-01", name: "Zamalek Flagship", city: "Cairo", staff: 12, revenue: 214300, status: "Active" },
-  { id: "BR-02", name: "Maadi Corniche", city: "Cairo", staff: 8, revenue: 168400, status: "Active" },
-  { id: "BR-03", name: "Sheraton Heliopolis", city: "Cairo", staff: 9, revenue: 142800, status: "Active" },
-  { id: "BR-04", name: "Smouha", city: "Alexandria", staff: 7, revenue: 121500, status: "Onboarding" },
+  { id: "BR-01", name: "فرع الزمالك الرئيسي", city: "القاهرة", staff: 12, revenue: 214300, status: "نشط" },
+  { id: "BR-02", name: "فرع كورنيش المعادي", city: "القاهرة", staff: 8, revenue: 168400, status: "نشط" },
+  { id: "BR-03", name: "فرع شيراتون هليوبوليس", city: "القاهرة", staff: 9, revenue: 142800, status: "نشط" },
+  { id: "BR-04", name: "فرع سموحة", city: "الإسكندرية", staff: 7, revenue: 121500, status: "قيد التأهيل" },
 ];
 
 export const products = [
-  { id: "SKU-1001", name: "Coca-Cola 330ml", category: "Beverages", supplier: "Coca-Cola HBC", price: 12, cost: 8.4, stock: 480, reorder: 120, status: "In Stock" },
-  { id: "SKU-1002", name: "Pepsi 2L", category: "Beverages", supplier: "PepsiCo Egypt", price: 34, cost: 24, stock: 96, reorder: 60, status: "In Stock" },
-  { id: "SKU-1003", name: "Lay's Chips Classic", category: "Snacks", supplier: "PepsiCo Egypt", price: 15, cost: 9.6, stock: 42, reorder: 80, status: "Low Stock" },
-  { id: "SKU-1004", name: "Oreo Original", category: "Snacks", supplier: "Mondelez", price: 18, cost: 12, stock: 210, reorder: 60, status: "In Stock" },
-  { id: "SKU-1005", name: "Nescafe Gold 100g", category: "Beverages", supplier: "Nestlé Egypt", price: 210, cost: 168, stock: 22, reorder: 30, status: "Low Stock" },
-  { id: "SKU-1006", name: "Juhayna Full Cream 1L", category: "Dairy", supplier: "Juhayna", price: 42, cost: 32, stock: 158, reorder: 100, status: "In Stock" },
-  { id: "SKU-1007", name: "Domty Feta 500g", category: "Dairy", supplier: "Domty", price: 78, cost: 58, stock: 8, reorder: 40, status: "Critical" },
-  { id: "SKU-1008", name: "Molto Croissant", category: "Snacks", supplier: "Edita", price: 8, cost: 5.2, stock: 340, reorder: 100, status: "In Stock" },
-  { id: "SKU-1009", name: "Fine Tissues 200s", category: "Household", supplier: "Fine Foods", price: 28, cost: 19, stock: 74, reorder: 60, status: "In Stock" },
-  { id: "SKU-1010", name: "Persil Detergent 3kg", category: "Household", supplier: "Henkel Egypt", price: 245, cost: 190, stock: 18, reorder: 25, status: "Low Stock" },
-  { id: "SKU-1011", name: "Colgate Total 100ml", category: "Personal Care", supplier: "Colgate-Palmolive", price: 62, cost: 42, stock: 130, reorder: 60, status: "In Stock" },
-  { id: "SKU-1012", name: "Head & Shoulders 400ml", category: "Personal Care", supplier: "P&G Egypt", price: 168, cost: 128, stock: 0, reorder: 30, status: "Out of Stock" },
+  { id: "SKU-1001", name: "كوكاكولا ٣٣٠ مل", category: "مشروبات", supplier: "كوكاكولا مصر", price: 12, cost: 8.4, stock: 480, reorder: 120, status: "متوفر" },
+  { id: "SKU-1002", name: "بيبسي ٢ لتر", category: "مشروبات", supplier: "بيبسيكو مصر", price: 34, cost: 24, stock: 96, reorder: 60, status: "متوفر" },
+  { id: "SKU-1003", name: "شيبسي كلاسيك", category: "وجبات خفيفة", supplier: "بيبسيكو مصر", price: 15, cost: 9.6, stock: 42, reorder: 80, status: "مخزون منخفض" },
+  { id: "SKU-1004", name: "بسكويت أوريو", category: "وجبات خفيفة", supplier: "موندليز", price: 18, cost: 12, stock: 210, reorder: 60, status: "متوفر" },
+  { id: "SKU-1005", name: "نسكافيه جولد ١٠٠ جم", category: "مشروبات", supplier: "نستله مصر", price: 210, cost: 168, stock: 22, reorder: 30, status: "مخزون منخفض" },
+  { id: "SKU-1006", name: "جهينة لبن كامل الدسم ١ لتر", category: "ألبان", supplier: "جهينة", price: 42, cost: 32, stock: 158, reorder: 100, status: "متوفر" },
+  { id: "SKU-1007", name: "دومتي جبنة فيتا ٥٠٠ جم", category: "ألبان", supplier: "دومتي", price: 78, cost: 58, stock: 8, reorder: 40, status: "حرج" },
+  { id: "SKU-1008", name: "كرواسون مولتو", category: "وجبات خفيفة", supplier: "إيديتا", price: 8, cost: 5.2, stock: 340, reorder: 100, status: "متوفر" },
+  { id: "SKU-1009", name: "مناديل فاين ٢٠٠ مناديل", category: "مستلزمات منزلية", supplier: "فاين", price: 28, cost: 19, stock: 74, reorder: 60, status: "متوفر" },
+  { id: "SKU-1010", name: "برسيل مسحوق غسيل ٣ كجم", category: "مستلزمات منزلية", supplier: "هنكل مصر", price: 245, cost: 190, stock: 18, reorder: 25, status: "مخزون منخفض" },
+  { id: "SKU-1011", name: "كولجيت توتال ١٠٠ مل", category: "عناية شخصية", supplier: "كولجيت-بالموليڤ", price: 62, cost: 42, stock: 130, reorder: 60, status: "متوفر" },
+  { id: "SKU-1012", name: "هيد آند شولدرز ٤٠٠ مل", category: "عناية شخصية", supplier: "بروكتر آند جامبل مصر", price: 168, cost: 128, stock: 0, reorder: 30, status: "نفد المخزون" },
 ];
 
 export const suppliers = [
-  { id: "SUP-01", name: "Nestlé Egypt", contact: "Karim Yousri", phone: "+20 100 111 2233", terms: "Net 30", rating: 4.8, openPOs: 2 },
-  { id: "SUP-02", name: "Coca-Cola HBC", contact: "Sara Fahmy", phone: "+20 122 445 8899", terms: "Net 15", rating: 4.7, openPOs: 1 },
-  { id: "SUP-03", name: "PepsiCo Egypt", contact: "Omar Salem", phone: "+20 111 887 5566", terms: "Net 30", rating: 4.5, openPOs: 3 },
-  { id: "SUP-04", name: "Juhayna", contact: "Mona Gharib", phone: "+20 128 665 3311", terms: "Net 7", rating: 4.6, openPOs: 1 },
-  { id: "SUP-05", name: "Edita", contact: "Hesham Nabil", phone: "+20 106 224 7788", terms: "Net 30", rating: 4.4, openPOs: 0 },
-  { id: "SUP-06", name: "Fine Foods", contact: "Rania Adel", phone: "+20 100 998 3322", terms: "Net 15", rating: 4.3, openPOs: 0 },
-  { id: "SUP-07", name: "Domty", contact: "Yasmin Hosny", phone: "+20 109 774 6621", terms: "Net 21", rating: 4.5, openPOs: 1 },
+  { id: "SUP-01", name: "نستله مصر", contact: "كريم يسري", phone: "٠١٠٠ ١١١ ٢٢٣٣", terms: "صافي ٣٠ يوم", rating: 4.8, openPOs: 2 },
+  { id: "SUP-02", name: "كوكاكولا مصر", contact: "سارة فهمي", phone: "٠١٢٢ ٤٤٥ ٨٨٩٩", terms: "صافي ١٥ يوم", rating: 4.7, openPOs: 1 },
+  { id: "SUP-03", name: "بيبسيكو مصر", contact: "عمر سالم", phone: "٠١١١ ٨٨٧ ٥٥٦٦", terms: "صافي ٣٠ يوم", rating: 4.5, openPOs: 3 },
+  { id: "SUP-04", name: "جهينة للصناعات الغذائية", contact: "منى غريب", phone: "٠١٢٨ ٦٦٥ ٣٣١١", terms: "صافي ٧ أيام", rating: 4.6, openPOs: 1 },
+  { id: "SUP-05", name: "إيديتا للصناعات الغذائية", contact: "هشام نبيل", phone: "٠١٠٦ ٢٢٤ ٧٧٨٨", terms: "صافي ٣٠ يوم", rating: 4.4, openPOs: 0 },
+  { id: "SUP-06", name: "فاين هايجينك", contact: "رانيا عادل", phone: "٠١٠٠ ٩٩٨ ٣٣٢٢", terms: "صافي ١٥ يوم", rating: 4.3, openPOs: 0 },
+  { id: "SUP-07", name: "دومتي للأغذية", contact: "ياسمين حسني", phone: "٠١٠٩ ٧٧٤ ٦٦٢١", terms: "صافي ٢١ يوم", rating: 4.5, openPOs: 1 },
 ];
 
 export const purchaseOrders = [
-  { id: "PO-2041", supplier: "Nestlé Egypt", branch: "Zamalek Flagship", items: 14, total: 48200, status: "Approved", date: "2026-06-28", eta: "2026-07-04" },
-  { id: "PO-2042", supplier: "Coca-Cola HBC", branch: "Maadi Corniche", items: 6, total: 22400, status: "Pending", date: "2026-06-30", eta: "2026-07-06" },
-  { id: "PO-2043", supplier: "Juhayna", branch: "Sheraton Heliopolis", items: 9, total: 18650, status: "Delivered", date: "2026-06-24", eta: "2026-06-29" },
-  { id: "PO-2044", supplier: "PepsiCo Egypt", branch: "Zamalek Flagship", items: 22, total: 61240, status: "Delivered", date: "2026-06-20", eta: "2026-06-26" },
-  { id: "PO-2045", supplier: "Edita", branch: "Smouha", items: 11, total: 14200, status: "Pending", date: "2026-07-01", eta: "2026-07-08" },
-  { id: "PO-2046", supplier: "Domty", branch: "Maadi Corniche", items: 5, total: 9860, status: "Cancelled", date: "2026-06-18", eta: "—" },
-  { id: "PO-2047", supplier: "Fine Foods", branch: "Zamalek Flagship", items: 8, total: 17200, status: "Approved", date: "2026-07-02", eta: "2026-07-09" },
+  { id: "PO-2041", supplier: "نستله مصر", branch: "فرع الزمالك الرئيسي", items: 14, total: 48200, status: "معتمد", date: "٢٠٢٦-٠٦-٢٨", eta: "٢٠٢٦-٠٧-٠٤" },
+  { id: "PO-2042", supplier: "كوكاكولا مصر", branch: "فرع كورنيش المعادي", items: 6, total: 22400, status: "قيد الانتظار", date: "٢٠٢٦-٠٦-٣٠", eta: "٢٠٢٦-٠٧-٠٦" },
+  { id: "PO-2043", supplier: "جهينة للصناعات الغذائية", branch: "فرع شيراتون هليوبوليس", items: 9, total: 18650, status: "تم التسليم", date: "٢٠٢٦-٠٦-٢٤", eta: "٢٠٢٦-٠٦-٢٩" },
+  { id: "PO-2044", supplier: "بيبسيكو مصر", branch: "فرع الزمالك الرئيسي", items: 22, total: 61240, status: "تم التسليم", date: "٢٠٢٦-٠٦-٢٠", eta: "٢٠٢٦-٠٦-٢٦" },
+  { id: "PO-2045", supplier: "إيديتا للصناعات الغذائية", branch: "فرع سموحة", items: 11, total: 14200, status: "قيد الانتظار", date: "٢٠٢٦-٠٧-٠١", eta: "٢٠٢٦-٠٧-٠٨" },
+  { id: "PO-2046", supplier: "دومتي للأغذية", branch: "فرع كورنيش المعادي", items: 5, total: 9860, status: "مُلغى", date: "٢٠٢٦-٠٦-١٨", eta: "—" },
+  { id: "PO-2047", supplier: "فاين هايجينك", branch: "فرع الزمالك الرئيسي", items: 8, total: 17200, status: "معتمد", date: "٢٠٢٦-٠٧-٠٢", eta: "٢٠٢٦-٠٧-٠٩" },
 ];
 
 export const customers = [
-  { id: "CUS-1001", name: "Ahmed Hassan", phone: "+20 100 223 4411", visits: 42, spend: 18420, loyalty: "Gold", lastVisit: "2026-07-04" },
-  { id: "CUS-1002", name: "Mohamed Ali", phone: "+20 122 664 7788", visits: 28, spend: 9680, loyalty: "Silver", lastVisit: "2026-07-03" },
-  { id: "CUS-1003", name: "Fatma Adel", phone: "+20 111 335 8822", visits: 61, spend: 24310, loyalty: "Platinum", lastVisit: "2026-07-05" },
-  { id: "CUS-1004", name: "Nour El-Din", phone: "+20 128 447 6611", visits: 15, spend: 4820, loyalty: "Silver", lastVisit: "2026-07-01" },
-  { id: "CUS-1005", name: "Salma Ibrahim", phone: "+20 106 778 2244", visits: 9, spend: 2210, loyalty: "Bronze", lastVisit: "2026-06-29" },
-  { id: "CUS-1006", name: "Youssef Kamal", phone: "+20 100 555 1122", visits: 34, spend: 12480, loyalty: "Gold", lastVisit: "2026-07-02" },
+  { id: "CUS-1001", name: "أحمد حسن", phone: "٠١٠٠ ٢٢٣ ٤٤١١", visits: 42, spend: 18420, loyalty: "ذهبي", lastVisit: "٢٠٢٦-٠٧-٠٤" },
+  { id: "CUS-1002", name: "محمد علي", phone: "٠١٢٢ ٦٦٤ ٧٧٨٨", visits: 28, spend: 9680, loyalty: "فضي", lastVisit: "٢٠٢٦-٠٧-٠٣" },
+  { id: "CUS-1003", name: "فاطمة عادل", phone: "٠١١١ ٣٣٥ ٨٨٢٢", visits: 61, spend: 24310, loyalty: "بلاتيني", lastVisit: "٢٠٢٦-٠٧-٠٥" },
+  { id: "CUS-1004", name: "نور الدين محمود", phone: "٠١٢٨ ٤٤٧ ٦٦١١", visits: 15, spend: 4820, loyalty: "فضي", lastVisit: "٢٠٢٦-٠٧-٠١" },
+  { id: "CUS-1005", name: "سلمى إبراهيم", phone: "٠١٠٦ ٧٧٨ ٢٢٤٤", visits: 9, spend: 2210, loyalty: "برونزي", lastVisit: "٢٠٢٦-٠٦-٢٩" },
+  { id: "CUS-1006", name: "يوسف كمال", phone: "٠١٠٠ ٥٥٥ ١١٢٢", visits: 34, spend: 12480, loyalty: "ذهبي", lastVisit: "٢٠٢٦-٠٧-٠٢" },
 ];
 
 export const sales = [
-  { id: "TXN-88421", cashier: "Menna Tarek", branch: "Zamalek Flagship", items: 8, total: 342, method: "Card", time: "12:42", status: "Completed" },
-  { id: "TXN-88422", cashier: "Karim Fouad", branch: "Zamalek Flagship", items: 3, total: 96, method: "Cash", time: "12:44", status: "Completed" },
-  { id: "TXN-88423", cashier: "Menna Tarek", branch: "Zamalek Flagship", items: 12, total: 812, method: "Card", time: "12:47", status: "Completed" },
-  { id: "TXN-88424", cashier: "Hana Sami", branch: "Maadi Corniche", items: 2, total: 58, method: "Cash", time: "12:51", status: "Refunded" },
-  { id: "TXN-88425", cashier: "Ahmed Nabil", branch: "Sheraton Heliopolis", items: 5, total: 218, method: "Card", time: "12:53", status: "Completed" },
-  { id: "TXN-88426", cashier: "Menna Tarek", branch: "Zamalek Flagship", items: 1, total: 12, method: "Cash", time: "12:55", status: "Completed" },
-  { id: "TXN-88427", cashier: "Karim Fouad", branch: "Zamalek Flagship", items: 7, total: 421, method: "Wallet", time: "12:58", status: "Completed" },
+  { id: "TXN-88421", cashier: "منة طارق", branch: "فرع الزمالك الرئيسي", items: 8, total: 342, method: "بطاقة", time: "١٢:٤٢", status: "مكتمل" },
+  { id: "TXN-88422", cashier: "كريم فؤاد", branch: "فرع الزمالك الرئيسي", items: 3, total: 96, method: "نقدي", time: "١٢:٤٤", status: "مكتمل" },
+  { id: "TXN-88423", cashier: "منة طارق", branch: "فرع الزمالك الرئيسي", items: 12, total: 812, method: "بطاقة", time: "١٢:٤٧", status: "مكتمل" },
+  { id: "TXN-88424", cashier: "هناء سامي", branch: "فرع كورنيش المعادي", items: 2, total: 58, method: "نقدي", time: "١٢:٥١", status: "مُسترد" },
+  { id: "TXN-88425", cashier: "أحمد نبيل", branch: "فرع شيراتون هليوبوليس", items: 5, total: 218, method: "بطاقة", time: "١٢:٥٣", status: "مكتمل" },
+  { id: "TXN-88426", cashier: "منة طارق", branch: "فرع الزمالك الرئيسي", items: 1, total: 12, method: "نقدي", time: "١٢:٥٥", status: "مكتمل" },
+  { id: "TXN-88427", cashier: "كريم فؤاد", branch: "فرع الزمالك الرئيسي", items: 7, total: 421, method: "محفظة", time: "١٢:٥٨", status: "مكتمل" },
 ];
 
 export const employees = [
-  { id: "EMP-01", name: "Menna Tarek", role: "Cashier", branch: "Zamalek Flagship", shift: "Morning", status: "Active" },
-  { id: "EMP-02", name: "Karim Fouad", role: "Cashier", branch: "Zamalek Flagship", shift: "Evening", status: "Active" },
-  { id: "EMP-03", name: "Hana Sami", role: "Shift Manager", branch: "Maadi Corniche", shift: "Morning", status: "Active" },
-  { id: "EMP-04", name: "Ahmed Nabil", role: "Cashier", branch: "Sheraton Heliopolis", shift: "Morning", status: "Active" },
-  { id: "EMP-05", name: "Laila Mostafa", role: "Branch Manager", branch: "Zamalek Flagship", shift: "Full", status: "Active" },
-  { id: "EMP-06", name: "Tarek Sobhy", role: "Inventory Clerk", branch: "Maadi Corniche", shift: "Morning", status: "On Leave" },
-  { id: "EMP-07", name: "Nada Wahby", role: "Branch Manager", branch: "Smouha", shift: "Full", status: "Active" },
+  { id: "EMP-01", name: "منة طارق", role: "كاشير", branch: "فرع الزمالك الرئيسي", shift: "صباحية", status: "نشط" },
+  { id: "EMP-02", name: "كريم فؤاد", role: "كاشير", branch: "فرع الزمالك الرئيسي", shift: "مسائية", status: "نشط" },
+  { id: "EMP-03", name: "هناء سامي", role: "مدير وردية", branch: "فرع كورنيش المعادي", shift: "صباحية", status: "نشط" },
+  { id: "EMP-04", name: "أحمد نبيل", role: "كاشير", branch: "فرع شيراتون هليوبوليس", shift: "صباحية", status: "نشط" },
+  { id: "EMP-05", name: "ليلى مصطفى", role: "مدير فرع", branch: "فرع الزمالك الرئيسي", shift: "كامل", status: "نشط" },
+  { id: "EMP-06", name: "طارق صبحي", role: "أمين مخزون", branch: "فرع كورنيش المعادي", shift: "صباحية", status: "في إجازة" },
+  { id: "EMP-07", name: "ندى وهبي", role: "مدير فرع", branch: "فرع سموحة", shift: "كامل", status: "نشط" },
 ];
 
 export const expenses = [
-  { id: "EXP-2201", category: "Utilities", vendor: "Cairo Electricity", amount: 8420, date: "2026-07-01", branch: "Zamalek Flagship", status: "Paid" },
-  { id: "EXP-2202", category: "Rent", vendor: "Nile Properties", amount: 42000, date: "2026-07-01", branch: "Maadi Corniche", status: "Paid" },
-  { id: "EXP-2203", category: "Maintenance", vendor: "CoolAir Services", amount: 3200, date: "2026-06-28", branch: "Sheraton Heliopolis", status: "Pending" },
-  { id: "EXP-2204", category: "Marketing", vendor: "Meta Ads", amount: 6800, date: "2026-06-25", branch: "All", status: "Paid" },
-  { id: "EXP-2205", category: "Supplies", vendor: "OfficeMax Egypt", amount: 1420, date: "2026-06-22", branch: "Zamalek Flagship", status: "Paid" },
+  { id: "EXP-2201", category: "مرافق", vendor: "شركة كهرباء القاهرة", amount: 8420, date: "٢٠٢٦-٠٧-٠١", branch: "فرع الزمالك الرئيسي", status: "مدفوع" },
+  { id: "EXP-2202", category: "إيجار", vendor: "النيل العقارية", amount: 42000, date: "٢٠٢٦-٠٧-٠١", branch: "فرع كورنيش المعادي", status: "مدفوع" },
+  { id: "EXP-2203", category: "صيانة", vendor: "كول إير للخدمات", amount: 3200, date: "٢٠٢٦-٠٦-٢٨", branch: "فرع شيراتون هليوبوليس", status: "قيد الانتظار" },
+  { id: "EXP-2204", category: "تسويق", vendor: "إعلانات ميتا", amount: 6800, date: "٢٠٢٦-٠٦-٢٥", branch: "جميع الفروع", status: "مدفوع" },
+  { id: "EXP-2205", category: "مستلزمات", vendor: "أوفيس ماكس مصر", amount: 1420, date: "٢٠٢٦-٠٦-٢٢", branch: "فرع الزمالك الرئيسي", status: "مدفوع" },
 ];
 
 export const activity = [
-  { id: 1, user: "Laila Mostafa", action: "Approved PO-2041 for Nestlé Egypt", time: "2 min ago", type: "purchase" },
-  { id: 2, user: "Menna Tarek", action: "Processed refund on TXN-88424", time: "8 min ago", type: "sale" },
-  { id: 3, user: "System", action: "Low-stock alert: Lay's Chips Classic (42 units)", time: "22 min ago", type: "alert" },
-  { id: 4, user: "Karim Fouad", action: "Closed cash drawer with EGP 12,420", time: "1 hr ago", type: "cash" },
-  { id: 5, user: "Hana Sami", action: "Received delivery for PO-2043 (Juhayna)", time: "2 hr ago", type: "purchase" },
-  { id: 6, user: "Tarek Sobhy", action: "Adjusted inventory: +18 Oreo Original", time: "3 hr ago", type: "inventory" },
-  { id: 7, user: "Nada Wahby", action: "Onboarded new cashier at Smouha", time: "5 hr ago", type: "user" },
+  { id: 1, user: "ليلى مصطفى", action: "اعتمدت أمر الشراء PO-2041 من نستله مصر", time: "منذ ٢ دقيقة", type: "purchase" },
+  { id: 2, user: "منة طارق", action: "أنجزت استرداد على المعاملة TXN-88424", time: "منذ ٨ دقائق", type: "sale" },
+  { id: 3, user: "النظام", action: "تنبيه مخزون منخفض: شيبسي كلاسيك (٤٢ وحدة)", time: "منذ ٢٢ دقيقة", type: "alert" },
+  { id: 4, user: "كريم فؤاد", action: "أغلق درج النقد بمبلغ ١٢٬٤٢٠ ج.م.", time: "منذ ساعة", type: "cash" },
+  { id: 5, user: "هناء سامي", action: "استلمت شحنة أمر الشراء PO-2043 (جهينة)", time: "منذ ساعتين", type: "purchase" },
+  { id: 6, user: "طارق صبحي", action: "عدّل المخزون: +١٨ بسكويت أوريو", time: "منذ ٣ ساعات", type: "inventory" },
+  { id: 7, user: "ندى وهبي", action: "أضافت كاشير جديد إلى فرع سموحة", time: "منذ ٥ ساعات", type: "user" },
 ];
 
 export const notifications = [
-  { id: 1, title: "Domty Feta 500g at critical level", desc: "Only 8 units left across all branches. Suggested reorder: 60.", time: "12 min ago", unread: true, kind: "warning" },
-  { id: 2, title: "PO-2043 delivered", desc: "Juhayna delivery received at Sheraton Heliopolis by Hana Sami.", time: "1 hr ago", unread: true, kind: "success" },
-  { id: 3, title: "Cash variance detected", desc: "Zamalek Flagship evening close variance of −EGP 84.", time: "3 hr ago", unread: true, kind: "warning" },
-  { id: 4, title: "Weekly report ready", desc: "Your operations summary for Jun 28 – Jul 4 is ready.", time: "Yesterday", unread: false, kind: "info" },
-  { id: 5, title: "New device paired", desc: "POS-Terminal-04 was registered at Maadi Corniche.", time: "2 days ago", unread: false, kind: "info" },
+  { id: 1, title: "دومتي فيتا ٥٠٠ جم عند مستوى حرج", desc: "لم يتبقَ سوى ٨ وحدات في جميع الفروع. إعادة طلب مقترحة: ٦٠.", time: "منذ ١٢ دقيقة", unread: true, kind: "warning" },
+  { id: 2, title: "تم تسليم أمر الشراء PO-2043", desc: "تم استلام شحنة جهينة في فرع شيراتون هليوبوليس بواسطة هناء سامي.", time: "منذ ساعة", unread: true, kind: "success" },
+  { id: 3, title: "اكتُشف فرق في النقدية", desc: "فرق إغلاق مسائي في فرع الزمالك الرئيسي بقيمة ‎−٨٤ ج.م.", time: "منذ ٣ ساعات", unread: true, kind: "warning" },
+  { id: 4, title: "التقرير الأسبوعي جاهز", desc: "ملخص العمليات للفترة ٢٨ يونيو – ٤ يوليو أصبح جاهزًا.", time: "أمس", unread: false, kind: "info" },
+  { id: 5, title: "تم إقران جهاز جديد", desc: "تم تسجيل نقطة البيع POS-Terminal-04 في فرع كورنيش المعادي.", time: "منذ يومين", unread: false, kind: "info" },
 ];
 
 export const roles = [
-  { id: "RL-01", name: "Owner", members: 1, description: "Full access to all branches, finance, and settings." },
-  { id: "RL-02", name: "Branch Manager", members: 4, description: "Manage branch operations, staff, inventory, and reports." },
-  { id: "RL-03", name: "Shift Manager", members: 6, description: "Supervise cashiers, approve refunds, close drawers." },
-  { id: "RL-04", name: "Cashier", members: 18, description: "Operate POS, process sales, handle returns with approval." },
-  { id: "RL-05", name: "Inventory Clerk", members: 5, description: "Receive stock, count inventory, adjust with approval." },
-  { id: "RL-06", name: "Accountant", members: 2, description: "View finance, reconcile cash, export tax documents." },
+  { id: "RL-01", name: "المالك", members: 1, description: "صلاحيات كاملة على جميع الفروع والمالية والإعدادات." },
+  { id: "RL-02", name: "مدير الفرع", members: 4, description: "إدارة عمليات الفرع والفريق والمخزون والتقارير." },
+  { id: "RL-03", name: "مدير الوردية", members: 6, description: "الإشراف على الكاشير واعتماد الاسترجاعات وإغلاق أدراج النقد." },
+  { id: "RL-04", name: "كاشير", members: 18, description: "تشغيل نقطة البيع ومعالجة المبيعات وتنفيذ المرتجعات باعتماد." },
+  { id: "RL-05", name: "أمين مخزون", members: 5, description: "استلام البضائع وجرد المخزون والتعديل عليه باعتماد." },
+  { id: "RL-06", name: "محاسب", members: 2, description: "عرض المالية وتسوية النقدية وتصدير المستندات الضريبية." },
 ];
 
 export const currency = (n: number) =>
-  new Intl.NumberFormat("en-EG", { style: "currency", currency: "EGP", maximumFractionDigits: 0 }).format(n);
+  new Intl.NumberFormat("ar-EG", { style: "currency", currency: "EGP", maximumFractionDigits: 0 }).format(n);
+
+export const num = (n: number) => new Intl.NumberFormat("ar-EG").format(n);
