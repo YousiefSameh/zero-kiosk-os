@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell, SectionCard, KpiCard } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
-import { customers, currency } from "@/lib/mock-data";
+import { customers, currency, num } from "@/lib/mock-data";
 import { Plus, Users, Crown, TrendingUp } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
@@ -11,27 +11,27 @@ function CustomersPage() {
   const totalSpend = customers.reduce((s, c) => s + c.spend, 0);
   return (
     <AppShell
-      title="Customers"
-      subtitle="Loyalty members and repeat shoppers"
-      actions={<Button size="sm" className="bg-brand hover:bg-brand/90"><Plus className="w-4 h-4 mr-1.5" />Add customer</Button>}
+      title="العملاء"
+      subtitle="أعضاء برنامج الولاء والعملاء المتكررون"
+      actions={<Button size="sm" className="bg-brand hover:bg-brand/90"><Plus className="w-4 h-4 ms-1.5" />إضافة عميل</Button>}
     >
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <KpiCard label="Total customers" value={customers.length.toString()} delta="+12 this week" icon={Users} tone="brand" />
-        <KpiCard label="Lifetime value" value={currency(totalSpend)} delta="Avg per customer 11,987" icon={TrendingUp} tone="success" />
-        <KpiCard label="Loyalty members" value="3" delta="Gold + Platinum" icon={Crown} tone="coral" />
+        <KpiCard label="إجمالي العملاء" value={num(customers.length)} delta="+١٢ هذا الأسبوع" icon={Users} tone="brand" />
+        <KpiCard label="القيمة الإجمالية" value={currency(totalSpend)} delta="متوسط ١١٬٩٨٧ ج.م. لكل عميل" icon={TrendingUp} tone="success" />
+        <KpiCard label="أعضاء الولاء" value="٣" delta="ذهبي + بلاتيني" icon={Crown} tone="coral" />
       </div>
 
-      <SectionCard className="mt-4" title="All customers">
+      <SectionCard className="mt-4" title="جميع العملاء">
         <div className="overflow-x-auto -mx-5">
           <table className="w-full text-sm">
             <thead className="text-xs text-muted-foreground">
               <tr className="border-b border-border">
-                <th className="text-left font-medium px-5 py-2.5">Customer</th>
-                <th className="text-left font-medium py-2.5">Phone</th>
-                <th className="text-right font-medium py-2.5">Visits</th>
-                <th className="text-right font-medium py-2.5">Lifetime spend</th>
-                <th className="text-left font-medium py-2.5">Loyalty</th>
-                <th className="text-left font-medium px-5 py-2.5">Last visit</th>
+                <th className="text-right font-medium px-5 py-2.5">العميل</th>
+                <th className="text-right font-medium py-2.5">الهاتف</th>
+                <th className="text-left font-medium py-2.5">الزيارات</th>
+                <th className="text-left font-medium py-2.5">الإنفاق الإجمالي</th>
+                <th className="text-right font-medium py-2.5">مستوى الولاء</th>
+                <th className="text-right font-medium px-5 py-2.5">آخر زيارة</th>
               </tr>
             </thead>
             <tbody>
@@ -47,13 +47,13 @@ function CustomersPage() {
                     </div>
                   </td>
                   <td className="py-3 text-muted-foreground">{c.phone}</td>
-                  <td className="py-3 text-right">{c.visits}</td>
-                  <td className="py-3 text-right font-medium">{currency(c.spend)}</td>
+                  <td className="py-3 text-left">{num(c.visits)}</td>
+                  <td className="py-3 text-left font-medium">{currency(c.spend)}</td>
                   <td className="py-3">
                     <span className={`inline-flex px-2 py-0.5 rounded-full text-[11px] font-medium ${
-                      c.loyalty === "Platinum" ? "bg-brand text-brand-foreground" :
-                      c.loyalty === "Gold" ? "bg-warning/20 text-warning" :
-                      c.loyalty === "Silver" ? "bg-muted text-foreground" :
+                      c.loyalty === "بلاتيني" ? "bg-brand text-brand-foreground" :
+                      c.loyalty === "ذهبي" ? "bg-warning/20 text-warning" :
+                      c.loyalty === "فضي" ? "bg-muted text-foreground" :
                       "bg-accent text-accent-foreground"
                     }`}>{c.loyalty}</span>
                   </td>

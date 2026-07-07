@@ -7,22 +7,22 @@ import { Plus, Shield, Check } from "lucide-react";
 export const Route = createFileRoute("/roles")({ component: RolesPage });
 
 const permissions = [
-  { name: "View dashboard", owner: true, manager: true, shift: true, cashier: true, clerk: true, accountant: true },
-  { name: "Process sales", owner: true, manager: true, shift: true, cashier: true, clerk: false, accountant: false },
-  { name: "Approve refunds", owner: true, manager: true, shift: true, cashier: false, clerk: false, accountant: false },
-  { name: "Manage inventory", owner: true, manager: true, shift: false, cashier: false, clerk: true, accountant: false },
-  { name: "Create purchase orders", owner: true, manager: true, shift: false, cashier: false, clerk: true, accountant: false },
-  { name: "View finance", owner: true, manager: true, shift: false, cashier: false, clerk: false, accountant: true },
-  { name: "Manage employees", owner: true, manager: true, shift: false, cashier: false, clerk: false, accountant: false },
-  { name: "Configure settings", owner: true, manager: false, shift: false, cashier: false, clerk: false, accountant: false },
+  { name: "عرض لوحة التحكم", owner: true, manager: true, shift: true, cashier: true, clerk: true, accountant: true },
+  { name: "معالجة المبيعات", owner: true, manager: true, shift: true, cashier: true, clerk: false, accountant: false },
+  { name: "اعتماد الاسترجاعات", owner: true, manager: true, shift: true, cashier: false, clerk: false, accountant: false },
+  { name: "إدارة المخزون", owner: true, manager: true, shift: false, cashier: false, clerk: true, accountant: false },
+  { name: "إنشاء أوامر الشراء", owner: true, manager: true, shift: false, cashier: false, clerk: true, accountant: false },
+  { name: "عرض المالية", owner: true, manager: true, shift: false, cashier: false, clerk: false, accountant: true },
+  { name: "إدارة الموظفين", owner: true, manager: true, shift: false, cashier: false, clerk: false, accountant: false },
+  { name: "ضبط الإعدادات", owner: true, manager: false, shift: false, cashier: false, clerk: false, accountant: false },
 ];
 
 function RolesPage() {
   return (
     <AppShell
-      title="Roles & Permissions"
-      subtitle="Fine-grained access control"
-      actions={<Button size="sm" className="bg-brand hover:bg-brand/90"><Plus className="w-4 h-4 mr-1.5" />New role</Button>}
+      title="الأدوار والصلاحيات"
+      subtitle="تحكم دقيق في صلاحيات الوصول"
+      actions={<Button size="sm" className="bg-brand hover:bg-brand/90"><Plus className="w-4 h-4 ms-1.5" />دور جديد</Button>}
     >
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {roles.map((r) => (
@@ -31,7 +31,7 @@ function RolesPage() {
               <div className="w-10 h-10 rounded-xl bg-brand-soft grid place-items-center text-brand"><Shield className="w-5 h-5" /></div>
               <div className="flex-1">
                 <div className="font-display font-semibold">{r.name}</div>
-                <div className="text-xs text-muted-foreground">{r.members} members</div>
+                <div className="text-xs text-muted-foreground">{r.members} عضو</div>
               </div>
             </div>
             <p className="text-sm text-muted-foreground mt-3">{r.description}</p>
@@ -39,18 +39,18 @@ function RolesPage() {
         ))}
       </div>
 
-      <SectionCard className="mt-4" title="Permissions matrix">
+      <SectionCard className="mt-4" title="مصفوفة الصلاحيات">
         <div className="overflow-x-auto -mx-5">
           <table className="w-full text-sm">
             <thead className="text-xs text-muted-foreground">
               <tr className="border-b border-border">
-                <th className="text-left font-medium px-5 py-2.5">Permission</th>
-                <th className="text-center font-medium py-2.5">Owner</th>
-                <th className="text-center font-medium py-2.5">Branch Manager</th>
-                <th className="text-center font-medium py-2.5">Shift Manager</th>
-                <th className="text-center font-medium py-2.5">Cashier</th>
-                <th className="text-center font-medium py-2.5">Clerk</th>
-                <th className="text-center font-medium px-5 py-2.5">Accountant</th>
+                <th className="text-right font-medium px-5 py-2.5">الصلاحية</th>
+                <th className="text-center font-medium py-2.5">المالك</th>
+                <th className="text-center font-medium py-2.5">مدير الفرع</th>
+                <th className="text-center font-medium py-2.5">مدير الوردية</th>
+                <th className="text-center font-medium py-2.5">الكاشير</th>
+                <th className="text-center font-medium py-2.5">أمين المخزون</th>
+                <th className="text-center font-medium px-5 py-2.5">المحاسب</th>
               </tr>
             </thead>
             <tbody>
