@@ -159,6 +159,7 @@ export function AppShell({ title, subtitle, actions, children }: {
             </div>
             <div className="flex items-center gap-2">
               {actions}
+              <HelpButton pathname={pathname} />
               <button
                 onClick={() => setOpenCmd(true)}
                 className="hidden md:inline-flex items-center gap-2 text-xs rounded-lg border border-border bg-card px-3 py-1.5 text-muted-foreground hover:bg-accent"
