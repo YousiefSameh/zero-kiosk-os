@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useState, useMemo, type ReactNode } from "react";
 import {
   Sheet, SheetContent, SheetTrigger,
 } from "@/components/ui/sheet";
@@ -10,11 +10,14 @@ import { Link } from "@tanstack/react-router";
 import {
   Lightbulb, Clock, Users as UsersIcon, ChevronLeft, Play, Sparkles,
   Info, AlertTriangle, CheckCircle2, StickyNote, ZoomIn, Phone, Bot,
-  ImageIcon, X,
+  ImageIcon, X, ArrowLeft, BookOpen, Compass, Workflow, LayoutGrid,
+  Table as TableIcon, MousePointerClick, Star, Lightbulb as LightbulbIcon,
+  ShieldAlert, HelpCircle, Film, Link2, ArrowLeftCircle,
 } from "lucide-react";
 import type {
   HelpPage, HelpBlock, HelpScreenshot, HelpWorkflowStep,
   HelpBestPractice, HelpMistake, HelpFAQ, HelpRelated,
+  HelpCard, HelpTableGuide, HelpAction, HelpTip, HelpNextPage,
 } from "@/lib/help-content";
 import { getHelpForRoute } from "@/lib/help-content";
 import { useRouterState } from "@tanstack/react-router";
@@ -43,19 +46,56 @@ export function HelpButton({ pathname }: { pathname?: string }) {
   );
 }
 
+/* ================= Section registry ================= */
+
+type SectionDef = {
+  id: string;
+  label: string;
+  icon: typeof BookOpen;
+  show: (p: HelpPage) => boolean;
+  render: (p: HelpPage) => ReactNode;
+};
+
+const SECTIONS: SectionDef[] = [
+  { id: "overview",      label: "نظرة عامة",      icon: BookOpen,        show: () => true,                                       render: (p) => <OverviewSection page={p} /> },
+  { id: "why",           label: "لماذا هذه الصفحة", icon: Compass,        show: (p) => !!p.whyExists?.length,                    render: (p) => <RichBlocks eyebrow="السبب والقيمة" title="لماذا توجد هذه الصفحة؟" description="السياق الاستراتيجي الذي دفعنا لبنائها بهذا الشكل." blocks={p.whyExists!} /> },
+  { id: "workflow",      label: "سير العمل",      icon: Workflow,        show: (p) => !!p.workflow?.length,                     render: (p) => <WorkflowSection steps={p.workflow} /> },
+  { id: "cards",         label: "شرح البطاقات",   icon: LayoutGrid,      show: (p) => !!p.cards?.length,                        render: (p) => <CardsSection items={p.cards!} /> },
+  { id: "tables",        label: "شرح الجداول",    icon: TableIcon,       show: (p) => !!p.tables?.length,                       render: (p) => <TablesSection items={p.tables!} /> },
+  { id: "actions",       label: "شرح الأزرار",    icon: MousePointerClick, show: (p) => !!p.actions?.length,                    render: (p) => <ActionsSection items={p.actions!} /> },
+  { id: "docs",          label: "الدليل التفصيلي", icon: BookOpen,       show: (p) => !!p.blocks?.length,                       render: (p) => <RichBlocks eyebrow="الدليل الكامل" title="كل ما تحتاج معرفته" description="شرح تفصيلي منظم بترتيب منطقي." blocks={p.blocks} /> },
+  { id: "best",          label: "أفضل الممارسات", icon: Star,            show: (p) => !!p.bestPractices?.length,                render: (p) => <BestPracticesSection items={p.bestPractices} /> },
+  { id: "tips",          label: "نصائح احترافية",  icon: LightbulbIcon,   show: (p) => !!p.tips?.length,                         render: (p) => <TipsSection items={p.tips!} /> },
+  { id: "mistakes",      label: "أخطاء شائعة",    icon: ShieldAlert,     show: (p) => !!p.mistakes?.length,                     render: (p) => <MistakesSection items={p.mistakes} /> },
+  { id: "faq",           label: "أسئلة شائعة",    icon: HelpCircle,      show: (p) => !!p.faq?.length,                          render: (p) => <FaqSection items={p.faq} /> },
+  { id: "screenshots",   label: "لقطات الشاشة",   icon: ImageIcon,       show: (p) => !!p.screenshots?.length,                  render: (p) => <ScreenshotsSection shots={p.screenshots} /> },
+  { id: "video",         label: "فيديو تعليمي",   icon: Film,            show: (p) => !!p.video?.title,                         render: (p) => <VideoSection video={p.video} /> },
+  { id: "related",       label: "صفحات ذات صلة",  icon: Link2,           show: (p) => !!p.related?.length,                      render: (p) => <RelatedSection items={p.related} /> },
+  { id: "next",          label: "الخطوة التالية", icon: ArrowLeftCircle, show: (p) => !!p.nextPage,                             render: (p) => <NextPageSection next={p.nextPage!} /> },
+];
+
 /* ================= Drawer content ================= */
 
 function HelpDrawerContent({ page, onClose }: { page: HelpPage; onClose: () => void }) {
+  const activeSections = useMemo(() => SECTIONS.filter((s) => s.show(page)), [page]);
+  const [activeId, setActiveId] = useState<string>(activeSections[0]?.id ?? "overview");
+
+  const scrollTo = (id: string) => {
+    setActiveId(id);
+    const el = document.getElementById(`help-sec-${id}`);
+    el?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <SheetContent
       side="left"
-      className="p-0 gap-0 w-full sm:max-w-none sm:w-[92vw] md:w-[85vw] lg:w-[1100px] xl:w-[1180px] border-e border-border bg-background overflow-hidden flex flex-col"
+      className="p-0 gap-0 w-full sm:max-w-none sm:w-[95vw] md:w-[92vw] lg:w-[1200px] xl:w-[1260px] border-e border-border bg-background overflow-hidden flex flex-col"
     >
       {/* Header */}
       <div className="relative shrink-0 border-b border-border bg-gradient-to-l from-brand-soft/50 via-background to-background">
         <div className="absolute inset-0 opacity-[0.04] pointer-events-none"
           style={{ backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)", backgroundSize: "16px 16px" }} />
-        <div className="relative px-8 pt-7 pb-6">
+        <div className="relative px-8 pt-6 pb-5">
           <div className="flex items-start justify-between gap-4">
             <div className="flex items-center gap-2 text-xs font-medium text-brand">
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-brand-soft border border-brand/15">
@@ -73,20 +113,22 @@ function HelpDrawerContent({ page, onClose }: { page: HelpPage; onClose: () => v
             </button>
           </div>
 
-          <div className="mt-5 flex items-start gap-4">
+          <div className="mt-4 flex items-start gap-4">
             <div className="w-14 h-14 rounded-2xl bg-brand text-brand-foreground grid place-items-center shadow-elevated shrink-0">
               <page.icon className="w-7 h-7" />
             </div>
             <div className="min-w-0 flex-1">
               <h2 className="font-display text-2xl font-semibold tracking-tight">{page.title}</h2>
               <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{page.short}</p>
-              <p className="text-sm mt-2 leading-relaxed">{page.purpose}</p>
-              <div className="mt-4 flex flex-wrap items-center gap-2.5 text-xs">
+              <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-card border border-border">
-                  <Clock className="w-3 h-3 text-brand" /> وقت القراءة: {page.readingTime}
+                  <Clock className="w-3 h-3 text-brand" /> {page.readingTime}
                 </span>
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-card border border-border">
-                  <UsersIcon className="w-3 h-3 text-brand" /> يستخدمها: {page.users.join(" · ")}
+                  <UsersIcon className="w-3 h-3 text-brand" /> {page.users.join(" · ")}
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-brand-soft border border-brand/15 text-brand">
+                  <BookOpen className="w-3 h-3" /> {activeSections.length} أقسام
                 </span>
               </div>
             </div>
@@ -94,18 +136,68 @@ function HelpDrawerContent({ page, onClose }: { page: HelpPage; onClose: () => v
         </div>
       </div>
 
-      {/* Body scroll */}
-      <div className="flex-1 overflow-y-auto scroll-smooth">
-        <div className="max-w-[980px] mx-auto px-6 md:px-8 py-8 space-y-10">
-          <RichBlocks blocks={page.blocks} />
-          <WorkflowSection steps={page.workflow} />
-          <ScreenshotsSection shots={page.screenshots} />
-          <VideoSection video={page.video} />
-          <BestPracticesSection items={page.bestPractices} />
-          <MistakesSection items={page.mistakes} />
-          <FaqSection items={page.faq} />
-          <RelatedSection items={page.related} />
-          <SupportCta />
+      {/* Body: TOC + Content */}
+      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[240px_1fr] overflow-hidden">
+        {/* TOC (sticky sidebar) */}
+        <aside className="hidden lg:flex flex-col border-e border-border bg-muted/30 overflow-y-auto">
+          <div className="p-4">
+            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground px-2 mb-2">
+              محتويات الدليل
+            </div>
+            <nav className="space-y-0.5">
+              {activeSections.map((s) => {
+                const Icon = s.icon;
+                const active = s.id === activeId;
+                return (
+                  <button
+                    key={s.id}
+                    onClick={() => scrollTo(s.id)}
+                    className={`w-full text-right flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm transition ${
+                      active
+                        ? "bg-brand text-brand-foreground shadow-soft"
+                        : "text-foreground/75 hover:bg-accent hover:text-foreground"
+                    }`}
+                  >
+                    <Icon className={`w-4 h-4 shrink-0 ${active ? "" : "text-brand"}`} />
+                    <span className="truncate">{s.label}</span>
+                  </button>
+                );
+              })}
+            </nav>
+          </div>
+          <div className="mt-auto p-4 border-t border-border">
+            <div className="rounded-xl bg-gradient-to-bl from-brand to-brand/85 text-brand-foreground p-4">
+              <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wider opacity-90">
+                <Bot className="w-3 h-3" /> مساعد ذكي
+              </div>
+              <div className="font-display text-sm font-semibold mt-1.5">اسأل عن أي شيء</div>
+              <p className="text-[11px] opacity-85 mt-1 leading-relaxed">إجابات فورية مخصصة لعملك ولهذه الصفحة.</p>
+              <Button size="sm" variant="secondary" className="w-full mt-3 bg-background text-foreground hover:bg-background/90 h-8">
+                فتح المساعد
+              </Button>
+            </div>
+          </div>
+        </aside>
+
+        {/* Content */}
+        <div className="overflow-y-auto scroll-smooth" onScroll={(e) => {
+          // Update active TOC based on scroll position
+          const container = e.currentTarget;
+          const secs = activeSections.map((s) => {
+            const el = document.getElementById(`help-sec-${s.id}`);
+            return { id: s.id, top: el ? el.getBoundingClientRect().top - container.getBoundingClientRect().top : Infinity };
+          });
+          const current = secs.filter((s) => s.top <= 100).pop();
+          if (current && current.id !== activeId) setActiveId(current.id);
+        }}>
+          <div className="max-w-[900px] mx-auto px-6 md:px-10 py-8 space-y-14">
+            {activeSections.map((s) => (
+              <section key={s.id} id={`help-sec-${s.id}`} className="scroll-mt-6">
+                {s.render(page)}
+              </section>
+            ))}
+            <SupportCta />
+          </div>
         </div>
       </div>
     </SheetContent>
@@ -116,7 +208,7 @@ function HelpDrawerContent({ page, onClose }: { page: HelpPage; onClose: () => v
 
 function SectionTitle({ eyebrow, title, description }: { eyebrow: string; title: string; description?: string }) {
   return (
-    <div className="animate-fade-in">
+    <div className="animate-fade-in mb-4">
       <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-brand">{eyebrow}</div>
       <h3 className="font-display text-xl font-semibold mt-1.5">{title}</h3>
       {description && <p className="text-sm text-muted-foreground mt-1">{description}</p>}
@@ -124,16 +216,43 @@ function SectionTitle({ eyebrow, title, description }: { eyebrow: string; title:
   );
 }
 
+/* ================= Overview ================= */
+
+function OverviewSection({ page }: { page: HelpPage }) {
+  return (
+    <div className="animate-fade-in space-y-4">
+      <SectionTitle eyebrow="نظرة عامة" title="ملخص الصفحة" description="ما ستحصل عليه من هذه الصفحة في دقيقة واحدة." />
+      <div className="card-elevated p-6 md:p-7">
+        <p className="text-[15px] leading-[1.9] text-foreground/85">{page.purpose}</p>
+        <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="rounded-xl bg-brand-soft/50 border border-brand/15 p-3">
+            <div className="text-[10px] font-semibold uppercase tracking-wider text-brand">وقت القراءة</div>
+            <div className="font-display font-semibold mt-1">{page.readingTime}</div>
+          </div>
+          <div className="rounded-xl bg-muted border border-border p-3">
+            <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">المستخدمون</div>
+            <div className="font-display font-semibold mt-1 text-sm">{page.users.join(" · ")}</div>
+          </div>
+          <div className="rounded-xl bg-success/10 border border-success/20 p-3">
+            <div className="text-[10px] font-semibold uppercase tracking-wider text-success">جاهزية</div>
+            <div className="font-display font-semibold mt-1 text-success">دليل تفاعلي</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ================= Rich blocks ================= */
 
-function RichBlocks({ blocks }: { blocks: HelpBlock[] }) {
+function RichBlocks({ blocks, eyebrow, title, description }: { blocks: HelpBlock[]; eyebrow: string; title: string; description?: string }) {
   return (
-    <section className="space-y-4 animate-fade-in">
-      <SectionTitle eyebrow="الدليل الكامل" title="كل ما تحتاج معرفته" description="شرح تفصيلي منظم بترتيب منطقي." />
-      <article className="card-elevated p-7 md:p-8 space-y-5 leading-[1.9] text-[15px]">
+    <div className="animate-fade-in space-y-4">
+      <SectionTitle eyebrow={eyebrow} title={title} description={description} />
+      <article className="card-elevated p-6 md:p-8 space-y-5 leading-[1.9] text-[15px]">
         {blocks.map((b, i) => <RenderBlock key={i} block={b} />)}
       </article>
-    </section>
+    </div>
   );
 }
 
@@ -158,7 +277,7 @@ function RenderBlock({ block }: { block: HelpBlock }) {
       );
     case "ol":
       return (
-        <ol className="space-y-2 ps-1 counter-reset-help">
+        <ol className="space-y-2 ps-1">
           {block.items.map((t, i) => (
             <li key={i} className="flex gap-3 items-start text-foreground/85">
               <span className="mt-0.5 w-6 h-6 rounded-md bg-brand-soft text-brand text-xs font-semibold grid place-items-center shrink-0">{i + 1}</span>
@@ -190,10 +309,10 @@ function RenderBlock({ block }: { block: HelpBlock }) {
       );
     case "callout": {
       const map = {
-        info: { icon: Info, cls: "border-brand/25 bg-brand-soft/50 text-brand" },
-        warning: { icon: AlertTriangle, cls: "border-warning/30 bg-warning/10 text-warning" },
-        success: { icon: CheckCircle2, cls: "border-success/25 bg-success/10 text-success" },
-        note: { icon: StickyNote, cls: "border-border bg-muted text-foreground" },
+        info:    { icon: Info,           cls: "border-brand/25 bg-brand-soft/50 text-brand" },
+        warning: { icon: AlertTriangle,  cls: "border-warning/30 bg-warning/10 text-warning" },
+        success: { icon: CheckCircle2,   cls: "border-success/25 bg-success/10 text-success" },
+        note:    { icon: StickyNote,     cls: "border-border bg-muted text-foreground" },
       }[block.variant];
       const Icon = map.icon;
       return (
@@ -220,6 +339,23 @@ function RenderBlock({ block }: { block: HelpBlock }) {
           <code>{block.text}</code>
         </pre>
       );
+    case "image": {
+      const tones: Record<string, string> = {
+        brand:   "from-brand/15 via-brand-soft to-brand/5",
+        coral:   "from-coral/15 via-coral/5 to-transparent",
+        success: "from-success/15 via-success/5 to-transparent",
+        warning: "from-warning/15 via-warning/5 to-transparent",
+      };
+      return (
+        <figure className="rounded-xl overflow-hidden border border-border">
+          <div className={`aspect-[16/8] bg-gradient-to-bl ${tones[block.tone ?? "brand"]} relative grid place-items-center`}>
+            <ImageIcon className="w-10 h-10 text-brand/40" />
+            <span className="absolute bottom-3 end-3 text-[10px] font-medium bg-background/90 border border-border rounded-full px-2 py-0.5 text-muted-foreground">صورة توضيحية</span>
+          </div>
+          {block.caption && <figcaption className="p-3 text-xs text-muted-foreground bg-muted/40">{block.caption}</figcaption>}
+        </figure>
+      );
+    }
   }
 }
 
@@ -227,7 +363,7 @@ function RenderBlock({ block }: { block: HelpBlock }) {
 
 function WorkflowSection({ steps }: { steps: HelpWorkflowStep[] }) {
   return (
-    <section className="space-y-4 animate-fade-in">
+    <div className="animate-fade-in space-y-4">
       <SectionTitle eyebrow="سير العمل" title="من البداية إلى النهاية" description="خطوات مترابطة تربط هذه الصفحة ببقية النظام." />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
         {steps.map((s, i) => {
@@ -254,7 +390,131 @@ function WorkflowSection({ steps }: { steps: HelpWorkflowStep[] }) {
           );
         })}
       </div>
-    </section>
+    </div>
+  );
+}
+
+/* ================= Cards explanation ================= */
+
+function CardsSection({ items }: { items: HelpCard[] }) {
+  const toneMap: Record<string, string> = {
+    brand: "bg-brand-soft text-brand border-brand/20",
+    coral: "bg-coral/10 text-coral border-coral/20",
+    success: "bg-success/10 text-success border-success/20",
+    warning: "bg-warning/10 text-warning border-warning/20",
+  };
+  return (
+    <div className="animate-fade-in space-y-4">
+      <SectionTitle eyebrow="شرح البطاقات" title="كل بطاقة على حدة" description="ما تعنيه كل بطاقة في الصفحة، ومصدر بياناتها، ومتى تنتبه إليها." />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {items.map((c, i) => {
+          const Icon = c.icon;
+          const tone = toneMap[c.tone ?? "brand"];
+          return (
+            <div key={i} className="card-elevated p-4 flex gap-3 hover:shadow-elevated transition">
+              <div className={`w-11 h-11 shrink-0 rounded-xl border grid place-items-center ${tone}`}>
+                {Icon && <Icon className="w-5 h-5" />}
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2">
+                  <div className="font-display font-semibold text-[15px]">{c.name}</div>
+                  {c.metric && (
+                    <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-muted text-muted-foreground border border-border">
+                      {c.metric}
+                    </span>
+                  )}
+                </div>
+                <div className="text-sm text-muted-foreground mt-1 leading-relaxed">{c.description}</div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/* ================= Tables explanation ================= */
+
+function TablesSection({ items }: { items: HelpTableGuide[] }) {
+  return (
+    <div className="animate-fade-in space-y-4">
+      <SectionTitle eyebrow="شرح الجداول" title="فهم كل جدول وأعمدته" description="دليل لكل عمود ومعناه لتقرأ الجدول بثقة." />
+      <div className="space-y-4">
+        {items.map((t, i) => (
+          <div key={i} className="card-elevated overflow-hidden">
+            <div className="p-5 border-b border-border bg-gradient-to-l from-brand-soft/30 to-transparent">
+              <div className="flex items-center gap-2 text-[11px] font-semibold text-brand">
+                <TableIcon className="w-3.5 h-3.5" />
+                <span className="uppercase tracking-wider">جدول</span>
+              </div>
+              <div className="font-display text-lg font-semibold mt-1.5">{t.name}</div>
+              <p className="text-sm text-muted-foreground mt-1">{t.description}</p>
+            </div>
+            <div className="p-5">
+              <div className="overflow-x-auto rounded-lg border border-border">
+                <table className="w-full text-sm">
+                  <thead className="bg-muted/50">
+                    <tr>
+                      <th className="text-right font-medium px-4 py-2.5 text-xs uppercase tracking-wider text-muted-foreground w-1/3">العمود</th>
+                      <th className="text-right font-medium px-4 py-2.5 text-xs uppercase tracking-wider text-muted-foreground">الوصف</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {t.columns.map((col, ci) => (
+                      <tr key={ci} className="border-t border-border/60">
+                        <td className="px-4 py-2.5 font-medium">{col.name}</td>
+                        <td className="px-4 py-2.5 text-foreground/75">{col.desc}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ================= Actions explanation ================= */
+
+function ActionsSection({ items }: { items: HelpAction[] }) {
+  const variantMap: Record<string, string> = {
+    primary: "bg-brand text-brand-foreground border-brand",
+    secondary: "bg-card text-foreground border-border",
+    destructive: "bg-coral/10 text-coral border-coral/25",
+  };
+  const labelMap: Record<string, string> = {
+    primary: "رئيسي",
+    secondary: "ثانوي",
+    destructive: "حساس",
+  };
+  return (
+    <div className="animate-fade-in space-y-4">
+      <SectionTitle eyebrow="شرح الأزرار" title="ماذا يفعل كل زر؟" description="دليل لكل زر إجرائي في الصفحة، ومتى تستخدمه، ومن يحتاج صلاحيته." />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {items.map((a, i) => {
+          const Icon = a.icon;
+          const variant = a.variant ?? "secondary";
+          return (
+            <div key={i} className="card-elevated p-4 hover:shadow-elevated transition">
+              <div className="flex items-start justify-between gap-3">
+                <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border font-medium text-sm ${variantMap[variant]}`}>
+                  {Icon && <Icon className="w-4 h-4" />}
+                  <span>{a.label}</span>
+                </div>
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground px-2 py-0.5 rounded-full bg-muted border border-border">
+                  {labelMap[variant]}
+                </span>
+              </div>
+              <div className="text-sm text-muted-foreground mt-3 leading-relaxed">{a.description}</div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
@@ -264,7 +524,7 @@ function ScreenshotsSection({ shots }: { shots: HelpScreenshot[] }) {
   const [zoom, setZoom] = useState<number | null>(null);
   if (!shots.length) return null;
   return (
-    <section className="space-y-4 animate-fade-in">
+    <div className="animate-fade-in space-y-4">
       <SectionTitle eyebrow="لقطات الشاشة" title="شاهد الواجهة عن قرب" description="لقطات معلّقة توضح أهم أجزاء الصفحة." />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {shots.map((s, i) => (
@@ -298,7 +558,7 @@ function ScreenshotsSection({ shots }: { shots: HelpScreenshot[] }) {
           </div>
         </div>
       )}
-    </section>
+    </div>
   );
 }
 
@@ -312,7 +572,6 @@ function ScreenshotFrame({ shot, large = false }: { shot: HelpScreenshot; large?
   const tone = tones[shot.tone ?? "brand"];
   return (
     <div className={`relative ${large ? "h-full" : "aspect-[16/10]"} bg-gradient-to-bl ${tone} overflow-hidden`}>
-      {/* mock UI */}
       <div className="absolute inset-4 rounded-lg bg-card border border-border/60 shadow-soft p-3 flex flex-col gap-2">
         <div className="flex items-center gap-1.5">
           <span className="w-2 h-2 rounded-full bg-coral" />
@@ -346,7 +605,7 @@ function ScreenshotFrame({ shot, large = false }: { shot: HelpScreenshot; large?
 
 function VideoSection({ video }: { video: HelpPage["video"] }) {
   return (
-    <section className="space-y-4 animate-fade-in">
+    <div className="animate-fade-in space-y-4">
       <SectionTitle eyebrow="فيديو تعليمي" title="شاهد الشرح المرئي" description="فيديو قصير يشرح الصفحة عمليًا." />
       <div className="card-elevated overflow-hidden">
         <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr]">
@@ -371,7 +630,7 @@ function VideoSection({ video }: { video: HelpPage["video"] }) {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
@@ -380,7 +639,7 @@ function VideoSection({ video }: { video: HelpPage["video"] }) {
 function BestPracticesSection({ items }: { items: HelpBestPractice[] }) {
   if (!items.length) return null;
   return (
-    <section className="space-y-4 animate-fade-in">
+    <div className="animate-fade-in space-y-4">
       <SectionTitle eyebrow="أفضل الممارسات" title="أدر عملك باحتراف" description="نصائح تشغيلية من خبراء التجزئة." />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {items.map((p, i) => (
@@ -395,7 +654,36 @@ function BestPracticesSection({ items }: { items: HelpBestPractice[] }) {
           </div>
         ))}
       </div>
-    </section>
+    </div>
+  );
+}
+
+/* ================= Professional Tips ================= */
+
+function TipsSection({ items }: { items: HelpTip[] }) {
+  return (
+    <div className="animate-fade-in space-y-4">
+      <SectionTitle eyebrow="نصائح احترافية" title="أسرار من الميدان" description="ممارسات متقدمة يستخدمها كبار تجار التجزئة." />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {items.map((t, i) => (
+          <div key={i} className="relative overflow-hidden rounded-xl border border-brand/20 bg-gradient-to-bl from-brand-soft/60 via-background to-background p-4 hover:shadow-elevated transition">
+            <div className="absolute -top-8 -end-8 w-24 h-24 rounded-full bg-brand/10 blur-2xl" />
+            <div className="relative flex gap-3">
+              <div className="w-10 h-10 shrink-0 rounded-xl bg-brand text-brand-foreground grid place-items-center shadow-soft">
+                <LightbulbIcon className="w-5 h-5" />
+              </div>
+              <div className="min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-brand">نصيحة {i + 1}</span>
+                </div>
+                <div className="font-display font-semibold text-[15px] mt-0.5">{t.title}</div>
+                <div className="text-sm text-foreground/75 mt-1 leading-relaxed">{t.text}</div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -404,7 +692,7 @@ function BestPracticesSection({ items }: { items: HelpBestPractice[] }) {
 function MistakesSection({ items }: { items: HelpMistake[] }) {
   if (!items.length) return null;
   return (
-    <section className="space-y-4 animate-fade-in">
+    <div className="animate-fade-in space-y-4">
       <SectionTitle eyebrow="أخطاء شائعة" title="تجنّب هذه الأخطاء" description="أخطاء متكررة كلفت أصحاب المتاجر أموالًا حقيقية." />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {items.map((m, i) => (
@@ -419,7 +707,7 @@ function MistakesSection({ items }: { items: HelpMistake[] }) {
           </div>
         ))}
       </div>
-    </section>
+    </div>
   );
 }
 
@@ -428,7 +716,7 @@ function MistakesSection({ items }: { items: HelpMistake[] }) {
 function FaqSection({ items }: { items: HelpFAQ[] }) {
   if (!items.length) return null;
   return (
-    <section className="space-y-4 animate-fade-in">
+    <div className="animate-fade-in space-y-4">
       <SectionTitle eyebrow="الأسئلة الشائعة" title="إجابات سريعة" description="أكثر ما يسأله المستخدمون عن هذه الصفحة." />
       <div className="card-elevated px-5">
         <Accordion type="single" collapsible className="w-full">
@@ -440,7 +728,7 @@ function FaqSection({ items }: { items: HelpFAQ[] }) {
           ))}
         </Accordion>
       </div>
-    </section>
+    </div>
   );
 }
 
@@ -449,7 +737,7 @@ function FaqSection({ items }: { items: HelpFAQ[] }) {
 function RelatedSection({ items }: { items: HelpRelated[] }) {
   if (!items.length) return null;
   return (
-    <section className="space-y-4 animate-fade-in">
+    <div className="animate-fade-in space-y-4">
       <SectionTitle eyebrow="صفحات ذات صلة" title="واصل الاستكشاف" description="مراكز مساعدة أخرى مرتبطة بهذه الصفحة." />
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {items.map((r) => (
@@ -469,7 +757,38 @@ function RelatedSection({ items }: { items: HelpRelated[] }) {
           </Link>
         ))}
       </div>
-    </section>
+    </div>
+  );
+}
+
+/* ================= Next page recommendation ================= */
+
+function NextPageSection({ next }: { next: HelpNextPage }) {
+  const Icon = next.icon;
+  return (
+    <div className="animate-fade-in space-y-4">
+      <SectionTitle eyebrow="الخطوة التالية" title="أين تذهب بعد هذه الصفحة؟" description="مسار موصى به لإكمال رحلتك في زيرو كشك." />
+      <Link
+        to={next.to}
+        className="block relative overflow-hidden rounded-2xl border border-brand/25 bg-gradient-to-bl from-brand-soft/70 via-background to-coral/10 p-6 hover:shadow-elevated transition group"
+      >
+        <div className="absolute -bottom-16 -start-10 w-64 h-64 rounded-full bg-brand/10 blur-3xl" />
+        <div className="relative flex items-center gap-5">
+          <div className="w-16 h-16 rounded-2xl bg-brand text-brand-foreground grid place-items-center shadow-elevated shrink-0">
+            <Icon className="w-8 h-8" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-brand">التوصية التالية</div>
+            <div className="font-display text-lg font-semibold mt-1">{next.label}</div>
+            <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{next.description}</p>
+          </div>
+          <div className="shrink-0 hidden md:flex items-center gap-2 text-sm font-medium text-brand group-hover:-translate-x-1 transition">
+            انتقل الآن
+            <ArrowLeft className="w-4 h-4" />
+          </div>
+        </div>
+      </Link>
+    </div>
   );
 }
 
@@ -477,7 +796,7 @@ function RelatedSection({ items }: { items: HelpRelated[] }) {
 
 function SupportCta() {
   return (
-    <section className="animate-fade-in">
+    <div className="animate-fade-in pt-4">
       <div className="relative overflow-hidden rounded-2xl border border-border bg-gradient-to-bl from-brand via-brand/95 to-brand/85 p-7 text-brand-foreground">
         <div className="absolute -top-16 -end-16 w-64 h-64 rounded-full bg-coral/25 blur-3xl" />
         <div className="absolute -bottom-24 -start-10 w-72 h-72 rounded-full bg-white/10 blur-3xl" />
@@ -499,7 +818,7 @@ function SupportCta() {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
