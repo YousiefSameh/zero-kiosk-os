@@ -1,7 +1,8 @@
 import {
   LayoutDashboard, Package, ShoppingCart, Truck, Users, Receipt,
   BarChart3, Wallet, Store, UserCog, Shield, Settings, Bell,
-  Boxes, ScrollText, CreditCard, LineChart, Building2,
+  Boxes, ScrollText, CreditCard, LineChart, Building2, TrendingUp,
+  DollarSign, Layers, Plus, Download, Filter, RefreshCw, Printer,
   type LucideIcon,
 } from "lucide-react";
 
@@ -12,7 +13,8 @@ export type HelpBlock =
   | { type: "table"; headers: string[]; rows: string[][] }
   | { type: "divider" }
   | { type: "highlight"; text: string }
-  | { type: "code"; text: string };
+  | { type: "code"; text: string }
+  | { type: "image"; caption?: string; tone?: "brand" | "coral" | "success" | "warning"; alt?: string };
 
 export type HelpScreenshot = { caption: string; highlight?: string; tone?: "brand" | "coral" | "success" | "warning" };
 export type HelpWorkflowStep = { label: string; desc?: string; icon?: LucideIcon };
@@ -21,6 +23,11 @@ export type HelpMistake = { title: string; text: string };
 export type HelpFAQ = { q: string; a: string };
 export type HelpRelated = { to: string; label: string; icon: LucideIcon };
 export type HelpVideo = { title: string; description: string; duration: string };
+export type HelpCard = { name: string; description: string; icon?: LucideIcon; metric?: string; tone?: "brand" | "coral" | "success" | "warning" };
+export type HelpTableGuide = { name: string; description: string; columns: { name: string; desc: string }[] };
+export type HelpAction = { label: string; description: string; icon?: LucideIcon; variant?: "primary" | "secondary" | "destructive" };
+export type HelpTip = { title: string; text: string };
+export type HelpNextPage = { to: string; label: string; description: string; icon: LucideIcon };
 
 export type HelpPage = {
   icon: LucideIcon;
@@ -37,6 +44,13 @@ export type HelpPage = {
   mistakes: HelpMistake[];
   faq: HelpFAQ[];
   related: HelpRelated[];
+  /* Optional enterprise sections */
+  whyExists?: HelpBlock[];
+  cards?: HelpCard[];
+  tables?: HelpTableGuide[];
+  actions?: HelpAction[];
+  tips?: HelpTip[];
+  nextPage?: HelpNextPage;
 };
 
 /* ---------- Page-specific content ---------- */
@@ -125,6 +139,53 @@ export const helpContent: Record<string, HelpPage> = {
       { to: "/reports", label: "التقارير", icon: BarChart3 },
       { to: "/sales", label: "المبيعات", icon: Receipt },
     ],
+    whyExists: [
+      { type: "p", text: "بُنيت لوحة التحكم لتكون النقطة الأولى التي تفتحها كل صباح: تختصر عليك تصفّح ٢٠ صفحة، وتُلخّص حالة عملك في أقل من ٦٠ ثانية." },
+      { type: "highlight", text: "إذا لم تعطك اللوحة قرارًا تنفيذيًا خلال دقيقة، فهي لم تؤدِ مهمتها. صمّمنا كل بطاقة لتقود إلى إجراء واضح." },
+      { type: "ul", items: [
+        "توحيد بيانات الفروع في مكان واحد بدل تقارير متفرقة.",
+        "إبراز الانحرافات (مبيعات منخفضة، مخزون حرج) قبل أن تتحول لخسارة.",
+        "قياس نبض العمل لحظيًا حتى في السفر أو خارج المحل.",
+      ]},
+    ],
+    cards: [
+      { name: "إيرادات اليوم", description: "إجمالي المبيعات منذ منتصف الليل مقارنة بأمس والأسبوع الماضي. اللون الأخضر يعني نمو، الأحمر تراجع.", icon: DollarSign, metric: "لحظي", tone: "success" },
+      { name: "عدد المعاملات", description: "عدد الفواتير المُصدرة اليوم عبر كل نقاط البيع النشطة.", icon: Receipt, metric: "لحظي", tone: "brand" },
+      { name: "متوسط الفاتورة", description: "قيمة الفاتورة الوسطى — مؤشر قوي على نجاح العروض والبيع المتقاطع.", icon: TrendingUp, metric: "محدث كل ٥ دقائق", tone: "coral" },
+      { name: "المخزون الحرج", description: "عدد الأصناف التي وصلت أقل من الحد الأدنى وتحتاج إعادة طلب فوري.", icon: Boxes, metric: "تنبيه حي", tone: "warning" },
+      { name: "منحنى المبيعات الساعية", description: "رسم بياني يوضح توزيع البيع على مدار اليوم — يساعدك على معرفة ذروة الازدحام.", icon: LineChart, metric: "٢٤ ساعة", tone: "brand" },
+      { name: "أفضل المنتجات", description: "أعلى ٥ أصناف مبيعًا بالكمية والقيمة. اضغط أي صنف لرؤية تفاصيله.", icon: Package, metric: "لحظي", tone: "success" },
+    ],
+    tables: [
+      {
+        name: "أفضل الفروع أداءً",
+        description: "ترتيب الفروع حسب الإيراد اليومي مع نسبة النمو ومتوسط الفاتورة.",
+        columns: [
+          { name: "الفرع", desc: "اسم الفرع ومدينته." },
+          { name: "الإيراد", desc: "إجمالي مبيعات اليوم." },
+          { name: "النمو", desc: "% مقارنة بنفس اليوم من الأسبوع الماضي." },
+          { name: "المعاملات", desc: "عدد الفواتير المُصدرة." },
+          { name: "الحالة", desc: "مؤشر لوني: أخضر / أصفر / أحمر." },
+        ],
+      },
+    ],
+    actions: [
+      { label: "تحديث البيانات", description: "إعادة سحب فورية لأحدث الأرقام من كل الفروع.", icon: RefreshCw, variant: "secondary" },
+      { label: "تصدير لقطة اليوم", description: "PDF جاهز للمشاركة في اجتماع الصباح.", icon: Download, variant: "secondary" },
+      { label: "فتح تنبيه حرج", description: "الانتقال المباشر لأول تنبيه يحتاج إجراء.", icon: Bell, variant: "primary" },
+    ],
+    tips: [
+      { title: "اقرأ الاتجاه لا الرقم", text: "الإيراد اليومي المفرد يخدعك؛ راقب المنحنى الأسبوعي لترى الاتجاه الحقيقي." },
+      { title: "اربط كل مؤشر بمسؤول", text: "إذا انخفض متوسط الفاتورة، فمدير الفرع مسؤول. حدد الملكية سلفًا." },
+      { title: "قارن بالفروع لا بالأمس فقط", text: "المقارنة بين فروعك تكشف الممارسات الأفضل بشكل أسرع من المقارنة بالتاريخ." },
+      { title: "خصّص جلسة ١٥ دقيقة أسبوعيًا", text: "افتح اللوحة كل خميس لمدة ربع ساعة مع مديري الفروع لمراجعة الأسبوع." },
+    ],
+    nextPage: {
+      to: "/analytics",
+      label: "التحليلات المتقدمة",
+      description: "بعد فهم اللوحة اليومية، انتقل للتحليلات لرؤية الاتجاهات طويلة المدى ومقارنة الفروع بعمق.",
+      icon: LineChart,
+    },
   },
 
   "/products": {
@@ -220,6 +281,51 @@ export const helpContent: Record<string, HelpPage> = {
       { to: "/suppliers", label: "الموردون", icon: Truck },
       { to: "/pos", label: "نقطة البيع", icon: CreditCard },
     ],
+    whyExists: [
+      { type: "p", text: "المنتجات هي «مصدر الحقيقة» لكل شيء في زيرو كشك. أي خطأ هنا يتضاعف في كل فاتورة وكل تقرير." },
+      { type: "highlight", text: "بدون كتالوج نظيف لن تحصل على تقارير موثوقة، ولن يعمل إعادة الطلب التلقائي، ولن تكون الفوترة الإلكترونية دقيقة." },
+      { type: "callout", variant: "note", title: "لماذا صفحة منفصلة؟", text: "نفصلها عن المخزون لأن المنتج ثابت (بياناته) بينما المخزون متغير (كمياته). هذا الفصل يحمي بياناتك التاريخية." },
+    ],
+    cards: [
+      { name: "إجمالي الأصناف", description: "عدد المنتجات النشطة في الكتالوج عبر كل الفروع.", icon: Package, metric: "لحظي", tone: "brand" },
+      { name: "أصناف بدون مورد", description: "منتجات لم تربطها بمورد بعد — لن تعمل معها اقتراحات إعادة الطلب.", icon: Truck, metric: "تنبيه", tone: "warning" },
+      { name: "أصناف بدون سعر تكلفة", description: "منتجات تُحتسب أرباحها بشكل غير دقيق. راجعها قبل قفل الشهر.", icon: DollarSign, metric: "مؤشر جودة", tone: "coral" },
+      { name: "أعلى هامش ربح", description: "الأصناف الأكثر ربحية — روّج لها في نقطة البيع.", icon: TrendingUp, metric: "شهري", tone: "success" },
+    ],
+    tables: [
+      {
+        name: "جدول المنتجات الرئيسي",
+        description: "قائمة كل الأصناف مع بياناتها الأساسية. قابل للفلترة والتصدير.",
+        columns: [
+          { name: "الصورة", desc: "صورة المنتج كما تظهر على شاشة الكاشير." },
+          { name: "الاسم", desc: "الاسم التجاري كما يُطبع على الفاتورة." },
+          { name: "الباركود", desc: "معرّف EAN-13 يُستخدم في المسح الضوئي." },
+          { name: "التصنيف", desc: "الفئة الرئيسية (ألبان، مشروبات، ...)." },
+          { name: "التكلفة / السعر", desc: "سعر الشراء وسعر البيع؛ الفرق = هامش الربح." },
+          { name: "الحالة", desc: "نشط / موقوف / مُؤرشف." },
+          { name: "الإجراءات", desc: "قائمة سريعة: تعديل، أرشفة، عرض المخزون." },
+        ],
+      },
+    ],
+    actions: [
+      { label: "منتج جديد", description: "فتح شاشة إضافة منتج مع الحقول الإلزامية.", icon: Plus, variant: "primary" },
+      { label: "استيراد من Excel", description: "رفع كتالوج جماعي عبر قالب جاهز — للبدء السريع أو التحديث الجماعي.", icon: Download, variant: "secondary" },
+      { label: "تصدير CSV", description: "تنزيل كل الكتالوج للنسخ الاحتياطي أو المشاركة مع المحاسب.", icon: Download, variant: "secondary" },
+      { label: "فلترة متقدمة", description: "تصفية حسب المورد، التصنيف، الحالة، أو هامش الربح.", icon: Filter, variant: "secondary" },
+      { label: "تعديل مجمّع", description: "تحديث الأسعار أو التصنيفات لعدة أصناف مرة واحدة. يحتاج اعتماد المدير.", icon: Layers, variant: "destructive" },
+    ],
+    tips: [
+      { title: "احتفظ باتفاقية تسمية موحدة", text: "«زيت عباد الشمس عافية ١ لتر» أفضل من «زيت عافية». الاتساق يُسهّل البحث." },
+      { title: "صوّر كل منتج بخلفية موحدة", text: "الصور تسرّع الكاشير بنسبة ٤٠٪ خصوصًا للأصناف المتشابهة." },
+      { title: "راجع الهوامش شهريًا", text: "أسعار الموردين تتغير — راجع أي صنف هامشه أقل من ٨٪." },
+      { title: "استخدم الأرشفة لا الحذف", text: "الحذف يكسر التقارير التاريخية؛ الأرشفة تُخفي الصنف مع الاحتفاظ بسجله." },
+    ],
+    nextPage: {
+      to: "/inventory",
+      label: "إدارة المخزون",
+      description: "بعد بناء الكتالوج، انتقل للمخزون لتحدد الكميات في كل فرع ونقاط إعادة الطلب.",
+      icon: Boxes,
+    },
   },
 
   "/pos": {
@@ -306,6 +412,52 @@ export const helpContent: Record<string, HelpPage> = {
       { to: "/customers", label: "العملاء", icon: Users },
       { to: "/products", label: "المنتجات", icon: Package },
     ],
+    whyExists: [
+      { type: "p", text: "نقطة البيع هي واجهة عملك التي يراها العميل. سرعة الكاشير ودقته تحدد رضا العميل وطول الطابور." },
+      { type: "highlight", text: "كل ثانية تُوفَّر على الكاشير = طابور أقصر = تجربة عميل أفضل. صمّمنا كل شاشة لتُنجز البيع في أقل عدد نقرات." },
+      { type: "ul", items: [
+        "تعمل بدون إنترنت وتزامن تلقائيًا عند العودة.",
+        "متكاملة مع الفوترة الإلكترونية المصرية.",
+        "تدعم كل طرق الدفع الشائعة في السوق المصري.",
+      ]},
+    ],
+    cards: [
+      { name: "حالة الدرج", description: "الرصيد المتوقع الحالي في الدرج بناءً على المبيعات النقدية.", icon: Wallet, metric: "لحظي", tone: "brand" },
+      { name: "مبيعات الوردية", description: "إجمالي ما بعته منذ فتح الوردية موزعًا على طرق الدفع.", icon: DollarSign, metric: "لحظي", tone: "success" },
+      { name: "عدد الفواتير", description: "عدد المعاملات المُنجزة في الوردية الحالية.", icon: Receipt, metric: "لحظي", tone: "coral" },
+    ],
+    tables: [
+      {
+        name: "سلة المشتريات",
+        description: "الأصناف المضافة للفاتورة الحالية مع الحسابات التلقائية.",
+        columns: [
+          { name: "الصنف", desc: "اسم المنتج وصورته المصغرة." },
+          { name: "الكمية", desc: "قابلة للتعديل من +/- أو الإدخال المباشر." },
+          { name: "السعر", desc: "سعر الوحدة بعد أي خصم مطبّق." },
+          { name: "الإجمالي", desc: "السعر × الكمية." },
+          { name: "حذف", desc: "إزالة الصنف من السلة (يحتاج تأكيدًا)." },
+        ],
+      },
+    ],
+    actions: [
+      { label: "فتح الوردية", description: "بدء يوم عمل جديد بإدخال الرصيد الافتتاحي للدرج.", icon: Plus, variant: "primary" },
+      { label: "دفع", description: "الانتقال لشاشة اختيار طريقة الدفع وإتمام الفاتورة.", icon: CreditCard, variant: "primary" },
+      { label: "خصم يدوي", description: "تطبيق خصم على الفاتورة كلها أو صنف محدد. يتطلب PIN المدير فوق ١٠٪.", icon: Filter, variant: "destructive" },
+      { label: "طباعة الإيصال", description: "إعادة طباعة آخر فاتورة على الطابعة الحرارية.", icon: Printer, variant: "secondary" },
+      { label: "إغلاق الوردية", description: "تسوية الدرج مع النقدية الفعلية وإصدار تقرير الوردية.", icon: RefreshCw, variant: "destructive" },
+    ],
+    tips: [
+      { title: "استخدم اختصارات لوحة المفاتيح", text: "F2 عميل، F3 خصم، F9 دفع نقدي. أسرع بكثير من الفأرة." },
+      { title: "ثبّت أعلى ١٠ أصناف بيعًا", text: "الخبز والسجائر والألبان تُباع كل دقيقة — يجب أن تكون بضغطة واحدة." },
+      { title: "لا تترك الوردية مفتوحة بين الكاشيرين", text: "كل كاشير يفتح وردية باسمه لضمان دقة الحسابات." },
+      { title: "طابق الدرج نقديًا قبل الإغلاق", text: "الفرق يجب أن يكون صفرًا؛ أي فرق يُوثّق بسبب واضح." },
+    ],
+    nextPage: {
+      to: "/sales",
+      label: "سجل المبيعات",
+      description: "بعد إتمام البيع، تنتقل الفاتورة تلقائيًا لسجل المبيعات للمراجعة والتدقيق.",
+      icon: Receipt,
+    },
   },
 
   "/inventory": {
