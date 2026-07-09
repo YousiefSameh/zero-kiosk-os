@@ -188,22 +188,7 @@ export const helpContent: Record<string, HelpPage> = {
     },
   },
 
-  "/products_PLACEHOLDER_MARKER": {
-    icon: Package,
-    title: "",
-    short: "",
-    purpose: "",
-    users: [],
-    readingTime: "",
-    blocks: [],
-    workflow: [],
-    screenshots: [],
-    video: { title: "", description: "", duration: "" },
-    bestPractices: [],
-    mistakes: [],
-    faq: [],
-    related: [],
-    icon: Package,
+  "/products": {
     title: "المنتجات",
     short: "إدارة الكتالوج الكامل لأصناف السوبرماركت",
     purpose:
