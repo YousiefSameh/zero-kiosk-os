@@ -189,6 +189,7 @@ export const helpContent: Record<string, HelpPage> = {
   },
 
   "/products": {
+    icon: Package,
     title: "المنتجات",
     short: "إدارة الكتالوج الكامل لأصناف السوبرماركت",
     purpose:
