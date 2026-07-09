@@ -1,7 +1,8 @@
 import {
   LayoutDashboard, Package, ShoppingCart, Truck, Users, Receipt,
   BarChart3, Wallet, Store, UserCog, Shield, Settings, Bell,
-  Boxes, ScrollText, CreditCard, LineChart, Building2,
+  Boxes, ScrollText, CreditCard, LineChart, Building2, TrendingUp,
+  DollarSign, Layers, Plus, Download, Filter, RefreshCw, Printer,
   type LucideIcon,
 } from "lucide-react";
 
@@ -12,7 +13,8 @@ export type HelpBlock =
   | { type: "table"; headers: string[]; rows: string[][] }
   | { type: "divider" }
   | { type: "highlight"; text: string }
-  | { type: "code"; text: string };
+  | { type: "code"; text: string }
+  | { type: "image"; caption?: string; tone?: "brand" | "coral" | "success" | "warning"; alt?: string };
 
 export type HelpScreenshot = { caption: string; highlight?: string; tone?: "brand" | "coral" | "success" | "warning" };
 export type HelpWorkflowStep = { label: string; desc?: string; icon?: LucideIcon };
@@ -21,6 +23,11 @@ export type HelpMistake = { title: string; text: string };
 export type HelpFAQ = { q: string; a: string };
 export type HelpRelated = { to: string; label: string; icon: LucideIcon };
 export type HelpVideo = { title: string; description: string; duration: string };
+export type HelpCard = { name: string; description: string; icon?: LucideIcon; metric?: string; tone?: "brand" | "coral" | "success" | "warning" };
+export type HelpTableGuide = { name: string; description: string; columns: { name: string; desc: string }[] };
+export type HelpAction = { label: string; description: string; icon?: LucideIcon; variant?: "primary" | "secondary" | "destructive" };
+export type HelpTip = { title: string; text: string };
+export type HelpNextPage = { to: string; label: string; description: string; icon: LucideIcon };
 
 export type HelpPage = {
   icon: LucideIcon;
@@ -37,6 +44,13 @@ export type HelpPage = {
   mistakes: HelpMistake[];
   faq: HelpFAQ[];
   related: HelpRelated[];
+  /* Optional enterprise sections */
+  whyExists?: HelpBlock[];
+  cards?: HelpCard[];
+  tables?: HelpTableGuide[];
+  actions?: HelpAction[];
+  tips?: HelpTip[];
+  nextPage?: HelpNextPage;
 };
 
 /* ---------- Page-specific content ---------- */
