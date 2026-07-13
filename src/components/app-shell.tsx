@@ -166,10 +166,7 @@ export function AppShell({ title, subtitle, actions, children }: {
               >
                 <Command className="w-3.5 h-3.5" /> إجراءات سريعة
               </button>
-              <Link to="/notifications" className="relative w-9 h-9 grid place-items-center rounded-lg border border-border bg-card hover:bg-accent">
-                <Bell className="w-4 h-4" />
-                <span className="absolute top-1.5 start-1.5 w-2 h-2 rounded-full bg-coral" />
-              </Link>
+              <NotificationBellButton unread={notifCtl.unread} onClick={() => setOpenNotif(true)} />
             </div>
           </div>
         </header>
