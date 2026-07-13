@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { HelpButton } from "@/components/help-center";
 import { CommandPalette } from "@/components/command-palette";
+import { NotificationBellButton, NotificationCenter, useNotifications } from "@/components/notification-center";
 import logoAsset from "@/assets/zero-kiosk-logo-teal.png.asset.json";
 
 const nav = [
