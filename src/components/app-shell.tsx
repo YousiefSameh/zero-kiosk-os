@@ -174,6 +174,7 @@ export function AppShell({ title, subtitle, actions, children }: {
       </div>
 
       <CommandPalette open={openCmd} onOpenChange={setOpenCmd} />
+      <NotificationCenter open={openNotif} onOpenChange={setOpenNotif} controller={notifCtl} />
     </div>
   );
 }
