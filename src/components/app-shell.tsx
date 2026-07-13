@@ -64,6 +64,8 @@ export function AppShell({ title, subtitle, actions, children }: {
 }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [openCmd, setOpenCmd] = useState(false);
+  const [openNotif, setOpenNotif] = useState(false);
+  const notifCtl = useNotifications();
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
