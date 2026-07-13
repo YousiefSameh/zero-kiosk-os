@@ -124,6 +124,33 @@ export const notifications = [
   { id: 5, title: "تم إقران جهاز جديد", desc: "تم تسجيل نقطة البيع POS-Terminal-04 في فرع كورنيش المعادي.", time: "منذ يومين", unread: false, kind: "info" },
 ];
 
+export type NotificationCategory = "sales" | "inventory" | "suppliers" | "customers" | "system" | "backups";
+
+export const notificationFeed: Array<{
+  id: string;
+  category: NotificationCategory;
+  title: string;
+  desc: string;
+  time: string;
+  unread: boolean;
+  actionLabel?: string;
+  actionHref?: string;
+  meta?: string;
+}> = [
+  { id: "n-101", category: "sales", title: "تجاوزت مبيعات اليوم ٥٠ ألف ج.م", desc: "فرع الزمالك الرئيسي حقّق ٥٢٬٣٠٠ ج.م بزيادة ١٦٪ عن أمس.", time: "منذ ٤ دقائق", unread: true, actionLabel: "عرض التقرير", actionHref: "/reports" },
+  { id: "n-102", category: "inventory", title: "دومتي فيتا ٥٠٠ جم عند المستوى الحرج", desc: "لم يتبقَ سوى ٨ وحدات في جميع الفروع. إعادة طلب مقترحة: ٦٠.", time: "منذ ١٢ دقيقة", unread: true, actionLabel: "إنشاء أمر شراء", actionHref: "/purchase-orders", meta: "SKU-1007" },
+  { id: "n-103", category: "suppliers", title: "تم تسليم أمر الشراء PO-2043", desc: "تم استلام شحنة جهينة في فرع شيراتون هليوبوليس بواسطة هناء سامي.", time: "منذ ساعة", unread: true, actionLabel: "فتح الأمر", actionHref: "/purchase-orders", meta: "PO-2043" },
+  { id: "n-104", category: "system", title: "اكتُشف فرق في النقدية بقيمة ‎−٨٤ ج.م", desc: "فرق إغلاق وردية مسائية في فرع الزمالك الرئيسي — مراجعة مطلوبة.", time: "منذ ٣ ساعات", unread: true, actionLabel: "مراجعة الوردية", actionHref: "/finance" },
+  { id: "n-105", category: "customers", title: "فاطمة عادل ترقّت إلى المستوى البلاتيني", desc: "بلغ إجمالي إنفاقها ٢٤٬٣١٠ ج.م خلال آخر ٩٠ يومًا.", time: "منذ ٥ ساعات", unread: true, actionLabel: "عرض الملف", actionHref: "/customers", meta: "CUS-1003" },
+  { id: "n-106", category: "backups", title: "اكتمل النسخ الاحتياطي اليومي بنجاح", desc: "تم رفع ٢٫٤ جيجابايت إلى التخزين السحابي المشفّر — نقطة استعادة جديدة متاحة.", time: "منذ ٦ ساعات", unread: false, meta: "٠٤:٠٠ ص" },
+  { id: "n-107", category: "sales", title: "استرداد فاتورة TXN-88424", desc: "طُلب استرداد بقيمة ٥٨ ج.م بواسطة هناء سامي — تم الاعتماد.", time: "أمس", unread: false, actionLabel: "عرض الفاتورة", actionHref: "/sales", meta: "TXN-88424" },
+  { id: "n-108", category: "inventory", title: "هيد آند شولدرز ٤٠٠ مل — نفد المخزون", desc: "لا يوجد رصيد في أي فرع. آخر بيع كان منذ يومين.", time: "أمس", unread: false, actionLabel: "طلب توريد عاجل", actionHref: "/purchase-orders", meta: "SKU-1012" },
+  { id: "n-109", category: "suppliers", title: "تحديث شروط الدفع — نستله مصر", desc: "الشروط الجديدة: صافي ٤٥ يومًا بدلًا من ٣٠ يومًا اعتبارًا من الشهر القادم.", time: "أمس", unread: false, actionLabel: "مراجعة المورد", actionHref: "/suppliers", meta: "SUP-01" },
+  { id: "n-110", category: "system", title: "تم إقران جهاز جديد POS-Terminal-04", desc: "تم تسجيل الجهاز في فرع كورنيش المعادي وربطه بحساب كريم فؤاد.", time: "منذ يومين", unread: false },
+  { id: "n-111", category: "customers", title: "٣ عملاء جدد انضموا لبرنامج الولاء", desc: "تم تسجيل: منى شاكر، طارق حسن، وسلمى مجدي.", time: "منذ يومين", unread: false, actionHref: "/customers" },
+  { id: "n-112", category: "backups", title: "تحذير: مساحة الأرشيف اقتربت من الحد الأقصى", desc: "استُخدم ٨٦٪ من مساحة الأرشيف السحابي — يُنصح بترقية الخطة.", time: "منذ ٣ أيام", unread: false, actionLabel: "ترقية الخطة", actionHref: "/settings" },
+];
+
 export const roles = [
   { id: "RL-01", name: "المالك", members: 1, description: "صلاحيات كاملة على جميع الفروع والمالية والإعدادات." },
   { id: "RL-02", name: "مدير الفرع", members: 4, description: "إدارة عمليات الفرع والفريق والمخزون والتقارير." },

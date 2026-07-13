@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { HelpButton } from "@/components/help-center";
 import { CommandPalette } from "@/components/command-palette";
+import { NotificationBellButton, NotificationCenter, useNotifications } from "@/components/notification-center";
 import logoAsset from "@/assets/zero-kiosk-logo-teal.png.asset.json";
 
 const nav = [
@@ -63,6 +64,8 @@ export function AppShell({ title, subtitle, actions, children }: {
 }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [openCmd, setOpenCmd] = useState(false);
+  const [openNotif, setOpenNotif] = useState(false);
+  const notifCtl = useNotifications();
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -163,10 +166,7 @@ export function AppShell({ title, subtitle, actions, children }: {
               >
                 <Command className="w-3.5 h-3.5" /> إجراءات سريعة
               </button>
-              <Link to="/notifications" className="relative w-9 h-9 grid place-items-center rounded-lg border border-border bg-card hover:bg-accent">
-                <Bell className="w-4 h-4" />
-                <span className="absolute top-1.5 start-1.5 w-2 h-2 rounded-full bg-coral" />
-              </Link>
+              <NotificationBellButton unread={notifCtl.unread} onClick={() => setOpenNotif(true)} />
             </div>
           </div>
         </header>
@@ -174,6 +174,7 @@ export function AppShell({ title, subtitle, actions, children }: {
       </div>
 
       <CommandPalette open={openCmd} onOpenChange={setOpenCmd} />
+      <NotificationCenter open={openNotif} onOpenChange={setOpenNotif} controller={notifCtl} />
     </div>
   );
 }
