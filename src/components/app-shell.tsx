@@ -4,15 +4,12 @@ import {
   LayoutDashboard, Package, ShoppingCart, Truck, Users, Receipt,
   BarChart3, Wallet, Store, UserCog, Shield, Settings, Bell,
   Search, Command, ChevronsUpDown, Boxes, ScrollText, CreditCard,
-  LineChart, Sparkles,
+  LineChart,
 } from "lucide-react";
-import {
-  CommandDialog, CommandEmpty, CommandGroup, CommandInput,
-  CommandItem, CommandList, CommandSeparator,
-} from "@/components/ui/command";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { HelpButton } from "@/components/help-center";
+import { CommandPalette } from "@/components/command-palette";
 import logoAsset from "@/assets/zero-kiosk-logo-teal.png.asset.json";
 
 const nav = [
