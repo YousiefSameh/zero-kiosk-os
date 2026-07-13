@@ -173,37 +173,8 @@ export function AppShell({ title, subtitle, actions, children }: {
         <main className="flex-1 p-6 lg:p-8 max-w-[1600px] w-full mx-auto">{children}</main>
       </div>
 
-      <CommandDialog open={openCmd} onOpenChange={setOpenCmd}>
-        <CommandInput placeholder="ابحث عن منتج أو طلب أو عميل أو إجراء…" />
-        <CommandList>
-          <CommandEmpty>لا توجد نتائج.</CommandEmpty>
-          <CommandGroup heading="انتقل إلى">
-            <CmdLink to="/" label="لوحة التحكم" icon={<LayoutDashboard className="w-4 h-4" />} setOpen={setOpenCmd} />
-            <CmdLink to="/pos" label="نقطة البيع" icon={<CreditCard className="w-4 h-4" />} setOpen={setOpenCmd} />
-            <CmdLink to="/inventory" label="المخزون" icon={<Boxes className="w-4 h-4" />} setOpen={setOpenCmd} />
-            <CmdLink to="/purchase-orders" label="أوامر الشراء" icon={<ShoppingCart className="w-4 h-4" />} setOpen={setOpenCmd} />
-            <CmdLink to="/suppliers" label="الموردون" icon={<Truck className="w-4 h-4" />} setOpen={setOpenCmd} />
-            <CmdLink to="/customers" label="العملاء" icon={<Users className="w-4 h-4" />} setOpen={setOpenCmd} />
-            <CmdLink to="/analytics" label="التحليلات" icon={<LineChart className="w-4 h-4" />} setOpen={setOpenCmd} />
-          </CommandGroup>
-          <CommandSeparator />
-          <CommandGroup heading="إجراءات سريعة">
-            <CommandItem><Sparkles className="w-4 h-4 me-2 text-coral" />إنشاء أمر شراء جديد</CommandItem>
-            <CommandItem><Sparkles className="w-4 h-4 me-2 text-coral" />إضافة منتج جديد</CommandItem>
-            <CommandItem><Sparkles className="w-4 h-4 me-2 text-coral" />فتح درج النقد</CommandItem>
-            <CommandItem><Sparkles className="w-4 h-4 me-2 text-coral" />تصدير مبيعات اليوم</CommandItem>
-          </CommandGroup>
-        </CommandList>
-      </CommandDialog>
+      <CommandPalette open={openCmd} onOpenChange={setOpenCmd} />
     </div>
-  );
-}
-
-function CmdLink({ to, label, icon, setOpen }: { to: string; label: string; icon: ReactNode; setOpen: (v: boolean) => void }) {
-  return (
-    <CommandItem onSelect={() => { setOpen(false); window.location.href = to; }}>
-      <span className="me-2">{icon}</span>{label}
-    </CommandItem>
   );
 }
 
