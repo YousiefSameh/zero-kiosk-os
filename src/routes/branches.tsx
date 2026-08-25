@@ -1,20 +1,39 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AppShell, StatusPill } from "@/components/app-shell";
+import { useState } from "react";
+import { AppShell, StatusPill, EmptyState } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { branches, currency, num } from "@/lib/mock-data";
-import { Plus, MapPin, Users } from "lucide-react";
+import { Plus, MapPin, Users, Store, Search } from "lucide-react";
 
 export const Route = createFileRoute("/branches")({ component: BranchesPage });
 
 function BranchesPage() {
+  const [q, setQ] = useState("");
+  const rows = branches.filter((b) => b.name.includes(q) || b.city.includes(q));
   return (
     <AppShell
       title="الفروع"
       subtitle="الانتشار التشغيلي"
       actions={<Button size="sm" className="bg-brand hover:bg-brand/90"><Plus className="w-4 h-4 ms-1.5" />فرع جديد</Button>}
     >
+      <div className="relative mb-4 md:max-w-sm">
+        <Search className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+        <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث عن فرع أو مدينة…" className="pr-9 rounded-lg" />
+      </div>
+      {rows.length === 0 ? (
+        <div className="card-elevated">
+          <EmptyState
+            icon={Store}
+            title="لا توجد فروع مطابقة"
+            description="لم نعثر على فرع بهذا الاسم. أضف فرعًا جديدًا وسيُربط تلقائيًا بالمخزون والمبيعات والموظفين."
+            primary={{ label: "فرع جديد" }}
+            secondary={{ label: "مسح البحث", onClick: () => setQ("") }}
+          />
+        </div>
+      ) : (
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        {branches.map((b) => (
+        {rows.map((b) => (
           <div key={b.id} className="card-elevated overflow-hidden hover:shadow-elevated transition">
             <div className="h-24 bg-gradient-to-br from-brand to-brand/70 relative">
               <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "radial-gradient(circle at 80% 20%, white 0%, transparent 40%)" }} />

@@ -64,6 +64,7 @@ function EmployeesPage() {
             </tbody>
           </table>
         </div>
+        )}
       </SectionCard>
     </AppShell>
   );
