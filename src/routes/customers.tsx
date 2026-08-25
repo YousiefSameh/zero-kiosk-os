@@ -52,7 +52,7 @@ function CustomersPage() {
               </tr>
             </thead>
             <tbody>
-              {customers.map((c) => (
+              {rows.map((c) => (
                 <tr key={c.id} className="border-b border-border/60 hover:bg-accent/40">
                   <td className="px-5 py-3">
                     <div className="flex items-center gap-3">
