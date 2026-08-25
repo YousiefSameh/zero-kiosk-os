@@ -9,6 +9,8 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { HelpButton } from "@/components/help-center";
+import { Button } from "@/components/ui/button";
+import { Plus, RotateCcw } from "lucide-react";
 import { CommandPalette } from "@/components/command-palette";
 import { NotificationBellButton, NotificationCenter, useNotifications } from "@/components/notification-center";
 import logoAsset from "@/assets/zero-kiosk-logo-teal.png.asset.json";
