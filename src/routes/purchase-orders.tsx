@@ -76,6 +76,7 @@ function POPage() {
             </tbody>
           </table>
         </div>
+        )}
       </SectionCard>
     </AppShell>
   );

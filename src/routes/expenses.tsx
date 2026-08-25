@@ -1,13 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AppShell, SectionCard, StatusPill } from "@/components/app-shell";
+import { useState } from "react";
+import { AppShell, SectionCard, StatusPill, EmptyState } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { expenses, currency } from "@/lib/mock-data";
-import { Plus } from "lucide-react";
+import { Plus, Wallet, Search } from "lucide-react";
 
 export const Route = createFileRoute("/expenses")({ component: ExpensesPage });
 
 function ExpensesPage() {
+  const [q, setQ] = useState("");
   const total = expenses.reduce((s, e) => s + e.amount, 0);
+  const rows = expenses.filter((e) => e.id.toLowerCase().includes(q.toLowerCase()) || e.category.includes(q) || e.vendor.includes(q));
   return (
     <AppShell
       title="المصروفات"
@@ -15,6 +19,19 @@ function ExpensesPage() {
       actions={<Button size="sm" className="bg-brand hover:bg-brand/90"><Plus className="w-4 h-4 ms-1.5" />مصروف جديد</Button>}
     >
       <SectionCard>
+        <div className="relative mb-4 md:max-w-sm">
+          <Search className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+          <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث بالمرجع أو التصنيف أو الجهة…" className="pr-9 rounded-lg" />
+        </div>
+        {rows.length === 0 ? (
+          <EmptyState
+            icon={Wallet}
+            title="لا توجد مصروفات مطابقة"
+            description="لم نعثر على أي قيد مصروف يطابق بحثك. سجّل المصروفات فور حدوثها للحفاظ على دقة التقارير المالية."
+            primary={{ label: "مصروف جديد" }}
+            secondary={{ label: "مسح البحث", onClick: () => setQ("") }}
+          />
+        ) : (
         <div className="overflow-x-auto -mx-5">
           <table className="w-full text-sm">
             <thead className="text-xs text-muted-foreground">
@@ -29,7 +46,7 @@ function ExpensesPage() {
               </tr>
             </thead>
             <tbody>
-              {expenses.map((e) => (
+              {rows.map((e) => (
                 <tr key={e.id} className="border-b border-border/60 hover:bg-accent/40">
                   <td className="px-5 py-3 font-mono text-xs">{e.id}</td>
                   <td className="py-3 font-medium">{e.category}</td>
