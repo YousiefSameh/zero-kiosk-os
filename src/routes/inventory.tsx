@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AppShell, KpiCard, SectionCard, StatusPill } from "@/components/app-shell";
+import { useState } from "react";
+import { AppShell, KpiCard, SectionCard, StatusPill, EmptyState } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { products, currency, num } from "@/lib/mock-data";
-import { Boxes, AlertTriangle, TrendingDown, PackageCheck, Download } from "lucide-react";
+import { Boxes, AlertTriangle, TrendingDown, PackageCheck, Download, Search } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 export const Route = createFileRoute("/inventory")({ component: InventoryPage });
@@ -12,6 +14,8 @@ function InventoryPage() {
   const low = products.filter((p) => p.status !== "متوفر").length;
   const out = products.filter((p) => p.status === "نفد المخزون").length;
   const skus = products.length;
+  const [q, setQ] = useState("");
+  const rows = products.filter((p) => p.name.includes(q) || p.category.includes(q));
 
   const perCategory = Object.entries(
     products.reduce<Record<string, number>>((acc, p) => {
@@ -70,6 +74,18 @@ function InventoryPage() {
       </div>
 
       <SectionCard title="سجل المخزون" description="كل حركة قابلة للتتبع" className="mt-4">
+        <div className="relative mb-4 md:max-w-sm">
+          <Search className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+          <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث في سجل المخزون…" className="pr-9 rounded-lg" />
+        </div>
+        {rows.length === 0 ? (
+          <EmptyState
+            icon={Boxes}
+            title="لا يوجد مخزون مطابق"
+            description="لم نعثر على أصناف تطابق بحثك في سجل المخزون. جرّب اسم منتج أو تصنيفًا مختلفًا."
+            secondary={{ label: "مسح البحث", onClick: () => setQ("") }}
+          />
+        ) : (
         <div className="overflow-x-auto -mx-5">
           <table className="w-full text-sm">
             <thead className="text-xs text-muted-foreground">

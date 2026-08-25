@@ -54,6 +54,7 @@ function ActivityPage() {
             );
           })}
         </ul>
+        )}
       </SectionCard>
     </AppShell>
   );
