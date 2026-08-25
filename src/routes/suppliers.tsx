@@ -69,6 +69,7 @@ function SuppliersPage() {
           </div>
         ))}
       </div>
+      )}
     </AppShell>
   );
 }
