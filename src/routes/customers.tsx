@@ -80,6 +80,7 @@ function CustomersPage() {
             </tbody>
           </table>
         </div>
+        )}
       </SectionCard>
     </AppShell>
   );
