@@ -60,6 +60,7 @@ function BranchesPage() {
           </div>
         ))}
       </div>
+      )}
     </AppShell>
   );
 }
