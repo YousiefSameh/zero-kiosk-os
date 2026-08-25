@@ -9,6 +9,8 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { HelpButton } from "@/components/help-center";
+import { Button } from "@/components/ui/button";
+import { Plus, RotateCcw } from "lucide-react";
 import { CommandPalette } from "@/components/command-palette";
 import { NotificationBellButton, NotificationCenter, useNotifications } from "@/components/notification-center";
 import logoAsset from "@/assets/zero-kiosk-logo-teal.png.asset.json";
@@ -250,17 +252,58 @@ export function StatusPill({ status }: { status: string }) {
   );
 }
 
-export function EmptyState({ icon: Icon, title, description, action }: {
-  icon: any; title: string; description: string; action?: ReactNode;
+export function EmptyState({ icon: Icon, title, description, primary, secondary, action }: {
+  icon: any;
+  title: string;
+  description: string;
+  primary?: { label: string; onClick?: () => void };
+  secondary?: { label: string; onClick?: () => void };
+  action?: ReactNode;
 }) {
   return (
-    <div className="text-center py-16 px-6">
-      <div className="w-14 h-14 mx-auto rounded-2xl bg-brand-soft grid place-items-center text-brand">
-        <Icon className="w-6 h-6" />
+    <div className="relative overflow-hidden text-center py-16 px-6">
+      {/* Decorative illustration background */}
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full bg-brand/5" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-52 h-52 rounded-full border border-dashed border-brand/20" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] rounded-full border border-brand/10" />
+        <div className="absolute top-8 right-10 w-2 h-2 rounded-full bg-coral/40" />
+        <div className="absolute bottom-10 right-1/4 w-1.5 h-1.5 rounded-full bg-brand/40" />
+        <div className="absolute top-14 left-12 w-1.5 h-1.5 rounded-full bg-warning/50" />
+        <div className="absolute bottom-8 left-1/3 w-2 h-2 rounded-full bg-brand/30" />
       </div>
-      <div className="mt-4 font-display font-semibold">{title}</div>
-      <div className="mt-1 text-sm text-muted-foreground max-w-sm mx-auto">{description}</div>
-      {action && <div className="mt-5">{action}</div>}
+
+      <div className="relative">
+        {/* Illustrated icon */}
+        <div className="relative w-24 h-24 mx-auto">
+          <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-brand/15 to-brand/5 rotate-6" />
+          <div className="absolute inset-0 rounded-3xl bg-card border border-border shadow-card grid place-items-center">
+            <Icon className="w-10 h-10 text-brand" strokeWidth={1.5} />
+          </div>
+          <div className="absolute -bottom-1.5 -left-1.5 w-6 h-6 rounded-lg bg-coral/15 grid place-items-center">
+            <div className="w-2 h-2 rounded-full bg-coral" />
+          </div>
+        </div>
+
+        <div className="mt-6 font-display font-semibold text-lg">{title}</div>
+        <p className="mt-1.5 text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">{description}</p>
+
+        <div className="mt-6 flex items-center justify-center gap-2.5">
+          {primary && (
+            <Button size="sm" className="bg-brand hover:bg-brand/90" onClick={primary.onClick}>
+              <Plus className="w-4 h-4 ms-1.5" />
+              {primary.label}
+            </Button>
+          )}
+          {secondary && (
+            <Button size="sm" variant="outline" onClick={secondary.onClick}>
+              <RotateCcw className="w-4 h-4 ms-1.5" />
+              {secondary.label}
+            </Button>
+          )}
+          {action}
+        </div>
+      </div>
     </div>
   );
 }

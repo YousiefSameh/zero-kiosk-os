@@ -1,20 +1,39 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AppShell } from "@/components/app-shell";
+import { useState } from "react";
+import { AppShell, EmptyState } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { suppliers, num } from "@/lib/mock-data";
-import { Plus, Star, Phone, Mail } from "lucide-react";
+import { Plus, Star, Phone, Mail, Truck, Search } from "lucide-react";
 
 export const Route = createFileRoute("/suppliers")({ component: SuppliersPage });
 
 function SuppliersPage() {
+  const [q, setQ] = useState("");
+  const rows = suppliers.filter((s) => s.name.includes(q) || s.contact.includes(q) || s.id.toLowerCase().includes(q.toLowerCase()));
   return (
     <AppShell
       title="الموردون"
       subtitle="إدارة العلاقات وشروط التعامل"
       actions={<Button size="sm" className="bg-brand hover:bg-brand/90"><Plus className="w-4 h-4 ms-1.5" />مورد جديد</Button>}
     >
+      <div className="relative mb-4 md:max-w-sm">
+        <Search className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+        <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث عن مورد…" className="pr-9 rounded-lg" />
+      </div>
+      {rows.length === 0 ? (
+        <div className="card-elevated">
+          <EmptyState
+            icon={Truck}
+            title="لا يوجد موردون مطابقون"
+            description="لم نعثر على مورد بهذا الاسم. أضف المورد الآن وسجّل شروط التعامل لتبدأ إصدار أوامر الشراء."
+            primary={{ label: "مورد جديد" }}
+            secondary={{ label: "مسح البحث", onClick: () => setQ("") }}
+          />
+        </div>
+      ) : (
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        {suppliers.map((s) => (
+        {rows.map((s) => (
           <div key={s.id} className="card-elevated p-5 hover:shadow-elevated transition">
             <div className="flex items-start gap-3">
               <div className="w-12 h-12 rounded-xl bg-brand-soft grid place-items-center text-brand font-display font-semibold">
@@ -50,6 +69,7 @@ function SuppliersPage() {
           </div>
         ))}
       </div>
+      )}
     </AppShell>
   );
 }

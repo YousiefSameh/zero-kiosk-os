@@ -1,14 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AppShell, SectionCard, StatusPill, KpiCard } from "@/components/app-shell";
+import { useState } from "react";
+import { AppShell, SectionCard, StatusPill, KpiCard, EmptyState } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { sales, currency, num } from "@/lib/mock-data";
-import { Receipt, RotateCcw, Filter, Download } from "lucide-react";
+import { Receipt, RotateCcw, Filter, Download, Search } from "lucide-react";
 
 export const Route = createFileRoute("/sales")({ component: SalesPage });
 
 function SalesPage() {
+  const [q, setQ] = useState("");
   const total = sales.reduce((s, x) => s + x.total, 0);
   const refunded = sales.filter((s) => s.status === "مُسترد").length;
+  const rows = sales.filter((s) => s.id.toLowerCase().includes(q.toLowerCase()) || s.cashier.includes(q) || s.branch.includes(q));
   return (
     <AppShell
       title="المبيعات"
@@ -27,6 +31,19 @@ function SalesPage() {
       </div>
 
       <SectionCard className="mt-4" title="سجل المعاملات">
+        <div className="relative mb-4 md:max-w-sm">
+          <Search className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+          <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث برقم المعاملة أو الكاشير أو الفرع…" className="pr-9 rounded-lg" />
+        </div>
+        {rows.length === 0 ? (
+          <EmptyState
+            icon={Receipt}
+            title="لا توجد مبيعات مطابقة"
+            description="لم يتم تسجيل أي معاملة تطابق هذا البحث. ستظهر المبيعات هنا تلقائيًا فور إتمامها من نقطة البيع."
+            primary={{ label: "فتح نقطة البيع" }}
+            secondary={{ label: "مسح البحث", onClick: () => setQ("") }}
+          />
+        ) : (
         <div className="overflow-x-auto -mx-5">
           <table className="w-full text-sm">
             <thead className="text-xs text-muted-foreground">
@@ -42,7 +59,7 @@ function SalesPage() {
               </tr>
             </thead>
             <tbody>
-              {sales.map((s) => (
+              {rows.map((s) => (
                 <tr key={s.id} className="border-b border-border/60 hover:bg-accent/40">
                   <td className="px-5 py-3 font-mono text-xs">{s.id}</td>
                   <td className="py-3 font-medium">{s.cashier}</td>
@@ -57,6 +74,7 @@ function SalesPage() {
             </tbody>
           </table>
         </div>
+        )}
       </SectionCard>
     </AppShell>
   );
