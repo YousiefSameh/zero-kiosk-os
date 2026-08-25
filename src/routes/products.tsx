@@ -52,7 +52,13 @@ function ProductsPage() {
         </div>
 
         {rows.length === 0 ? (
-          <EmptyState icon={Package} title="لا توجد منتجات" description="جرّب تعديل البحث أو الفلاتر." />
+          <EmptyState
+            icon={Package}
+            title="لا توجد منتجات مطابقة"
+            description="لم نعثر على أي منتج يطابق بحثك أو الفلاتر الحالية. جرّب كلمة مختلفة، أو أضف المنتج الآن وابدأ البيع فورًا."
+            primary={{ label: "إضافة منتج" }}
+            secondary={{ label: "مسح البحث", onClick: () => { setQ(""); setCat("الكل"); } }}
+          />
         ) : (
           <div className="overflow-x-auto -mx-5">
             <table className="w-full text-sm">
