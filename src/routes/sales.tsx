@@ -74,6 +74,7 @@ function SalesPage() {
             </tbody>
           </table>
         </div>
+        )}
       </SectionCard>
     </AppShell>
   );

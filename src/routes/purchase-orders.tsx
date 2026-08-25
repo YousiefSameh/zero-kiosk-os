@@ -1,12 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AppShell, SectionCard, StatusPill, KpiCard } from "@/components/app-shell";
+import { useState } from "react";
+import { AppShell, SectionCard, StatusPill, KpiCard, EmptyState } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { purchaseOrders, currency, num } from "@/lib/mock-data";
-import { Plus, ShoppingCart, Clock, CheckCircle2, XCircle } from "lucide-react";
+import { Plus, ShoppingCart, Clock, CheckCircle2, XCircle, Search } from "lucide-react";
 
 export const Route = createFileRoute("/purchase-orders")({ component: POPage });
 
 function POPage() {
+  const [q, setQ] = useState("");
+  const rows = purchaseOrders.filter((p) => p.id.toLowerCase().includes(q.toLowerCase()) || p.supplier.includes(q) || p.branch.includes(q));
   const totals = {
     pending: purchaseOrders.filter((p) => p.status === "قيد الانتظار").length,
     approved: purchaseOrders.filter((p) => p.status === "معتمد").length,
@@ -29,6 +33,19 @@ function POPage() {
       </div>
 
       <SectionCard className="mt-4" title="جميع أوامر الشراء">
+        <div className="relative mb-4 md:max-w-sm">
+          <Search className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+          <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث برقم الأمر أو المورد أو الفرع…" className="pr-9 rounded-lg" />
+        </div>
+        {rows.length === 0 ? (
+          <EmptyState
+            icon={ShoppingCart}
+            title="لا توجد أوامر شراء مطابقة"
+            description="لا توجد نتائج لهذا البحث. أنشئ أمر شراء جديدًا لتجديد المخزون قبل الوصول لنقطة إعادة الطلب."
+            primary={{ label: "أمر شراء جديد" }}
+            secondary={{ label: "مسح البحث", onClick: () => setQ("") }}
+          />
+        ) : (
         <div className="overflow-x-auto -mx-5">
           <table className="w-full text-sm">
             <thead className="text-xs text-muted-foreground">
@@ -44,7 +61,7 @@ function POPage() {
               </tr>
             </thead>
             <tbody>
-              {purchaseOrders.map((po) => (
+              {rows.map((po) => (
                 <tr key={po.id} className="border-b border-border/60 hover:bg-accent/40">
                   <td className="px-5 py-3 font-mono text-xs">{po.id}</td>
                   <td className="py-3 font-medium">{po.supplier}</td>
