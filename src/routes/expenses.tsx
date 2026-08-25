@@ -60,6 +60,7 @@ function ExpensesPage() {
             </tbody>
           </table>
         </div>
+        )}
       </SectionCard>
     </AppShell>
   );
