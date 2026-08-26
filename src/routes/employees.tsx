@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppShell, SectionCard, StatusPill, EmptyState } from "@/components/app-shell";
+import { useDataState, ListSkeleton } from "@/lib/demo-state";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { employees } from "@/lib/mock-data";
@@ -11,7 +12,9 @@ export const Route = createFileRoute("/employees")({ component: EmployeesPage })
 
 function EmployeesPage() {
   const [q, setQ] = useState("");
-  const rows = employees.filter((e) => e.name.includes(q) || e.role.includes(q) || e.branch.includes(q));
+  const ds = useDataState();
+  const allRows = employees.filter((e) => e.name.includes(q) || e.role.includes(q) || e.branch.includes(q));
+  const rows = ds.rows(allRows);
   return (
     <AppShell
       title="الموظفون"
@@ -23,11 +26,13 @@ function EmployeesPage() {
           <Search className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث بالاسم أو الوظيفة أو الفرع…" className="pr-9 rounded-lg" />
         </div>
-        {rows.length === 0 ? (
+        {ds.isLoading ? (
+          <ListSkeleton />
+        ) : rows.length === 0 ? (
           <EmptyState
             icon={UserCog}
-            title="لا يوجد موظفون مطابقون"
-            description="لا توجد نتائج لهذا البحث. ادعُ أعضاء فريقك وحدد صلاحياتهم لتبدأ تتبع الأداء عبر الفروع."
+            title={ds.isEmpty ? "لا يوجد موظفون بعد" : "لا يوجد موظفون مطابقون"}
+            description={ds.isEmpty ? "فريقك فارغ حاليًا. ادعُ أعضاء الفريق وحدّد أدوارهم وصلاحياتهم لتبدأ متابعة الأداء." : "لا توجد نتائج لهذا البحث. ادعُ أعضاء فريقك وحدد صلاحياتهم لتبدأ تتبع الأداء عبر الفروع."}
             primary={{ label: "دعوة موظف" }}
             secondary={{ label: "مسح البحث", onClick: () => setQ("") }}
           />

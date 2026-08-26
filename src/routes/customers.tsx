@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppShell, SectionCard, KpiCard, EmptyState } from "@/components/app-shell";
+import { useDataState, ListSkeleton } from "@/lib/demo-state";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { customers, currency, num } from "@/lib/mock-data";
@@ -11,8 +12,10 @@ export const Route = createFileRoute("/customers")({ component: CustomersPage })
 
 function CustomersPage() {
   const [q, setQ] = useState("");
+  const ds = useDataState();
   const totalSpend = customers.reduce((s, c) => s + c.spend, 0);
-  const rows = customers.filter((c) => c.name.includes(q) || c.phone.includes(q) || c.id.toLowerCase().includes(q.toLowerCase()));
+  const allRows = customers.filter((c) => c.name.includes(q) || c.phone.includes(q) || c.id.toLowerCase().includes(q.toLowerCase()));
+  const rows = ds.rows(allRows);
   return (
     <AppShell
       title="العملاء"
@@ -30,11 +33,13 @@ function CustomersPage() {
           <Search className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث بالاسم أو الهاتف أو الكود…" className="pr-9 rounded-lg" />
         </div>
-        {rows.length === 0 ? (
+        {ds.isLoading ? (
+          <ListSkeleton />
+        ) : rows.length === 0 ? (
           <EmptyState
             icon={Users}
-            title="لا يوجد عملاء مطابقون"
-            description="لا توجد نتائج لهذا البحث. يمكنك إضافة العميل الآن وربطه ببرنامج الولاء من أول عملية شراء."
+            title={ds.isEmpty ? "لا يوجد عملاء بعد" : "لا يوجد عملاء مطابقون"}
+            description={ds.isEmpty ? "لم تُسجّل أي عميل حتى الآن. أضف أول عميل أو فعّل برنامج الولاء ليُنشأ الملف تلقائيًا من نقطة البيع." : "لا توجد نتائج لهذا البحث. يمكنك إضافة العميل الآن وربطه ببرنامج الولاء من أول عملية شراء."}
             primary={{ label: "إضافة عميل" }}
             secondary={{ label: "مسح البحث", onClick: () => setQ("") }}
           />

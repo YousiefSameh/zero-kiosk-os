@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppShell, SectionCard, StatusPill, KpiCard, EmptyState } from "@/components/app-shell";
+import { useDataState, ListSkeleton } from "@/lib/demo-state";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { purchaseOrders, currency, num } from "@/lib/mock-data";
@@ -10,7 +11,9 @@ export const Route = createFileRoute("/purchase-orders")({ component: POPage });
 
 function POPage() {
   const [q, setQ] = useState("");
-  const rows = purchaseOrders.filter((p) => p.id.toLowerCase().includes(q.toLowerCase()) || p.supplier.includes(q) || p.branch.includes(q));
+  const ds = useDataState();
+  const allRows = purchaseOrders.filter((p) => p.id.toLowerCase().includes(q.toLowerCase()) || p.supplier.includes(q) || p.branch.includes(q));
+  const rows = ds.rows(allRows);
   const totals = {
     pending: purchaseOrders.filter((p) => p.status === "قيد الانتظار").length,
     approved: purchaseOrders.filter((p) => p.status === "معتمد").length,
@@ -37,11 +40,13 @@ function POPage() {
           <Search className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث برقم الأمر أو المورد أو الفرع…" className="pr-9 rounded-lg" />
         </div>
-        {rows.length === 0 ? (
+        {ds.isLoading ? (
+          <ListSkeleton />
+        ) : rows.length === 0 ? (
           <EmptyState
             icon={ShoppingCart}
-            title="لا توجد أوامر شراء مطابقة"
-            description="لا توجد نتائج لهذا البحث. أنشئ أمر شراء جديدًا لتجديد المخزون قبل الوصول لنقطة إعادة الطلب."
+            title={ds.isEmpty ? "لا توجد أوامر شراء بعد" : "لا توجد أوامر شراء مطابقة"}
+            description={ds.isEmpty ? "لم تُنشئ أي أمر شراء حتى الآن. أنشئ أول أمر لتجديد المخزون ومتابعة الاستلام خطوة بخطوة." : "لا توجد نتائج لهذا البحث. أنشئ أمر شراء جديدًا لتجديد المخزون قبل الوصول لنقطة إعادة الطلب."}
             primary={{ label: "أمر شراء جديد" }}
             secondary={{ label: "مسح البحث", onClick: () => setQ("") }}
           />

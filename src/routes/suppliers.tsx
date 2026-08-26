@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppShell, EmptyState } from "@/components/app-shell";
+import { useDataState, ListSkeleton } from "@/lib/demo-state";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { suppliers, num } from "@/lib/mock-data";
@@ -10,7 +11,9 @@ export const Route = createFileRoute("/suppliers")({ component: SuppliersPage })
 
 function SuppliersPage() {
   const [q, setQ] = useState("");
-  const rows = suppliers.filter((s) => s.name.includes(q) || s.contact.includes(q) || s.id.toLowerCase().includes(q.toLowerCase()));
+  const ds = useDataState();
+  const allRows = suppliers.filter((s) => s.name.includes(q) || s.contact.includes(q) || s.id.toLowerCase().includes(q.toLowerCase()));
+  const rows = ds.rows(allRows);
   return (
     <AppShell
       title="الموردون"
@@ -21,12 +24,14 @@ function SuppliersPage() {
         <Search className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
         <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث عن مورد…" className="pr-9 rounded-lg" />
       </div>
-      {rows.length === 0 ? (
+      {ds.isLoading ? (
+          <ListSkeleton />
+        ) : rows.length === 0 ? (
         <div className="card-elevated">
           <EmptyState
             icon={Truck}
-            title="لا يوجد موردون مطابقون"
-            description="لم نعثر على مورد بهذا الاسم. أضف المورد الآن وسجّل شروط التعامل لتبدأ إصدار أوامر الشراء."
+            title={ds.isEmpty ? "لا يوجد موردون بعد" : "لا يوجد موردون مطابقون"}
+            description={ds.isEmpty ? "ابدأ بإضافة أول مورد وشروط التعامل معه، لتتمكن من إصدار أوامر الشراء ومتابعة التوريد." : "لم نعثر على مورد بهذا الاسم. أضف المورد الآن وسجّل شروط التعامل لتبدأ إصدار أوامر الشراء."}
             primary={{ label: "مورد جديد" }}
             secondary={{ label: "مسح البحث", onClick: () => setQ("") }}
           />

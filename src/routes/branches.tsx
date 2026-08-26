@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppShell, StatusPill, EmptyState } from "@/components/app-shell";
+import { useDataState, ListSkeleton } from "@/lib/demo-state";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { branches, currency, num } from "@/lib/mock-data";
@@ -10,7 +11,9 @@ export const Route = createFileRoute("/branches")({ component: BranchesPage });
 
 function BranchesPage() {
   const [q, setQ] = useState("");
-  const rows = branches.filter((b) => b.name.includes(q) || b.city.includes(q));
+  const ds = useDataState();
+  const allRows = branches.filter((b) => b.name.includes(q) || b.city.includes(q));
+  const rows = ds.rows(allRows);
   return (
     <AppShell
       title="الفروع"
@@ -21,12 +24,14 @@ function BranchesPage() {
         <Search className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
         <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث عن فرع أو مدينة…" className="pr-9 rounded-lg" />
       </div>
-      {rows.length === 0 ? (
+      {ds.isLoading ? (
+          <ListSkeleton />
+        ) : rows.length === 0 ? (
         <div className="card-elevated">
           <EmptyState
             icon={Store}
-            title="لا توجد فروع مطابقة"
-            description="لم نعثر على فرع بهذا الاسم. أضف فرعًا جديدًا وسيُربط تلقائيًا بالمخزون والمبيعات والموظفين."
+            title={ds.isEmpty ? "لا توجد فروع بعد" : "لا توجد فروع مطابقة"}
+            description={ds.isEmpty ? "أضف أول فرع لتربط المخزون والمبيعات والموظفين به، وتبدأ المقارنة بين الفروع." : "لم نعثر على فرع بهذا الاسم. أضف فرعًا جديدًا وسيُربط تلقائيًا بالمخزون والمبيعات والموظفين."}
             primary={{ label: "فرع جديد" }}
             secondary={{ label: "مسح البحث", onClick: () => setQ("") }}
           />
