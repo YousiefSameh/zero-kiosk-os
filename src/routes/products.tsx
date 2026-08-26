@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppShell, SectionCard, StatusPill, EmptyState } from "@/components/app-shell";
+import { useDataState, ListSkeleton } from "@/lib/demo-state";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { products, currency, num } from "@/lib/mock-data";
@@ -10,13 +11,15 @@ export const Route = createFileRoute("/products")({ component: ProductsPage });
 
 function ProductsPage() {
   const [q, setQ] = useState("");
+  const ds = useDataState();
   const [cat, setCat] = useState("الكل");
   const cats = ["الكل", ...Array.from(new Set(products.map((p) => p.category)))];
-  const rows = products.filter(
+  const allRows = products.filter(
     (p) =>
       (cat === "الكل" || p.category === cat) &&
       (p.name.includes(q) || p.id.toLowerCase().includes(q.toLowerCase()))
   );
+  const rows = ds.rows(allRows);
 
   return (
     <AppShell
@@ -51,11 +54,13 @@ function ProductsPage() {
           <Button variant="outline" size="sm"><Filter className="w-4 h-4 ms-1.5" />فلاتر</Button>
         </div>
 
-        {rows.length === 0 ? (
+        {ds.isLoading ? (
+          <ListSkeleton />
+        ) : rows.length === 0 ? (
           <EmptyState
             icon={Package}
-            title="لا توجد منتجات مطابقة"
-            description="لم نعثر على أي منتج يطابق بحثك أو الفلاتر الحالية. جرّب كلمة مختلفة، أو أضف المنتج الآن وابدأ البيع فورًا."
+            title={ds.isEmpty ? "لا توجد منتجات بعد" : "لا توجد منتجات مطابقة"}
+            description={ds.isEmpty ? "كتالوجك فارغ حاليًا. أضف أول منتج أو استورد ملف CSV، وستبدأ الأسعار والمخزون والتقارير في الظهور تلقائيًا." : "لم نعثر على أي منتج يطابق بحثك أو الفلاتر الحالية. جرّب كلمة مختلفة، أو أضف المنتج الآن وابدأ البيع فورًا."}
             primary={{ label: "إضافة منتج" }}
             secondary={{ label: "مسح البحث", onClick: () => { setQ(""); setCat("الكل"); } }}
           />

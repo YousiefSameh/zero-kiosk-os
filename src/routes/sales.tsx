@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppShell, SectionCard, StatusPill, KpiCard, EmptyState } from "@/components/app-shell";
+import { useDataState, ListSkeleton } from "@/lib/demo-state";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { sales, currency, num } from "@/lib/mock-data";
@@ -10,9 +11,11 @@ export const Route = createFileRoute("/sales")({ component: SalesPage });
 
 function SalesPage() {
   const [q, setQ] = useState("");
+  const ds = useDataState();
   const total = sales.reduce((s, x) => s + x.total, 0);
   const refunded = sales.filter((s) => s.status === "مُسترد").length;
-  const rows = sales.filter((s) => s.id.toLowerCase().includes(q.toLowerCase()) || s.cashier.includes(q) || s.branch.includes(q));
+  const allRows = sales.filter((s) => s.id.toLowerCase().includes(q.toLowerCase()) || s.cashier.includes(q) || s.branch.includes(q));
+  const rows = ds.rows(allRows);
   return (
     <AppShell
       title="المبيعات"
@@ -35,11 +38,13 @@ function SalesPage() {
           <Search className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث برقم المعاملة أو الكاشير أو الفرع…" className="pr-9 rounded-lg" />
         </div>
-        {rows.length === 0 ? (
+        {ds.isLoading ? (
+          <ListSkeleton />
+        ) : rows.length === 0 ? (
           <EmptyState
             icon={Receipt}
-            title="لا توجد مبيعات مطابقة"
-            description="لم يتم تسجيل أي معاملة تطابق هذا البحث. ستظهر المبيعات هنا تلقائيًا فور إتمامها من نقطة البيع."
+            title={ds.isEmpty ? "لا توجد مبيعات بعد" : "لا توجد مبيعات مطابقة"}
+            description={ds.isEmpty ? "لم تُسجّل أي معاملة حتى الآن. افتح نقطة البيع وأتمّ أول عملية، وستظهر هنا مباشرة." : "لم يتم تسجيل أي معاملة تطابق هذا البحث. ستظهر المبيعات هنا تلقائيًا فور إتمامها من نقطة البيع."}
             primary={{ label: "فتح نقطة البيع" }}
             secondary={{ label: "مسح البحث", onClick: () => setQ("") }}
           />

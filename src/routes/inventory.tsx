@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppShell, KpiCard, SectionCard, StatusPill, EmptyState } from "@/components/app-shell";
+import { useDataState, ListSkeleton } from "@/lib/demo-state";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { products, currency, num } from "@/lib/mock-data";
@@ -15,7 +16,9 @@ function InventoryPage() {
   const out = products.filter((p) => p.status === "نفد المخزون").length;
   const skus = products.length;
   const [q, setQ] = useState("");
-  const rows = products.filter((p) => p.name.includes(q) || p.category.includes(q));
+  const ds = useDataState();
+  const allRows = products.filter((p) => p.name.includes(q) || p.category.includes(q));
+  const rows = ds.rows(allRows);
 
   const perCategory = Object.entries(
     products.reduce<Record<string, number>>((acc, p) => {
@@ -78,11 +81,13 @@ function InventoryPage() {
           <Search className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث في سجل المخزون…" className="pr-9 rounded-lg" />
         </div>
-        {rows.length === 0 ? (
+        {ds.isLoading ? (
+          <ListSkeleton />
+        ) : rows.length === 0 ? (
           <EmptyState
             icon={Boxes}
-            title="لا يوجد مخزون مطابق"
-            description="لم نعثر على أصناف تطابق بحثك في سجل المخزون. جرّب اسم منتج أو تصنيفًا مختلفًا."
+            title={ds.isEmpty ? "لا يوجد مخزون بعد" : "لا يوجد مخزون مطابق"}
+            description={ds.isEmpty ? "سجل المخزون فارغ. أضف منتجات وسجّل أول عملية استلام لتبدأ حركة المخزون في الظهور." : "لم نعثر على أصناف تطابق بحثك في سجل المخزون. جرّب اسم منتج أو تصنيفًا مختلفًا."}
             secondary={{ label: "مسح البحث", onClick: () => setQ("") }}
           />
         ) : (

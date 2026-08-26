@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppShell, SectionCard, EmptyState } from "@/components/app-shell";
+import { useDataState, ListSkeleton } from "@/lib/demo-state";
 import { Input } from "@/components/ui/input";
 import { activity } from "@/lib/mock-data";
 import { ShoppingCart, Receipt, AlertTriangle, Wallet, Package, User, ScrollText, Search } from "lucide-react";
@@ -23,7 +24,9 @@ const typeLabels: Record<string, string> = {
 
 function ActivityPage() {
   const [q, setQ] = useState("");
-  const rows = [...activity, ...activity].filter((a) => a.action.includes(q) || a.user.includes(q));
+  const ds = useDataState();
+  const allRows = [...activity, ...activity].filter((a) => a.action.includes(q) || a.user.includes(q));
+  const rows = ds.rows(allRows);
   return (
     <AppShell title="سجل النشاط" subtitle="سجل تدقيق غير قابل للتعديل عبر المنصة">
       <SectionCard>
@@ -31,11 +34,13 @@ function ActivityPage() {
           <Search className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث في سجل النشاط…" className="pr-9 rounded-lg" />
         </div>
-        {rows.length === 0 ? (
+        {ds.isLoading ? (
+          <ListSkeleton />
+        ) : rows.length === 0 ? (
           <EmptyState
             icon={ScrollText}
-            title="لا يوجد نشاط مطابق"
-            description="لم نعثر على أي حدث في سجل التدقيق يطابق بحثك. السجل يوثّق كل عملية تلقائيًا ولا يمكن تعديله."
+            title={ds.isEmpty ? "لا يوجد نشاط بعد" : "لا يوجد نشاط مطابق"}
+            description={ds.isEmpty ? "سجل التدقيق فارغ حاليًا. أي عملية تحدث على المنصة ستُوثّق هنا تلقائيًا ولا يمكن تعديلها." : "لم نعثر على أي حدث في سجل التدقيق يطابق بحثك. السجل يوثّق كل عملية تلقائيًا ولا يمكن تعديله."}
             secondary={{ label: "مسح البحث", onClick: () => setQ("") }}
           />
         ) : (
