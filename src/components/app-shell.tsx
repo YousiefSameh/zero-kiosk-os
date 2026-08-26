@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, RotateCcw } from "lucide-react";
 import { CommandPalette } from "@/components/command-palette";
 import { NotificationBellButton, NotificationCenter, useNotifications } from "@/components/notification-center";
+import { DataStateSwitcher } from "@/lib/demo-state";
 import logoAsset from "@/assets/zero-kiosk-logo-teal.png.asset.json";
 
 const nav = [
@@ -160,6 +161,7 @@ export function AppShell({ title, subtitle, actions, children }: {
               {subtitle && <p className="text-xs text-muted-foreground truncate">{subtitle}</p>}
             </div>
             <div className="flex items-center gap-2">
+              <DataStateSwitcher />
               {actions}
               <HelpButton pathname={pathname} />
               <button
