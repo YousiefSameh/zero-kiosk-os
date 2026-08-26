@@ -99,7 +99,7 @@ function InventoryPage() {
               </tr>
             </thead>
             <tbody>
-              {products.map((p) => (
+              {rows.map((p) => (
                 <tr key={p.id} className="border-b border-border/60 hover:bg-accent/40">
                   <td className="px-5 py-3 font-medium">{p.name}</td>
                   <td className="py-3 text-muted-foreground">{p.category}</td>
@@ -112,6 +112,7 @@ function InventoryPage() {
             </tbody>
           </table>
         </div>
+        )}
       </SectionCard>
     </AppShell>
   );
