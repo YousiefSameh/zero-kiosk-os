@@ -36,7 +36,9 @@ export function useDataState() {
       /* ignore */
     }
     listeners.add(setState);
-    return () => listeners.delete(setState);
+    return () => {
+      listeners.delete(setState);
+    };
   }, []);
 
   return {
