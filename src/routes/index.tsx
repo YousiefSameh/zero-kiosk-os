@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AppShell, KpiCard, SectionCard, StatusPill } from "@/components/app-shell";
+import { AppShell, KpiCard, SectionCard, StatusPill, EmptyState } from "@/components/app-shell";
+import { useDataState, KpiSkeleton, ChartSkeleton, ListSkeleton, RowsSkeleton } from "@/lib/demo-state";
 import { Button } from "@/components/ui/button";
 import { kpis, salesTrend, categoryMix, sales, activity, products, currency, num } from "@/lib/mock-data";
 import {
