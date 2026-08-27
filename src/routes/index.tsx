@@ -238,6 +238,8 @@ function Dashboard() {
           </div>
         </SectionCard>
       </div>
+        </>
+      )}
     </AppShell>
   );
 }
