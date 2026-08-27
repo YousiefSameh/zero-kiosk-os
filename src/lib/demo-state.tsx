@@ -106,3 +106,117 @@ export function ListSkeleton({ rows = 6, cols = 5 }: { rows?: number; cols?: num
     </div>
   );
 }
+
+/** Shimmering block used to compose every skeleton in the app. */
+export function Shimmer({ className = "" }: { className?: string }) {
+  return <div className={`rounded bg-muted animate-pulse ${className}`} />;
+}
+
+/** Skeleton for a row of KPI cards. */
+export function KpiSkeleton({ count = 4 }: { count?: number }) {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4" aria-busy>
+      {Array.from({ length: count }).map((_, i) => (
+        <div key={i} className="card-elevated p-5">
+          <div className="flex items-start justify-between">
+            <Shimmer className="h-3 w-24" />
+            <Shimmer className="w-9 h-9 rounded-xl" />
+          </div>
+          <Shimmer className="h-7 w-32 mt-4" />
+          <Shimmer className="h-3 w-40 mt-3" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Skeleton for a chart area (bars rising like a real chart). */
+export function ChartSkeleton({ height = 288 }: { height?: number }) {
+  const bars = [45, 62, 38, 74, 55, 88, 66, 50, 79, 42, 68, 58];
+  return (
+    <div className="w-full" style={{ height }} aria-busy>
+      <div className="h-full flex items-end gap-2 px-1">
+        {bars.map((h, i) => (
+          <div
+            key={i}
+            className="flex-1 rounded-t-lg bg-gradient-to-t from-brand/15 to-brand/5 animate-pulse"
+            style={{ height: `${h}%`, animationDelay: `${i * 60}ms` }}
+          />
+        ))}
+      </div>
+      <div className="mt-3 flex gap-2">
+        {bars.map((_, i) => (
+          <Shimmer key={i} className="h-2 flex-1" />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** Skeleton for a vertical list of avatar + two-line rows. */
+export function RowsSkeleton({ rows = 5, avatar = true }: { rows?: number; avatar?: boolean }) {
+  return (
+    <div className="divide-y divide-border" aria-busy>
+      {Array.from({ length: rows }).map((_, i) => (
+        <div key={i} className="py-3.5 flex items-center gap-3">
+          {avatar && <Shimmer className="w-10 h-10 rounded-xl shrink-0" />}
+          <div className="flex-1 space-y-2">
+            <Shimmer className="h-3.5" />
+            <Shimmer className="h-2.5 w-2/5" />
+          </div>
+          <Shimmer className="h-3.5 w-16 shrink-0" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Skeleton for a grid of content cards. */
+export function CardsSkeleton({ count = 6, cols = "md:grid-cols-2" }: { count?: number; cols?: string }) {
+  return (
+    <div className={`grid grid-cols-1 ${cols} gap-4`} aria-busy>
+      {Array.from({ length: count }).map((_, i) => (
+        <div key={i} className="card-elevated p-5">
+          <div className="flex items-start gap-3">
+            <Shimmer className="w-11 h-11 rounded-xl shrink-0" />
+            <div className="flex-1 space-y-2.5">
+              <Shimmer className="h-4 w-1/2" />
+              <Shimmer className="h-2.5 w-4/5" />
+              <Shimmer className="h-2.5 w-1/3" />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Skeleton for a form of labelled inputs. */
+export function FormSkeleton({ fields = 6 }: { fields?: number }) {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4" aria-busy>
+      {Array.from({ length: fields }).map((_, i) => (
+        <div key={i} className="space-y-2">
+          <Shimmer className="h-2.5 w-24" />
+          <Shimmer className="h-10 rounded-lg" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Skeleton for the POS product grid. */
+export function TilesSkeleton({ count = 8 }: { count?: number }) {
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3" aria-busy>
+      {Array.from({ length: count }).map((_, i) => (
+        <div key={i} className="rounded-xl border border-border bg-card p-3">
+          <Shimmer className="aspect-square rounded-lg mb-2" />
+          <Shimmer className="h-3" />
+          <Shimmer className="h-2.5 w-2/3 mt-2" />
+          <Shimmer className="h-3 w-1/2 mt-2" />
+        </div>
+      ))}
+    </div>
+  );
+}

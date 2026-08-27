@@ -254,21 +254,36 @@ export function StatusPill({ status }: { status: string }) {
   );
 }
 
-export function EmptyState({ icon: Icon, title, description, primary, secondary, action }: {
+export function EmptyState({
+  icon: Icon,
+  title,
+  description,
+  primary,
+  secondary,
+  action,
+  compact = false,
+  hint,
+}: {
   icon: any;
   title: string;
   description: string;
-  primary?: { label: string; onClick?: () => void };
-  secondary?: { label: string; onClick?: () => void };
+  primary?: { label: string; onClick?: () => void; icon?: any };
+  secondary?: { label: string; onClick?: () => void; icon?: any };
   action?: ReactNode;
+  /** Tighter variant for empty states rendered inside a card or panel. */
+  compact?: boolean;
+  /** Optional micro-copy under the CTAs (e.g. a keyboard shortcut hint). */
+  hint?: string;
 }) {
+  const PrimaryIcon = primary?.icon ?? Plus;
+  const SecondaryIcon = secondary?.icon ?? RotateCcw;
   return (
-    <div className="relative overflow-hidden text-center py-16 px-6">
+    <div className={`relative overflow-hidden text-center px-6 ${compact ? "py-10" : "py-16"}`}>
       {/* Decorative illustration background */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full bg-brand/5" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-52 h-52 rounded-full border border-dashed border-brand/20" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] rounded-full border border-brand/10" />
+        <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand/5 ${compact ? "w-52 h-52" : "w-72 h-72"}`} />
+        <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-brand/20 ${compact ? "w-36 h-36" : "w-52 h-52"}`} />
+        <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-brand/10 ${compact ? "w-64 h-64" : "w-[340px] h-[340px]"}`} />
         <div className="absolute top-8 right-10 w-2 h-2 rounded-full bg-coral/40" />
         <div className="absolute bottom-10 right-1/4 w-1.5 h-1.5 rounded-full bg-brand/40" />
         <div className="absolute top-14 left-12 w-1.5 h-1.5 rounded-full bg-warning/50" />
@@ -277,35 +292,38 @@ export function EmptyState({ icon: Icon, title, description, primary, secondary,
 
       <div className="relative">
         {/* Illustrated icon */}
-        <div className="relative w-24 h-24 mx-auto">
+        <div className={`relative mx-auto ${compact ? "w-16 h-16" : "w-24 h-24"}`}>
           <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-brand/15 to-brand/5 rotate-6" />
           <div className="absolute inset-0 rounded-3xl bg-card border border-border shadow-card grid place-items-center">
-            <Icon className="w-10 h-10 text-brand" strokeWidth={1.5} />
+            <Icon className={compact ? "w-7 h-7 text-brand" : "w-10 h-10 text-brand"} strokeWidth={1.5} />
           </div>
           <div className="absolute -bottom-1.5 -left-1.5 w-6 h-6 rounded-lg bg-coral/15 grid place-items-center">
             <div className="w-2 h-2 rounded-full bg-coral" />
           </div>
         </div>
 
-        <div className="mt-6 font-display font-semibold text-lg">{title}</div>
-        <p className="mt-1.5 text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">{description}</p>
+        <div className={`font-display font-semibold ${compact ? "mt-4 text-base" : "mt-6 text-lg"}`}>{title}</div>
+        <p className={`mt-1.5 text-muted-foreground max-w-md mx-auto leading-relaxed ${compact ? "text-xs" : "text-sm"}`}>{description}</p>
 
-        <div className="mt-6 flex items-center justify-center gap-2.5">
+        <div className={`flex flex-wrap items-center justify-center gap-2.5 ${compact ? "mt-4" : "mt-6"}`}>
           {primary && (
             <Button size="sm" className="bg-brand hover:bg-brand/90" onClick={primary.onClick}>
-              <Plus className="w-4 h-4 ms-1.5" />
+              <PrimaryIcon className="w-4 h-4 ms-1.5" />
               {primary.label}
             </Button>
           )}
           {secondary && (
             <Button size="sm" variant="outline" onClick={secondary.onClick}>
-              <RotateCcw className="w-4 h-4 ms-1.5" />
+              <SecondaryIcon className="w-4 h-4 ms-1.5" />
               {secondary.label}
             </Button>
           )}
           {action}
         </div>
+
+        {hint && <div className="mt-3 text-[11px] text-muted-foreground">{hint}</div>}
       </div>
     </div>
   );
 }
+
