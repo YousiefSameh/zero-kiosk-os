@@ -27,6 +27,75 @@ function Dashboard() {
         </>
       }
     >
+      {ds.isLoading ? (
+        <>
+          <KpiSkeleton />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
+            <SectionCard className="lg:col-span-2" title="مبيعات هذا الأسبوع" description="جارٍ تحميل بيانات الإيرادات…">
+              <ChartSkeleton height={288} />
+            </SectionCard>
+            <SectionCard title="توزيع التصنيفات" description="جارٍ تحميل الحصص…">
+              <div className="h-72 grid place-items-center">
+                <div className="w-44 h-44 rounded-full border-[18px] border-muted animate-pulse" />
+              </div>
+            </SectionCard>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
+            <SectionCard className="lg:col-span-2" title="أحدث المبيعات" description="جارٍ استقبال المعاملات…">
+              <ListSkeleton rows={6} cols={5} />
+            </SectionCard>
+            <SectionCard title="النشاط" description="جارٍ تحميل السجل…">
+              <RowsSkeleton rows={6} />
+            </SectionCard>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
+            <SectionCard title="مخزون منخفض" description="جارٍ الفحص…"><RowsSkeleton rows={5} /></SectionCard>
+            <SectionCard title="أفضل الفروع" description="جارٍ الترتيب…"><RowsSkeleton rows={4} avatar={false} /></SectionCard>
+          </div>
+        </>
+      ) : ds.isEmpty ? (
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+            <KpiCard label="إيرادات اليوم" value="—" delta="لا توجد مبيعات مسجلة بعد" icon={Wallet} tone="brand" />
+            <KpiCard label="عدد المعاملات" value="—" delta="ابدأ أول فاتورة من نقطة البيع" icon={ShoppingBag} tone="coral" />
+            <KpiCard label="الفروع النشطة" value="—" delta="أضف فرعك الأول" icon={Store} tone="success" />
+            <KpiCard label="تنبيهات المخزون" value="—" delta="لا يوجد مخزون لمراقبته" icon={AlertTriangle} tone="warning" />
+          </div>
+          <div className="card-elevated mt-4">
+            <EmptyState
+              icon={TrendingUp}
+              title="لوحة التحكم جاهزة، وتنتظر أول عملية بيع"
+              description="بمجرد تسجيل أول فاتورة من نقطة البيع ستظهر هنا الإيرادات اللحظية، ومقارنات الفروع، وتنبيهات المخزون، وسجل النشاط — كل ذلك محدَّثًا لحظة بلحظة."
+              primary={{ label: "فتح نقطة البيع", icon: ShoppingBag }}
+              secondary={{ label: "استيراد بيانات تجريبية" }}
+              hint="نصيحة: اضغط Ctrl + K للتنقل السريع بين وحدات النظام"
+            />
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
+            <SectionCard title="مخزون منخفض" description="أصناف تحتاج إلى إعادة طلب">
+              <EmptyState
+                compact
+                icon={AlertTriangle}
+                title="لا توجد تنبيهات مخزون"
+                description="أضف منتجاتك وحدّد نقطة إعادة الطلب لكل صنف، وسننبهك قبل النفاد."
+                primary={{ label: "إضافة منتج" }}
+                secondary={{ label: "استيراد كتالوج" }}
+              />
+            </SectionCard>
+            <SectionCard title="أفضل الفروع" description="حسب الإيرادات هذا الأسبوع">
+              <EmptyState
+                compact
+                icon={Store}
+                title="لا توجد فروع لمقارنتها"
+                description="أضف فرعًا واحدًا على الأقل لبدء مقارنة الأداء والإيرادات بين المواقع."
+                primary={{ label: "إضافة فرع" }}
+                secondary={{ label: "معرفة المزيد" }}
+              />
+            </SectionCard>
+          </div>
+        </>
+      ) : (
+        <>
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         <KpiCard label="إيرادات اليوم" value={currency(kpis.revenueToday)} delta={`▲ ${num(Number(delta.toFixed(1)))}٪ مقارنة بالأمس`} icon={Wallet} tone="brand" />
         <KpiCard label="عدد المعاملات" value={num(kpis.transactionsToday)} delta={`متوسط الفاتورة ${currency(kpis.avgBasket)}`} icon={ShoppingBag} tone="coral" />
