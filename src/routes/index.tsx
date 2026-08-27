@@ -14,6 +14,7 @@ import {
 export const Route = createFileRoute("/")({ component: Dashboard });
 
 function Dashboard() {
+  const ds = useDataState();
   const delta = ((kpis.revenueToday - kpis.revenueYesterday) / kpis.revenueYesterday) * 100;
   return (
     <AppShell
