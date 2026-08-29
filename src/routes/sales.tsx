@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppShell, SectionCard, StatusPill, KpiCard, EmptyState } from "@/components/app-shell";
-import { useDataState, ListSkeleton } from "@/lib/demo-state";
+import { useDataState, ListSkeleton, KpiSkeleton } from "@/lib/demo-state";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { sales, currency, num } from "@/lib/mock-data";
@@ -12,8 +12,9 @@ export const Route = createFileRoute("/sales")({ component: SalesPage });
 function SalesPage() {
   const [q, setQ] = useState("");
   const ds = useDataState();
-  const total = sales.reduce((s, x) => s + x.total, 0);
-  const refunded = sales.filter((s) => s.status === "مُسترد").length;
+  const base = ds.rows(sales);
+  const total = base.reduce((s, x) => s + x.total, 0);
+  const refunded = base.filter((s) => s.status === "مُسترد").length;
   const allRows = sales.filter((s) => s.id.toLowerCase().includes(q.toLowerCase()) || s.cashier.includes(q) || s.branch.includes(q));
   const rows = ds.rows(allRows);
   return (
@@ -22,16 +23,21 @@ function SalesPage() {
       subtitle="كل معاملة من كل جهاز"
       actions={
         <>
-          <Button variant="outline" size="sm"><Filter className="w-4 h-4 ms-1.5" />تصفية</Button>
-          <Button variant="outline" size="sm"><Download className="w-4 h-4 ms-1.5" />تصدير</Button>
+          <Button variant="outline" size="sm" disabled={ds.isLoading}><Filter className="w-4 h-4 ms-1.5" />تصفية</Button>
+          <Button variant="outline" size="sm" disabled={ds.isLoading || ds.isEmpty}><Download className="w-4 h-4 ms-1.5" />تصدير</Button>
         </>
       }
     >
+      {ds.isLoading ? (
+        <KpiSkeleton count={3} />
+      ) : (
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <KpiCard label="معاملات اليوم" value={num(sales.length)} delta="عبر ٣ فروع" icon={Receipt} tone="brand" />
-        <KpiCard label="إجمالي الإيرادات" value={currency(total)} delta="مباشر" icon={Receipt} tone="success" />
-        <KpiCard label="مرتجعات" value={num(refunded)} delta="نسبة ٠٫٨٪" icon={RotateCcw} tone="coral" />
+        <KpiCard label="معاملات اليوم" value={num(base.length)} delta={ds.isEmpty ? "لا معاملات بعد" : "عبر ٣ فروع"} icon={Receipt} tone="brand" />
+        <KpiCard label="إجمالي الإيرادات" value={currency(total)} delta={ds.isEmpty ? "بانتظار أول عملية" : "مباشر"} icon={Receipt} tone="success" />
+        <KpiCard label="مرتجعات" value={num(refunded)} delta={ds.isEmpty ? "لا مرتجعات" : "نسبة ٠٫٨٪"} icon={RotateCcw} tone="coral" />
       </div>
+      )}
+
 
       <SectionCard className="mt-4" title="سجل المعاملات">
         <div className="relative mb-4 md:max-w-sm">

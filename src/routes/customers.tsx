@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppShell, SectionCard, KpiCard, EmptyState } from "@/components/app-shell";
-import { useDataState, ListSkeleton } from "@/lib/demo-state";
+import { useDataState, ListSkeleton, KpiSkeleton } from "@/lib/demo-state";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { customers, currency, num } from "@/lib/mock-data";
@@ -13,26 +13,33 @@ export const Route = createFileRoute("/customers")({ component: CustomersPage })
 function CustomersPage() {
   const [q, setQ] = useState("");
   const ds = useDataState();
-  const totalSpend = customers.reduce((s, c) => s + c.spend, 0);
+  const base = ds.rows(customers);
+  const totalSpend = base.reduce((s, c) => s + c.spend, 0);
+  const loyaltyMembers = base.filter((c) => c.loyalty === "ذهبي" || c.loyalty === "بلاتيني").length;
   const allRows = customers.filter((c) => c.name.includes(q) || c.phone.includes(q) || c.id.toLowerCase().includes(q.toLowerCase()));
   const rows = ds.rows(allRows);
   return (
     <AppShell
       title="العملاء"
       subtitle="أعضاء برنامج الولاء والعملاء المتكررون"
-      actions={<Button size="sm" className="bg-brand hover:bg-brand/90"><Plus className="w-4 h-4 ms-1.5" />إضافة عميل</Button>}
+      actions={<Button size="sm" className="bg-brand hover:bg-brand/90" disabled={ds.isLoading}><Plus className="w-4 h-4 ms-1.5" />إضافة عميل</Button>}
     >
+      {ds.isLoading ? (
+        <KpiSkeleton count={3} />
+      ) : (
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <KpiCard label="إجمالي العملاء" value={num(customers.length)} delta="+١٢ هذا الأسبوع" icon={Users} tone="brand" />
-        <KpiCard label="القيمة الإجمالية" value={currency(totalSpend)} delta="متوسط ١١٬٩٨٧ ج.م. لكل عميل" icon={TrendingUp} tone="success" />
-        <KpiCard label="أعضاء الولاء" value="٣" delta="ذهبي + بلاتيني" icon={Crown} tone="coral" />
+        <KpiCard label="إجمالي العملاء" value={num(base.length)} delta={ds.isEmpty ? "لا عملاء بعد" : "+١٢ هذا الأسبوع"} icon={Users} tone="brand" />
+        <KpiCard label="القيمة الإجمالية" value={currency(totalSpend)} delta={ds.isEmpty ? "بانتظار أول عميل" : "متوسط ١١٬٩٨٧ ج.م. لكل عميل"} icon={TrendingUp} tone="success" />
+        <KpiCard label="أعضاء الولاء" value={num(loyaltyMembers)} delta={ds.isEmpty ? "برنامج الولاء غير مُفعّل" : "ذهبي + بلاتيني"} icon={Crown} tone="coral" />
       </div>
+      )}
 
       <SectionCard className="mt-4" title="جميع العملاء">
         <div className="relative mb-4 md:max-w-sm">
           <Search className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-          <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث بالاسم أو الهاتف أو الكود…" className="pr-9 rounded-lg" />
+          <Input value={q} onChange={(e) => setQ(e.target.value)} disabled={ds.isLoading} placeholder="ابحث بالاسم أو الهاتف أو الكود…" className="pr-9 rounded-lg" />
         </div>
+
         {ds.isLoading ? (
           <ListSkeleton />
         ) : rows.length === 0 ? (
