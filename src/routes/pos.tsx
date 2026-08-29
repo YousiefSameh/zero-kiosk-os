@@ -1,16 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AppShell } from "@/components/app-shell";
+import { AppShell, EmptyState } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { products, currency, num } from "@/lib/mock-data";
 import { useState } from "react";
-import { Search, Plus, Minus, Trash2, CreditCard, Banknote, Wallet, Barcode, User } from "lucide-react";
+import { Search, Plus, Minus, Trash2, CreditCard, Banknote, Wallet, Barcode, User, PackageSearch, ShoppingCart } from "lucide-react";
+import { useDataState, TilesSkeleton, RowsSkeleton, Shimmer } from "@/lib/demo-state";
 
 export const Route = createFileRoute("/pos")({ component: PosPage });
 
 type CartLine = { id: string; name: string; price: number; qty: number };
 
 function PosPage() {
+  const ds = useDataState();
   const [q, setQ] = useState("");
   const [cart, setCart] = useState<CartLine[]>([
     { id: "SKU-1001", name: "كوكاكولا ٣٣٠ مل", price: 12, qty: 4 },
@@ -19,8 +21,9 @@ function PosPage() {
   ]);
   const [method, setMethod] = useState<"نقدي" | "بطاقة" | "محفظة">("بطاقة");
 
-  const filtered = products.filter((p) => p.name.includes(q)).slice(0, 12);
-  const subtotal = cart.reduce((s, l) => s + l.price * l.qty, 0);
+  const catalog = ds.rows(products).filter((p) => p.name.includes(q)).slice(0, 12);
+  const lines = ds.rows(cart);
+  const subtotal = lines.reduce((s, l) => s + l.price * l.qty, 0);
   const vat = subtotal * 0.14;
   const total = subtotal + vat;
 
@@ -39,26 +42,44 @@ function PosPage() {
           <div className="flex gap-2 mb-4">
             <div className="relative flex-1">
               <Barcode className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="امسح الباركود أو ابحث عن منتج…" className="pr-9 h-11 rounded-lg" />
+              <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="امسح الباركود أو ابحث عن منتج…" className="pr-9 h-11 rounded-lg" disabled={ds.isLoading} />
             </div>
-            <Button variant="outline" className="h-11"><Search className="w-4 h-4 ms-1.5" />بحث</Button>
+            <Button variant="outline" className="h-11" disabled={ds.isLoading}><Search className="w-4 h-4 ms-1.5" />بحث</Button>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3">
-            {filtered.map((p) => (
-              <button
-                key={p.id}
-                onClick={() => add(p)}
-                className="text-right rounded-xl border border-border bg-card hover:border-brand hover:shadow-soft transition p-3 group"
-              >
-                <div className="aspect-square rounded-lg bg-brand-soft grid place-items-center text-brand font-display font-semibold text-lg mb-2 group-hover:scale-[1.02] transition">
-                  {p.name.slice(0, 2)}
-                </div>
-                <div className="text-xs font-medium line-clamp-2 min-h-[2rem]">{p.name}</div>
-                <div className="text-xs text-muted-foreground">{p.category}</div>
-                <div className="text-sm font-semibold text-brand mt-1">{currency(p.price)}</div>
-              </button>
-            ))}
-          </div>
+
+          {ds.isLoading ? (
+            <TilesSkeleton count={8} />
+          ) : catalog.length === 0 ? (
+            <EmptyState
+              icon={PackageSearch}
+              title={ds.isEmpty ? "لا توجد منتجات متاحة للبيع" : `لا نتائج مطابقة لـ «${q}»`}
+              description={
+                ds.isEmpty
+                  ? "نقطة البيع تعرض المنتجات المفعّلة في الكتالوج فقط. أضف منتجاتك أو استورد ملف أسعار وسيصبح البيع جاهزًا في دقائق."
+                  : "تأكد من الباركود أو جرّب اسمًا أقصر. يمكنك أيضًا إضافة الصنف الجديد فورًا وإكمال بياناته لاحقًا."
+              }
+              primary={{ label: ds.isEmpty ? "إضافة منتج" : "إضافة صنف جديد" }}
+              secondary={ds.isEmpty ? { label: "استيراد كتالوج" } : { label: "مسح البحث", onClick: () => setQ("") }}
+              hint="نصيحة: استخدم قارئ الباركود لإضافة الأصناف فورًا إلى الفاتورة"
+            />
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3">
+              {catalog.map((p) => (
+                <button
+                  key={p.id}
+                  onClick={() => add(p)}
+                  className="text-right rounded-xl border border-border bg-card hover:border-brand hover:shadow-soft transition p-3 group"
+                >
+                  <div className="aspect-square rounded-lg bg-brand-soft grid place-items-center text-brand font-display font-semibold text-lg mb-2 group-hover:scale-[1.02] transition">
+                    {p.name.slice(0, 2)}
+                  </div>
+                  <div className="text-xs font-medium line-clamp-2 min-h-[2rem]">{p.name}</div>
+                  <div className="text-xs text-muted-foreground">{p.category}</div>
+                  <div className="text-sm font-semibold text-brand mt-1">{currency(p.price)}</div>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Cart */}
@@ -66,51 +87,77 @@ function PosPage() {
           <div className="p-5 border-b border-border flex items-center justify-between">
             <div>
               <div className="font-display font-semibold">الفاتورة الحالية</div>
-              <div className="text-xs text-muted-foreground">تذكرة #أ-٨٨٤٢٨</div>
+              <div className="text-xs text-muted-foreground">{ds.isLoading ? "جارٍ تحميل التذكرة…" : "تذكرة #أ-٨٨٤٢٨"}</div>
             </div>
-            <Button variant="outline" size="sm"><User className="w-4 h-4 ms-1.5" />ربط عميل</Button>
+            <Button variant="outline" size="sm" disabled={ds.isLoading}><User className="w-4 h-4 ms-1.5" />ربط عميل</Button>
           </div>
 
           <div className="flex-1 divide-y divide-border max-h-[380px] overflow-y-auto">
-            {cart.map((l) => (
-              <div key={l.id} className="p-4 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-muted grid place-items-center text-xs font-medium shrink-0">{l.name.slice(0, 2)}</div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-sm font-medium truncate">{l.name}</div>
-                  <div className="text-xs text-muted-foreground">{currency(l.price)} للوحدة</div>
+            {ds.isLoading ? (
+              <div className="px-4"><RowsSkeleton rows={3} /></div>
+            ) : lines.length === 0 ? (
+              <EmptyState
+                compact
+                icon={ShoppingCart}
+                title="الفاتورة فارغة"
+                description="ابدأ بمسح الباركود أو اختر منتجًا من الكتالوج، وستحسب الضريبة والإجمالي تلقائيًا."
+                primary={{ label: "مسح باركود", icon: Barcode }}
+                secondary={{ label: "فاتورة معلّقة" }}
+                hint="F2 لتعليق الفاتورة · F4 للتحصيل"
+              />
+            ) : (
+              lines.map((l) => (
+                <div key={l.id} className="p-4 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-muted grid place-items-center text-xs font-medium shrink-0">{l.name.slice(0, 2)}</div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-medium truncate">{l.name}</div>
+                    <div className="text-xs text-muted-foreground">{currency(l.price)} للوحدة</div>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <button onClick={() => setCart((c) => c.map((x) => x.id === l.id ? { ...x, qty: Math.max(1, x.qty - 1) } : x))} className="w-7 h-7 rounded-md border border-border hover:bg-accent grid place-items-center"><Minus className="w-3 h-3" /></button>
+                    <span className="w-8 text-center text-sm font-medium">{num(l.qty)}</span>
+                    <button onClick={() => setCart((c) => c.map((x) => x.id === l.id ? { ...x, qty: x.qty + 1 } : x))} className="w-7 h-7 rounded-md border border-border hover:bg-accent grid place-items-center"><Plus className="w-3 h-3" /></button>
+                  </div>
+                  <div className="w-20 text-left text-sm font-semibold">{currency(l.price * l.qty)}</div>
+                  <button onClick={() => setCart((c) => c.filter((x) => x.id !== l.id))} className="text-muted-foreground hover:text-destructive"><Trash2 className="w-4 h-4" /></button>
                 </div>
-                <div className="flex items-center gap-1">
-                  <button onClick={() => setCart((c) => c.map((x) => x.id === l.id ? { ...x, qty: Math.max(1, x.qty - 1) } : x))} className="w-7 h-7 rounded-md border border-border hover:bg-accent grid place-items-center"><Minus className="w-3 h-3" /></button>
-                  <span className="w-8 text-center text-sm font-medium">{num(l.qty)}</span>
-                  <button onClick={() => setCart((c) => c.map((x) => x.id === l.id ? { ...x, qty: x.qty + 1 } : x))} className="w-7 h-7 rounded-md border border-border hover:bg-accent grid place-items-center"><Plus className="w-3 h-3" /></button>
-                </div>
-                <div className="w-20 text-left text-sm font-semibold">{currency(l.price * l.qty)}</div>
-                <button onClick={() => setCart((c) => c.filter((x) => x.id !== l.id))} className="text-muted-foreground hover:text-destructive"><Trash2 className="w-4 h-4" /></button>
-              </div>
-            ))}
+              ))
+            )}
           </div>
 
           <div className="p-5 border-t border-border space-y-2">
-            <div className="flex justify-between text-sm"><span className="text-muted-foreground">المجموع الفرعي</span><span>{currency(subtotal)}</span></div>
-            <div className="flex justify-between text-sm"><span className="text-muted-foreground">ضريبة القيمة المضافة (١٤٪)</span><span>{currency(vat)}</span></div>
-            <div className="flex justify-between font-display text-lg font-semibold pt-2 border-t border-border"><span>الإجمالي</span><span className="text-brand">{currency(total)}</span></div>
+            {ds.isLoading ? (
+              <div className="space-y-3">
+                <Shimmer className="h-3.5" />
+                <Shimmer className="h-3.5 w-4/5" />
+                <Shimmer className="h-6 w-1/2" />
+                <div className="grid grid-cols-3 gap-2">{[0, 1, 2].map((i) => <Shimmer key={i} className="h-14 rounded-lg" />)}</div>
+                <Shimmer className="h-11 rounded-lg" />
+              </div>
+            ) : (
+              <>
+                <div className="flex justify-between text-sm"><span className="text-muted-foreground">المجموع الفرعي</span><span>{currency(subtotal)}</span></div>
+                <div className="flex justify-between text-sm"><span className="text-muted-foreground">ضريبة القيمة المضافة (١٤٪)</span><span>{currency(vat)}</span></div>
+                <div className="flex justify-between font-display text-lg font-semibold pt-2 border-t border-border"><span>الإجمالي</span><span className="text-brand">{currency(total)}</span></div>
 
-            <div className="grid grid-cols-3 gap-2 pt-2">
-              {(["نقدي", "بطاقة", "محفظة"] as const).map((m) => {
-                const Icon = m === "نقدي" ? Banknote : m === "بطاقة" ? CreditCard : Wallet;
-                return (
-                  <button key={m} onClick={() => setMethod(m)} className={`p-3 rounded-lg border text-xs font-medium transition ${
-                    method === m ? "border-brand bg-brand-soft text-brand" : "border-border hover:bg-accent"
-                  }`}>
-                    <Icon className="w-4 h-4 mx-auto mb-1" />{m}
-                  </button>
-                );
-              })}
-            </div>
+                <div className="grid grid-cols-3 gap-2 pt-2">
+                  {(["نقدي", "بطاقة", "محفظة"] as const).map((m) => {
+                    const Icon = m === "نقدي" ? Banknote : m === "بطاقة" ? CreditCard : Wallet;
+                    return (
+                      <button key={m} onClick={() => setMethod(m)} disabled={lines.length === 0} className={`p-3 rounded-lg border text-xs font-medium transition disabled:opacity-50 ${
+                        method === m ? "border-brand bg-brand-soft text-brand" : "border-border hover:bg-accent"
+                      }`}>
+                        <Icon className="w-4 h-4 mx-auto mb-1" />{m}
+                      </button>
+                    );
+                  })}
+                </div>
 
-            <Button className="w-full h-11 bg-coral hover:bg-coral/90 text-coral-foreground font-semibold mt-2">
-              تحصيل {currency(total)}
-            </Button>
+                <Button disabled={lines.length === 0} className="w-full h-11 bg-coral hover:bg-coral/90 text-coral-foreground font-semibold mt-2">
+                  {lines.length === 0 ? "أضف أصنافًا للتحصيل" : `تحصيل ${currency(total)}`}
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>
