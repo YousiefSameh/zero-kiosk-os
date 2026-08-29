@@ -28,13 +28,12 @@ export function useDataState() {
   useEffect(() => {
     try {
       const saved = localStorage.getItem(KEY) as DataState | null;
-      if (saved && saved !== current) {
-        current = saved;
-        setState(saved);
-      }
+      if (saved) current = saved;
     } catch {
       /* ignore */
     }
+    // Always sync to the module value: another consumer may have hydrated it first.
+    setState(current);
     listeners.add(setState);
     return () => {
       listeners.delete(setState);
