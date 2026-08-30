@@ -14,11 +14,13 @@ import { Plus, RotateCcw } from "lucide-react";
 import { CommandPalette } from "@/components/command-palette";
 import { NotificationBellButton, NotificationCenter, useNotifications } from "@/components/notification-center";
 import { DataStateSwitcher } from "@/lib/demo-state";
+import { OnboardingTour } from "@/components/onboarding-tour";
 import logoAsset from "@/assets/zero-kiosk-logo-teal.png.asset.json";
 
 const nav = [
   {
     label: "نظرة عامة",
+    tour: "overview",
     items: [
       { to: "/", label: "لوحة التحكم", icon: LayoutDashboard },
       { to: "/analytics", label: "التحليلات", icon: LineChart },
@@ -27,6 +29,7 @@ const nav = [
   },
   {
     label: "البيع",
+    tour: "selling",
     items: [
       { to: "/pos", label: "نقطة البيع", icon: CreditCard },
       { to: "/sales", label: "المبيعات", icon: Receipt },
@@ -35,6 +38,7 @@ const nav = [
   },
   {
     label: "المخزون",
+    tour: "inventory",
     items: [
       { to: "/products", label: "المنتجات", icon: Package },
       { to: "/inventory", label: "المخزون", icon: Boxes },
@@ -44,6 +48,7 @@ const nav = [
   },
   {
     label: "التشغيل",
+    tour: "operations",
     items: [
       { to: "/finance", label: "المالية", icon: Wallet },
       { to: "/expenses", label: "المصروفات", icon: Receipt },
@@ -55,6 +60,7 @@ const nav = [
   },
   {
     label: "الحساب",
+    tour: "account",
     items: [
       { to: "/notifications", label: "الإشعارات", icon: Bell },
       { to: "/settings", label: "الإعدادات", icon: Settings },
@@ -165,14 +171,14 @@ export function AppShell({ title, subtitle, actions, children }: {
             <div className="flex items-center gap-2">
               <DataStateSwitcher />
               {actions}
-              <HelpButton pathname={pathname} />
+              <span data-tour="help"><HelpButton pathname={pathname} /></span>
               <button
                 onClick={() => setOpenCmd(true)}
                 className="hidden md:inline-flex items-center gap-2 text-xs rounded-lg border border-border bg-card px-3 py-1.5 text-muted-foreground hover:bg-accent"
               >
                 <Command className="w-3.5 h-3.5" /> إجراءات سريعة
               </button>
-              <NotificationBellButton unread={notifCtl.unread} onClick={() => setOpenNotif(true)} />
+              <span data-tour="notifications"><NotificationBellButton unread={notifCtl.unread} onClick={() => setOpenNotif(true)} /></span>
             </div>
           </div>
         </header>
@@ -180,6 +186,7 @@ export function AppShell({ title, subtitle, actions, children }: {
       </div>
 
       <CommandPalette open={openCmd} onOpenChange={setOpenCmd} />
+      <OnboardingTour />
       <NotificationCenter open={openNotif} onOpenChange={setOpenNotif} controller={notifCtl} />
     </div>
   );
