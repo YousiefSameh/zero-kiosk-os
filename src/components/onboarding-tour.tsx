@@ -258,7 +258,7 @@ export function OnboardingTour() {
               />
             ))}
           </div>
-          <span className="text-[11px] text-muted-foreground ms-auto tabular-nums">
+          <span dir="ltr" className="text-[11px] text-muted-foreground ms-auto tabular-nums">
             {i + 1} / {steps.length}
           </span>
         </div>
