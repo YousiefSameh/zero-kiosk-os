@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Building2, SlidersHorizontal, CreditCard } from "lucide-react";
+import { Building2, SlidersHorizontal, CreditCard, Sparkles } from "lucide-react";
 import { useDataState, FormSkeleton, RowsSkeleton, Shimmer } from "@/lib/demo-state";
+import { startOnboardingTour } from "@/components/onboarding-tour";
 
 export const Route = createFileRoute("/settings")({ component: SettingsPage });
 
