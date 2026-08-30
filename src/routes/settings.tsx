@@ -107,6 +107,26 @@ function SettingsPage() {
           </div>
         )}
       </SectionCard>
+
+      <SectionCard className="mt-4" title="الجولة التعريفية" description="تعريف سريع بمساحة العمل وكل أقسام التنقل">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-start gap-3">
+            <div className="w-10 h-10 rounded-xl bg-brand-soft text-brand grid place-items-center shrink-0">
+              <Sparkles className="w-5 h-5" strokeWidth={1.75} />
+            </div>
+            <div>
+              <div className="text-sm font-medium">أعد تشغيل جولة التعريف</div>
+              <div className="text-xs text-muted-foreground mt-0.5">
+                ١١ خطوة تفاعلية تشرح لوحة التحكم، نقطة البيع، المخزون، المالية، ومركز المساعدة — مع إمكانية التخطّي في أي لحظة.
+              </div>
+            </div>
+          </div>
+          <Button className="bg-brand hover:bg-brand/90" onClick={() => startOnboardingTour()}>
+            <Sparkles className="w-4 h-4 ms-1.5" /> ابدأ الجولة الآن
+          </Button>
+        </div>
+      </SectionCard>
     </AppShell>
   );
 }
+
