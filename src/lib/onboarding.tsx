@@ -266,6 +266,8 @@ type Rect = { top: number; left: number; width: number; height: number };
 
 const PAD = 8;
 
+const ar = (n: number) => n.toLocaleString("ar-EG");
+
 export function OnboardingTour() {
   const { active, index } = useTourState();
   const navigate = useNavigate();
@@ -409,7 +411,7 @@ export function OnboardingTour() {
             left: rect.left - PAD,
             width: rect.width + PAD * 2,
             height: rect.height + PAD * 2,
-            boxShadow: "0 0 0 9999px color-mix(in oklab, var(--foreground) 62%, transparent)",
+            boxShadow: "0 0 0 9999px rgba(8, 32, 29, 0.72)",
             outline: "2px solid var(--brand)",
             outlineOffset: "2px",
           }}
@@ -419,7 +421,7 @@ export function OnboardingTour() {
       ) : (
         <div
           className="fixed inset-0 animate-in fade-in duration-300"
-          style={{ backgroundColor: "color-mix(in oklab, var(--foreground) 62%, transparent)" }}
+          style={{ backgroundColor: "rgba(8, 32, 29, 0.72)" }}
           onClick={() => endTour(false)}
         />
       )}
@@ -437,7 +439,7 @@ export function OnboardingTour() {
               {step.badge ?? "الجولة"}
             </span>
             <span className="text-[11px] text-muted-foreground">
-              الخطوة {index + 1} من {total}
+              الخطوة {ar(index + 1)} من {ar(total)}
             </span>
             <button
               onClick={() => endTour(false)}
