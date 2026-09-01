@@ -216,14 +216,22 @@ export const tourSteps: TourStep[] = [
 /* ------------------------------------------------------------------ */
 
 let tourActive = false;
-const listeners = new Set<(v: boolean) => void>();
+let tourIndex = 0;
+const listeners = new Set<(v: { active: boolean; index: number }) => void>();
 
 function emit() {
-  listeners.forEach((l) => l(tourActive));
+  const snap = { active: tourActive, index: tourIndex };
+  listeners.forEach((l) => l(snap));
+}
+
+export function setTourIndex(i: number) {
+  tourIndex = i;
+  emit();
 }
 
 export function startTour() {
   tourActive = true;
+  tourIndex = 0;
   emit();
 }
 
@@ -237,16 +245,16 @@ export function endTour(completed: boolean) {
   emit();
 }
 
-export function useTourActive() {
-  const [active, setActive] = useState(tourActive);
+export function useTourState() {
+  const [snap, setSnap] = useState({ active: tourActive, index: tourIndex });
   useEffect(() => {
-    setActive(tourActive);
-    listeners.add(setActive);
+    setSnap({ active: tourActive, index: tourIndex });
+    listeners.add(setSnap);
     return () => {
-      listeners.delete(setActive);
+      listeners.delete(setSnap);
     };
   }, []);
-  return active;
+  return snap;
 }
 
 /* ------------------------------------------------------------------ */
@@ -258,8 +266,7 @@ type Rect = { top: number; left: number; width: number; height: number };
 const PAD = 8;
 
 export function OnboardingTour() {
-  const active = useTourActive();
-  const [index, setIndex] = useState(0);
+  const { active, index } = useTourState();
   const navigate = useNavigate();
   const [rect, setRect] = useState<Rect | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -281,10 +288,6 @@ export function OnboardingTour() {
       return () => clearTimeout(t);
     }
   }, []);
-
-  useEffect(() => {
-    if (active) setIndex(0);
-  }, [active]);
 
   /* navigate for steps bound to a route */
   useEffect(() => {
@@ -332,16 +335,11 @@ export function OnboardingTour() {
   }, [active, index, step?.title]);
 
   const next = useCallback(() => {
-    setIndex((i) => {
-      if (i >= total - 1) {
-        endTour(true);
-        return i;
-      }
-      return i + 1;
-    });
+    if (tourIndex >= total - 1) endTour(true);
+    else setTourIndex(tourIndex + 1);
   }, [total]);
 
-  const prev = useCallback(() => setIndex((i) => Math.max(0, i - 1)), []);
+  const prev = useCallback(() => setTourIndex(Math.max(0, tourIndex - 1)), []);
 
   useEffect(() => {
     if (!active) return;
