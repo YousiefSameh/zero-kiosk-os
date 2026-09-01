@@ -107,6 +107,19 @@ function SettingsPage() {
           </div>
         )}
       </SectionCard>
+
+      <SectionCard className="mt-4" title="الجولة التعريفية" description="جولة تفاعلية تشرح كل قسم في زيرو كشك خطوة بخطوة">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <div className="text-sm font-medium">أعد تشغيل الجولة الإرشادية</div>
+            <div className="text-xs text-muted-foreground mt-1">
+              ٢٤ خطوة تُبرز كل عنصر في القائمة وتشرح متى تستخدمه — مناسبة لتدريب موظف جديد.
+            </div>
+          </div>
+          <RestartTourButton />
+        </div>
+      </SectionCard>
+
     </AppShell>
   );
 }
