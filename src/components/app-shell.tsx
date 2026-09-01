@@ -14,6 +14,7 @@ import { Plus, RotateCcw } from "lucide-react";
 import { CommandPalette } from "@/components/command-palette";
 import { NotificationBellButton, NotificationCenter, useNotifications } from "@/components/notification-center";
 import { DataStateSwitcher } from "@/lib/demo-state";
+import { OnboardingTour } from "@/lib/onboarding";
 import logoAsset from "@/assets/zero-kiosk-logo-teal.png.asset.json";
 
 const nav = [
@@ -84,7 +85,7 @@ export function AppShell({ title, subtitle, actions, children }: {
   return (
     <div className="min-h-screen bg-background text-foreground flex" dir="rtl">
       {/* Sidebar (right in RTL) */}
-      <aside className="hidden lg:flex w-64 shrink-0 flex-col border-e border-border bg-sidebar">
+      <aside data-tour="sidebar" className="hidden lg:flex w-64 shrink-0 flex-col border-e border-border bg-sidebar">
         <div className="h-16 px-5 flex items-center gap-2.5 border-b border-sidebar-border">
           <div className="w-10 h-10 rounded-xl bg-brand grid place-items-center shadow-soft overflow-hidden">
             <img src={logoAsset.url} alt="زيرو كشك" className="w-full h-full object-cover" />
@@ -100,6 +101,7 @@ export function AppShell({ title, subtitle, actions, children }: {
 
         <div className="px-3 py-3 border-b border-sidebar-border">
           <button
+            data-tour="search"
             onClick={() => setOpenCmd(true)}
             className="w-full flex items-center gap-2 text-sm rounded-lg border border-sidebar-border bg-background/60 px-3 py-2 text-muted-foreground hover:bg-accent transition"
           >
@@ -122,6 +124,7 @@ export function AppShell({ title, subtitle, actions, children }: {
                     <Link
                       key={item.to}
                       to={item.to}
+                      data-tour={`nav-${item.to}`}
                       className={`flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm transition ${
                         active
                           ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
@@ -163,20 +166,21 @@ export function AppShell({ title, subtitle, actions, children }: {
             <div className="flex items-center gap-2">
               <DataStateSwitcher />
               {actions}
-              <HelpButton pathname={pathname} />
+              <span data-tour="help" className="inline-flex"><HelpButton pathname={pathname} /></span>
               <button
                 onClick={() => setOpenCmd(true)}
                 className="hidden md:inline-flex items-center gap-2 text-xs rounded-lg border border-border bg-card px-3 py-1.5 text-muted-foreground hover:bg-accent"
               >
                 <Command className="w-3.5 h-3.5" /> إجراءات سريعة
               </button>
-              <NotificationBellButton unread={notifCtl.unread} onClick={() => setOpenNotif(true)} />
+              <span data-tour="notifications" className="inline-flex"><NotificationBellButton unread={notifCtl.unread} onClick={() => setOpenNotif(true)} /></span>
             </div>
           </div>
         </header>
         <main className="flex-1 p-6 lg:p-8 max-w-[1600px] w-full mx-auto">{children}</main>
       </div>
 
+      <OnboardingTour />
       <CommandPalette open={openCmd} onOpenChange={setOpenCmd} />
       <NotificationCenter open={openNotif} onOpenChange={setOpenNotif} controller={notifCtl} />
     </div>
