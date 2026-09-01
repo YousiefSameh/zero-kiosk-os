@@ -217,6 +217,7 @@ export const tourSteps: TourStep[] = [
 
 let tourActive = false;
 let tourIndex = 0;
+let autoStartChecked = false;
 const listeners = new Set<(v: { active: boolean; index: number }) => void>();
 
 function emit() {
@@ -277,6 +278,8 @@ export function OnboardingTour() {
 
   /* auto-start for first-time visitors */
   useEffect(() => {
+    if (autoStartChecked) return;
+    autoStartChecked = true;
     let seen: string | null = null;
     try {
       seen = localStorage.getItem(STORAGE_KEY);
