@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Building2, SlidersHorizontal, CreditCard } from "lucide-react";
 import { useDataState, FormSkeleton, RowsSkeleton, Shimmer } from "@/lib/demo-state";
+import { RestartTourButton } from "@/lib/onboarding";
+
 
 export const Route = createFileRoute("/settings")({ component: SettingsPage });
 
