@@ -20,7 +20,6 @@ import type {
   HelpCard, HelpTableGuide, HelpAction, HelpTip, HelpNextPage,
 } from "@/lib/help-content";
 import { getHelpForRoute } from "@/lib/help-content";
-import { BrandLockup, BrandMark } from "@/components/brand";
 import { useRouterState } from "@tanstack/react-router";
 
 /* ================= Trigger button ================= */
@@ -99,7 +98,6 @@ function HelpDrawerContent({ page, onClose }: { page: HelpPage; onClose: () => v
         <div className="relative px-8 pt-6 pb-5">
           <div className="flex items-start justify-between gap-4">
             <div className="flex items-center gap-2 text-xs font-medium text-brand">
-              <BrandLockup variant="light" height={26} className="hidden sm:block me-1 opacity-90" />
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-brand-soft border border-brand/15">
                 <Sparkles className="w-3 h-3" /> مركز المساعدة
               </span>
@@ -804,7 +802,6 @@ function SupportCta() {
         <div className="absolute -bottom-24 -start-10 w-72 h-72 rounded-full bg-white/10 blur-3xl" />
         <div className="relative flex flex-col md:flex-row items-start md:items-center gap-5 justify-between">
           <div className="max-w-xl">
-            <BrandMark size="sm" className="mb-3 ring-1 ring-white/20" />
             <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-brand-foreground/80">هل ما زلت بحاجة إلى مساعدة؟</div>
             <h4 className="font-display text-xl font-semibold mt-1.5">فريق زيرو كشك جاهز لدعمك</h4>
             <p className="text-sm text-brand-foreground/85 mt-1.5 leading-relaxed">
