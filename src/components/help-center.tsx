@@ -804,6 +804,7 @@ function SupportCta() {
         <div className="absolute -bottom-24 -start-10 w-72 h-72 rounded-full bg-white/10 blur-3xl" />
         <div className="relative flex flex-col md:flex-row items-start md:items-center gap-5 justify-between">
           <div className="max-w-xl">
+            <BrandMark size="sm" className="mb-3 ring-1 ring-white/20" />
             <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-brand-foreground/80">هل ما زلت بحاجة إلى مساعدة؟</div>
             <h4 className="font-display text-xl font-semibold mt-1.5">فريق زيرو كشك جاهز لدعمك</h4>
             <p className="text-sm text-brand-foreground/85 mt-1.5 leading-relaxed">
