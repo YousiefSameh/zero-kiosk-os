@@ -1,11 +1,17 @@
 import lockupDark from "@/assets/zero-kiosk-lockup-dark.png.asset.json";
 import lockupLight from "@/assets/zero-kiosk-lockup-light.png.asset.json";
 import cartMark from "@/assets/zero-kiosk-cart-mark.png.asset.json";
+import markTeal from "@/assets/zero-kiosk-mark-teal.png.asset.json";
 
 /** Official Zero Kiosk brand assets (CDN-hosted). */
 export const brandAssets = {
+  /** Full lockup on deep brand teal. */
   lockupOnTeal: lockupDark.url,
+  /** Full lockup on light neutral background. */
   lockupOnLight: lockupLight.url,
+  /** Square app mark: coral cart on brand teal. */
+  markTeal: markTeal.url,
+  /** Bare cart glyph on a light background. */
   cartMark: cartMark.url,
 };
 
@@ -15,10 +21,7 @@ const markSizes = {
   lg: "w-14 h-14 rounded-2xl",
 } as const;
 
-/**
- * Square brand mark: the coral cart on the deep brand teal container.
- * Uses the official cart glyph, cropped so only the cart is visible.
- */
+/** Square brand mark: the official coral cart on the deep brand teal container. */
 export function BrandMark({
   size = "md",
   className = "",
@@ -28,15 +31,9 @@ export function BrandMark({
 }) {
   return (
     <span
-      className={`relative overflow-hidden bg-brand grid place-items-center shadow-soft shrink-0 ${markSizes[size]} ${className}`}
-      aria-hidden
+      className={`overflow-hidden bg-brand grid place-items-center shadow-soft shrink-0 ${markSizes[size]} ${className}`}
     >
-      <img
-        src={brandAssets.cartMark}
-        alt=""
-        className="w-[132%] h-[132%] object-cover mix-blend-multiply"
-        style={{ filter: "contrast(1.02)" }}
-      />
+      <img src={brandAssets.markTeal} alt="زيرو كشك" className="w-full h-full object-cover" />
     </span>
   );
 }
@@ -61,7 +58,7 @@ export function BrandLockup({
   );
 }
 
-/** Sidebar / header identity block: mark + Arabic name + tagline. */
+/** Sidebar / drawer identity block: mark + Arabic name + tagline. */
 export function BrandIdentity({
   tagline = "نظام تشغيل السوبرماركت",
   size = "md",
@@ -72,9 +69,9 @@ export function BrandIdentity({
   return (
     <>
       <BrandMark size={size} />
-      <div className="leading-tight">
-        <div className="font-display font-semibold text-[15px]">زيرو كشك</div>
-        <div className="text-[11px] text-muted-foreground">{tagline}</div>
+      <div className="leading-tight min-w-0">
+        <div className="font-display font-semibold text-[15px] truncate">زيرو كشك</div>
+        <div className="text-[11px] text-muted-foreground truncate">{tagline}</div>
       </div>
     </>
   );
