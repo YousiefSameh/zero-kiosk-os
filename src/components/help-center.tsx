@@ -20,6 +20,7 @@ import type {
   HelpCard, HelpTableGuide, HelpAction, HelpTip, HelpNextPage,
 } from "@/lib/help-content";
 import { getHelpForRoute } from "@/lib/help-content";
+import { BrandLockup, BrandMark } from "@/components/brand";
 import { useRouterState } from "@tanstack/react-router";
 
 /* ================= Trigger button ================= */
