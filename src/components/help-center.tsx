@@ -99,6 +99,7 @@ function HelpDrawerContent({ page, onClose }: { page: HelpPage; onClose: () => v
         <div className="relative px-8 pt-6 pb-5">
           <div className="flex items-start justify-between gap-4">
             <div className="flex items-center gap-2 text-xs font-medium text-brand">
+              <BrandLockup variant="light" height={26} className="hidden sm:block me-1 opacity-90" />
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-brand-soft border border-brand/15">
                 <Sparkles className="w-3 h-3" /> مركز المساعدة
               </span>
