@@ -87,13 +87,7 @@ export function AppShell({ title, subtitle, actions, children }: {
       {/* Sidebar (right in RTL) */}
       <aside data-tour="sidebar" className="hidden lg:flex w-64 shrink-0 flex-col border-e border-border bg-sidebar">
         <div className="h-16 px-5 flex items-center gap-2.5 border-b border-sidebar-border">
-          <div className="w-10 h-10 rounded-xl bg-brand grid place-items-center shadow-soft overflow-hidden">
-            <img src={logoAsset.url} alt="زيرو كشك" className="w-full h-full object-cover" />
-          </div>
-          <div className="leading-tight">
-            <div className="font-display font-semibold text-[15px]">زيرو كشك</div>
-            <div className="text-[11px] text-muted-foreground">نظام تشغيل السوبرماركت</div>
-          </div>
+          <BrandIdentity />
           <button className="ms-auto text-muted-foreground hover:text-foreground">
             <ChevronsUpDown className="w-4 h-4" />
           </button>
