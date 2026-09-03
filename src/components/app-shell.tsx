@@ -153,6 +153,9 @@ export function AppShell({ title, subtitle, actions, children }: {
       <div className="flex-1 flex flex-col min-w-0">
         <header className="h-16 border-b border-border bg-background/80 backdrop-blur sticky top-0 z-30">
           <div className="h-full px-6 flex items-center gap-4">
+            <Link to="/" className="lg:hidden shrink-0" aria-label="زيرو كشك">
+              <BrandMark size="sm" />
+            </Link>
             <div className="flex-1 min-w-0">
               <h1 className="font-display text-lg font-semibold truncate">{title}</h1>
               {subtitle && <p className="text-xs text-muted-foreground truncate">{subtitle}</p>}
