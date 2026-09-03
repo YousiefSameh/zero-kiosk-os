@@ -15,7 +15,7 @@ import { CommandPalette } from "@/components/command-palette";
 import { NotificationBellButton, NotificationCenter, useNotifications } from "@/components/notification-center";
 import { DataStateSwitcher } from "@/lib/demo-state";
 import { OnboardingTour } from "@/lib/onboarding";
-import logoAsset from "@/assets/zero-kiosk-logo-teal.png.asset.json";
+import { BrandIdentity, BrandMark } from "@/components/brand";
 
 const nav = [
   {
