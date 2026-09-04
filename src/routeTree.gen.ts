@@ -23,6 +23,7 @@ import { Route as InventoryRouteImport } from './routes/inventory'
 import { Route as FinanceRouteImport } from './routes/finance'
 import { Route as ExpensesRouteImport } from './routes/expenses'
 import { Route as EmployeesRouteImport } from './routes/employees'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CustomersRouteImport } from './routes/customers'
 import { Route as BranchesRouteImport } from './routes/branches'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
@@ -99,6 +100,11 @@ const EmployeesRoute = EmployeesRouteImport.update({
   path: '/employees',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CustomersRoute = CustomersRouteImport.update({
   id: '/customers',
   path: '/customers',
@@ -131,6 +137,7 @@ export interface FileRoutesByFullPath {
   '/analytics': typeof AnalyticsRoute
   '/branches': typeof BranchesRoute
   '/customers': typeof CustomersRoute
+  '/dashboard': typeof DashboardRoute
   '/employees': typeof EmployeesRoute
   '/expenses': typeof ExpensesRoute
   '/finance': typeof FinanceRoute
@@ -152,6 +159,7 @@ export interface FileRoutesByTo {
   '/analytics': typeof AnalyticsRoute
   '/branches': typeof BranchesRoute
   '/customers': typeof CustomersRoute
+  '/dashboard': typeof DashboardRoute
   '/employees': typeof EmployeesRoute
   '/expenses': typeof ExpensesRoute
   '/finance': typeof FinanceRoute
@@ -174,6 +182,7 @@ export interface FileRoutesById {
   '/analytics': typeof AnalyticsRoute
   '/branches': typeof BranchesRoute
   '/customers': typeof CustomersRoute
+  '/dashboard': typeof DashboardRoute
   '/employees': typeof EmployeesRoute
   '/expenses': typeof ExpensesRoute
   '/finance': typeof FinanceRoute
@@ -197,6 +206,7 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/branches'
     | '/customers'
+    | '/dashboard'
     | '/employees'
     | '/expenses'
     | '/finance'
@@ -218,6 +228,7 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/branches'
     | '/customers'
+    | '/dashboard'
     | '/employees'
     | '/expenses'
     | '/finance'
@@ -239,6 +250,7 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/branches'
     | '/customers'
+    | '/dashboard'
     | '/employees'
     | '/expenses'
     | '/finance'
@@ -261,6 +273,7 @@ export interface RootRouteChildren {
   AnalyticsRoute: typeof AnalyticsRoute
   BranchesRoute: typeof BranchesRoute
   CustomersRoute: typeof CustomersRoute
+  DashboardRoute: typeof DashboardRoute
   EmployeesRoute: typeof EmployeesRoute
   ExpensesRoute: typeof ExpensesRoute
   FinanceRoute: typeof FinanceRoute
@@ -377,6 +390,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmployeesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/customers': {
       id: '/customers'
       path: '/customers'
@@ -421,6 +441,7 @@ const rootRouteChildren: RootRouteChildren = {
   AnalyticsRoute: AnalyticsRoute,
   BranchesRoute: BranchesRoute,
   CustomersRoute: CustomersRoute,
+  DashboardRoute: DashboardRoute,
   EmployeesRoute: EmployeesRoute,
   ExpensesRoute: ExpensesRoute,
   FinanceRoute: FinanceRoute,

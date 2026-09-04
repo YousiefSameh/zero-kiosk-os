@@ -70,7 +70,7 @@ export function CommandPalette({ open, onOpenChange }: {
 
   const rootItems = useMemo<Item[]>(() => {
     const pages: Item[] = [
-      { id: "p:/", label: "لوحة التحكم", hint: "نظرة عامة على الأداء", icon: LayoutDashboard, section: "الصفحات", onSelect: () => go("/", "p:/") },
+      { id: "p:/", label: "لوحة التحكم", hint: "نظرة عامة على الأداء", icon: LayoutDashboard, section: "الصفحات", onSelect: () => go("/dashboard", "p:/") },
       { id: "p:/analytics", label: "التحليلات", hint: "مؤشرات الأداء التفصيلية", icon: LineChart, section: "الصفحات", onSelect: () => go("/analytics", "p:/analytics") },
       { id: "p:/reports", label: "التقارير", hint: "تقارير مالية ومبيعات", icon: BarChart3, section: "الصفحات", onSelect: () => go("/reports", "p:/reports") },
       { id: "p:/pos", label: "نقطة البيع", hint: "افتح شاشة البيع السريعة", icon: CreditCard, section: "الصفحات", onSelect: () => go("/pos", "p:/pos") },

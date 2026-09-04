@@ -56,7 +56,7 @@ export type HelpPage = {
 /* ---------- Page-specific content ---------- */
 
 export const helpContent: Record<string, HelpPage> = {
-  "/": {
+  "/dashboard": {
     icon: LayoutDashboard,
     title: "لوحة التحكم",
     short: "نظرة شاملة على أداء عملك في الوقت الحقيقي",
@@ -1093,6 +1093,6 @@ export const helpContent: Record<string, HelpPage> = {
 export function getHelpForRoute(pathname: string): HelpPage {
   // Normalize: match by longest prefix
   const keys = Object.keys(helpContent).sort((a, b) => b.length - a.length);
-  const key = keys.find((k) => (k === "/" ? pathname === "/" : pathname.startsWith(k)));
-  return key ? helpContent[key] : helpContent["/"];
+  const key = keys.find((k) => pathname.startsWith(k));
+  return key ? helpContent[key] : helpContent["/dashboard"];
 }

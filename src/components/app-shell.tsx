@@ -21,7 +21,7 @@ const nav = [
   {
     label: "نظرة عامة",
     items: [
-      { to: "/", label: "لوحة التحكم", icon: LayoutDashboard },
+      { to: "/dashboard", label: "لوحة التحكم", icon: LayoutDashboard },
       { to: "/analytics", label: "التحليلات", icon: LineChart },
       { to: "/reports", label: "التقارير", icon: BarChart3 },
     ],
@@ -119,7 +119,7 @@ export function AppShell({ title, subtitle, actions, children }: {
               </div>
               <div className="space-y-0.5">
                 {section.items.map((item) => {
-                  const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
+                  const active = pathname === item.to || (item.to !== "/dashboard" && pathname.startsWith(item.to));
                   return (
                     <Link
                       key={item.to}

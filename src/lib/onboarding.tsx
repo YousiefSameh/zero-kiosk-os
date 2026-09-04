@@ -47,7 +47,7 @@ export const tourSteps: TourStep[] = [
   },
   {
     target: "nav-/",
-    route: "/",
+    route: "/dashboard",
     badge: "نظرة عامة",
     title: "لوحة التحكم",
     body:
