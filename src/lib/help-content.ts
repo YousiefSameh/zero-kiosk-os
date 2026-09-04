@@ -1093,6 +1093,6 @@ export const helpContent: Record<string, HelpPage> = {
 export function getHelpForRoute(pathname: string): HelpPage {
   // Normalize: match by longest prefix
   const keys = Object.keys(helpContent).sort((a, b) => b.length - a.length);
-  const key = keys.find((k) => (k === "/" ? pathname === "/" : pathname.startsWith(k)));
-  return key ? helpContent[key] : helpContent["/"];
+  const key = keys.find((k) => pathname.startsWith(k));
+  return key ? helpContent[key] : helpContent["/dashboard"];
 }
