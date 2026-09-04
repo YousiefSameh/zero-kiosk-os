@@ -56,7 +56,7 @@ export type HelpPage = {
 /* ---------- Page-specific content ---------- */
 
 export const helpContent: Record<string, HelpPage> = {
-  "/": {
+  "/dashboard": {
     icon: LayoutDashboard,
     title: "لوحة التحكم",
     short: "نظرة شاملة على أداء عملك في الوقت الحقيقي",
