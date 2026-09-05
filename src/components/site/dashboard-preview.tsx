@@ -38,7 +38,7 @@ function Sparkline() {
   const line = pts.map(([x, y], i) => `${i === 0 ? "M" : "L"}${x.toFixed(2)},${y.toFixed(2)}`).join(" ");
   const area = `${line} L100,100 L0,100 Z`;
   return (
-    <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="h-full w-full" aria-hidden="true">
+    <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="h-full w-full -scale-x-100" aria-hidden="true">
       <defs>
         <linearGradient id="zk-spark" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="var(--brand)" stopOpacity="0.28" />
