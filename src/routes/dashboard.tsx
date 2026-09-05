@@ -11,7 +11,18 @@ import {
   PieChart, Pie, Cell, Legend,
 } from "recharts";
 
-export const Route = createFileRoute("/dashboard")({ component: Dashboard });
+export const Route = createFileRoute("/dashboard")({
+  head: () => ({
+    meta: [
+      { title: "لوحة التحكم | زيرو كشك" },
+      { name: "description", content: "مركز التحكم في زيرو كشك: مبيعات اليوم، تنبيهات المخزون، آخر العمليات وأداء الفروع." },
+      { property: "og:title", content: "لوحة التحكم | زيرو كشك" },
+      { property: "og:description", content: "مبيعات اليوم، تنبيهات المخزون، وأداء الفروع في شاشة واحدة." },
+      { name: "robots", content: "noindex" },
+    ],
+  }),
+  component: Dashboard,
+});
 
 function Dashboard() {
   const ds = useDataState();
