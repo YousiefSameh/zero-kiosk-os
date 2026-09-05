@@ -62,13 +62,13 @@ export function Hero() {
             </div>
 
             {/* floating contextual chips */}
-            <div className="pointer-events-none absolute -start-3 top-24 hidden xl:block">
+            <div className="pointer-events-none absolute -start-16 top-28 hidden 2xl:block">
               <FloatChip icon={TrendingUp} title="مبيعات النهارده" value="٤٨٫٢ ألف ج.م" tone="brand" />
             </div>
-            <div className="pointer-events-none absolute -end-4 top-1/2 hidden xl:block">
+            <div className="pointer-events-none absolute -end-20 top-1/2 hidden 2xl:block">
               <FloatChip icon={PackageCheck} title="قرب يخلص" value="١٢ صنف" tone="coral" />
             </div>
-            <div className="pointer-events-none absolute -end-2 bottom-14 hidden xl:block">
+            <div className="pointer-events-none absolute -end-14 bottom-10 hidden 2xl:block">
               <FloatChip icon={Store} title="الفروع النشطة" value="٤ فروع" tone="brand" />
             </div>
           </div>
