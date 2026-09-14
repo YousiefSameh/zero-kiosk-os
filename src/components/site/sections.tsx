@@ -1,530 +1,296 @@
-import { Link } from "@tanstack/react-router";
-import type { ReactNode } from "react";
-import {
-  ArrowLeft,
-  ArrowDown,
-  CreditCard,
-  Boxes,
-  ShoppingCart,
-  Truck,
-  Package,
-  UserCog,
-  Users,
-  Store,
-  BarChart3,
-  ShieldCheck,
-  KeyRound,
-  ScrollText,
-  Building2,
-  Check,
-} from "lucide-react";
-import { DashboardPreview } from "./dashboard-preview";
+import { useState } from "react";
+import { ArrowLeft } from "lucide-react";
 import { Reveal } from "./reveal";
+import { CtaAnchor, CtaLink, Eyebrow, Heading, Lead, Section } from "./primitives";
+import { AppFrame, BranchesPanel } from "./product-panels";
 
-/* ------------------------------- primitives ------------------------------- */
+/* --------------------------- المشكلة اللي بنحلها --------------------------- */
 
-export function SectionHeader({
-  eyebrow,
-  title,
-  description,
-  align = "start",
-}: {
-  eyebrow?: string;
-  title: ReactNode;
-  description?: string;
-  align?: "start" | "center";
-}) {
-  return (
-    <Reveal className={`max-w-3xl ${align === "center" ? "mx-auto text-center" : ""}`}>
-      {eyebrow && (
-        <div className="mb-4 flex items-center gap-2.5 text-[13px] font-semibold tracking-wide text-brand"
-             style={align === "center" ? { justifyContent: "center" } : undefined}>
-          <span className="h-px w-6 bg-brand/40" />
-          {eyebrow}
-        </div>
-      )}
-      <h2 className="font-display text-[clamp(1.9rem,4.6vw,3.25rem)] font-bold leading-[1.18] tracking-[-0.015em] text-ink">
-        {title}
-      </h2>
-      {description && (
-        <p className="mt-5 text-[17px] leading-[1.9] text-ink-soft">{description}</p>
-      )}
-    </Reveal>
-  );
-}
-
-function Section({
-  id,
-  children,
-  className = "",
-}: {
-  id?: string;
-  children: ReactNode;
-  className?: string;
-}) {
-  return (
-    <section id={id} className={`scroll-mt-24 py-20 md:py-28 ${className}`}>
-      <div className="site-container">{children}</div>
-    </section>
-  );
-}
-
-/* ------------------------------ product showcase ------------------------------ */
-
-export function ProductShowcase() {
-  return (
-    <Section id="product" className="border-t border-hairline bg-sand-deep/40">
-      <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
-        <SectionHeader
-          eyebrow="المنتج"
-          title={<>مركز التحكم في محلك، من غير لف ودوران.</>}
-          description="شاشة واحدة تجمع مبيعات اليوم، حالة المخزون، وآخر العمليات في كل الفروع. كل رقم تشوفه هنا بيتحدث لحظة بلحظة من نقطة البيع نفسها."
-        />
-        <Reveal delay={100} className="lg:-mx-6">
-          <DashboardPreview />
-        </Reveal>
-      </div>
-    </Section>
-  );
-}
-
-/* -------------------------------- problem -------------------------------- */
-
-const problems = [
-  { n: "٠١", t: "مبيعات في كذا مكان", d: "دفتر، كاشير، وواتساب. والحصر في آخر اليوم بالتخمين." },
-  { n: "٠٢", t: "مخزون مش واضح", d: "الصنف بيخلص من الرف قبل ما حد ياخد باله." },
-  { n: "٠٣", t: "طلبات الموردين يدوي", d: "كل طلب بمزاج اللحظة، ومفيش سجل لسعر ولا كمية." },
-  { n: "٠٤", t: "الموظفين محتاجين متابعة", d: "مين باع إيه، ومين فتح الدرج، ومين عمل مرتجع." },
-  { n: "٠٥", t: "أرقام كتير بدون صورة كاملة", d: "معلومات موجودة، لكن مفيش حاجة تربطها ببعضها." },
+const gaps = [
+  { q: "بعت بكام النهارده؟", a: "الرقم موجود، بس في الدرج وفي دفتر وفي دماغ الكاشير." },
+  { q: "فيه إيه ناقص؟", a: "بتعرف إن الصنف خلص لما عميل يطلبه ومايكونش موجود." },
+  { q: "المورد ده أخد كام؟", a: "الحساب متفرق بين واتساب وورق فواتير." },
+  { q: "مين أحسن موظف؟", a: "إحساس، مش رقم." },
 ];
 
 export function ProblemSection() {
   return (
-    <Section id="solutions" className="border-t border-hairline">
-      <SectionHeader
-        eyebrow="الواقع اليومي"
-        title={<>إدارة المحل مش مفروض تبقى تخمين.</>}
-        description="مش عشان في مشكلة في شغلك — لكن عشان المعلومات متفرقة. ولما تتفرق، القرار بيتأخر."
-      />
-
-      <ul className="mt-14 divide-y divide-hairline border-y border-hairline">
-        {problems.map((p, i) => (
-          <Reveal as="li" key={p.n} delay={i * 60}>
-            <div className="group grid gap-3 py-7 transition-colors hover:bg-sand-deep/40 md:grid-cols-[auto_1fr_1.2fr] md:items-baseline md:gap-8 md:px-3">
-              <span className="font-display text-sm font-bold text-brand/60">{p.n}</span>
-              <h3 className="font-display text-xl font-semibold text-ink md:text-2xl">{p.t}</h3>
-              <p className="text-[15px] leading-[1.9] text-ink-soft">{p.d}</p>
-            </div>
-          </Reveal>
-        ))}
-      </ul>
-
-      <Reveal delay={120} className="mt-14 flex items-start gap-4 md:items-center">
-        <span className="mt-1.5 h-10 w-1 shrink-0 rounded-full bg-coral md:mt-0" />
-        <p className="font-display text-[clamp(1.35rem,3vw,2.1rem)] font-bold leading-snug text-ink">
-          زيرو كشك يجمع الصورة كلها في مكان واحد.
-        </p>
-      </Reveal>
-    </Section>
-  );
-}
-
-/* -------------------------------- pillars -------------------------------- */
-
-const pillars = [
-  { n: "٠١", t: "السيطرة", d: "اعرف كل اللي بيحصل في محلك." , x: "كل بيعة، كل مرتجع، كل تعديل مخزون — مسجّل باسم صاحبه ووقته." },
-  { n: "٠٢", t: "الرؤية", d: "بيانات واضحة بدل التخمين.", x: "مقارنات بالأمس وبالأسبوع اللي فات، ومؤشرات بتلفت نظرك قبل المشكلة." },
-  { n: "٠٣", t: "البساطة", d: "كل حاجة في مكان واحد.", x: "نظام واحد للبيع والمخزون والمشتريات والتقارير. بدون برامج متفرقة." },
-  { n: "٠٤", t: "النمو", d: "نظام يكبر مع محلك.", x: "فرع، فرعين، أو شبكة — نفس النظام ونفس طريقة الشغل." },
-];
-
-export function Pillars() {
-  return (
-    <Section id="features" className="border-t border-hairline bg-ink text-sand">
-      <SectionHeader
-        eyebrow="القيمة"
-        title={<span className="text-sand">أربع حاجات بس هي اللي فارقة.</span>}
-      />
-      <div className="mt-14 grid gap-px overflow-hidden rounded-2xl bg-white/10 md:grid-cols-2">
-        {pillars.map((p, i) => (
-          <Reveal key={p.n} delay={i * 80} className="bg-ink">
-            <div className="group h-full p-8 transition-colors duration-300 hover:bg-white/[0.04] md:p-10">
-              <div className="font-display text-sm font-bold text-coral">{p.n}</div>
-              <h3 className="mt-6 font-display text-3xl font-bold text-sand md:text-4xl">{p.t}</h3>
-              <p className="mt-3 text-lg text-sand/85">{p.d}</p>
-              <p className="mt-5 max-w-sm text-[15px] leading-[1.9] text-sand/55">{p.x}</p>
-            </div>
-          </Reveal>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-/* ------------------------------ modules ------------------------------ */
-
-const modules = [
-  { icon: Boxes, t: "المخزون", d: "اعرف إيه قرب يخلص قبل ما يخلص." },
-  { icon: ShoppingCart, t: "المشتريات", d: "رتب طلباتك قبل ما الرف يفضى." },
-  { icon: Truck, t: "الموردين", d: "أسعار وسجل توريد لكل مورد في مكانه." },
-  { icon: Package, t: "المنتجات", d: "كتالوج واحد منظم بباركود وسعر بيع وتكلفة." },
-  { icon: UserCog, t: "الموظفين", d: "اعرف مين واقف على الكاشير وشغله عامل إيه." },
-  { icon: Users, t: "العملاء", d: "الآجل والحساب والمشتريات المتكررة تحت السيطرة." },
-  { icon: Store, t: "الفروع", d: "قارن الفروع من شاشة واحدة." },
-  { icon: BarChart3, t: "التقارير", d: "اعرف محلك عمل إيه النهارده." },
-];
-
-export function ModuleShowcase() {
-  return (
-    <Section className="border-t border-hairline">
-      <SectionHeader
-        eyebrow="وحدات النظام"
-        title={<>نظام واحد، وكل جزء بيخدم الجزء اللي بعده.</>}
-      />
-
-      <div className="mt-14 grid gap-4 lg:grid-cols-[1.25fr_1fr]">
-        {/* featured */}
-        <Reveal className="overflow-hidden rounded-2xl border border-hairline bg-card">
-          <div className="p-8 md:p-10">
-            <span className="inline-flex items-center gap-2 rounded-full bg-brand-soft px-3 py-1.5 text-[12px] font-semibold text-brand">
-              <CreditCard className="h-3.5 w-3.5" /> نقطة البيع
-            </span>
-            <h3 className="mt-6 font-display text-3xl font-bold text-ink md:text-4xl">
-              البيعة تخلص في ثواني، والباقي بيحصل لوحده.
-            </h3>
-            <p className="mt-4 max-w-lg text-[16px] leading-[1.9] text-ink-soft">
-              كاشير سريع بالباركود، أكثر من طريقة دفع، ومرتجعات مسجّلة. كل فاتورة بتنزل على المخزون والتقارير في نفس اللحظة.
-            </p>
-            <ul className="mt-7 grid gap-2.5 sm:grid-cols-2">
-              {["بيع بالباركود", "دفع كاش وفيزا وآجل", "مرتجعات وتسويات", "وردية وتقفيل درج"].map((f) => (
-                <li key={f} className="flex items-center gap-2.5 text-[15px] text-ink">
-                  <Check className="h-4 w-4 shrink-0 text-brand" />
-                  {f}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="border-t border-hairline bg-sand-deep/40 p-5 pb-0 md:p-8 md:pb-0">
-            <div className="[mask-image:linear-gradient(to_bottom,black_65%,transparent)]">
-              <DashboardPreview compact />
-            </div>
-          </div>
+    <Section labelledBy="problem-title" tone="sand">
+      <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+        <Reveal>
+          <Eyebrow>الواقع</Eyebrow>
+          <Heading id="problem-title" className="mt-5 text-ink">
+            إدارة المحل مش مفروض تبقى تخمين.
+          </Heading>
+          <Lead className="mt-5 max-w-md">
+            المشكلة مش إنك مش شغّال. المشكلة إن المعلومة متفرقة، وكل قرار بتاخده وإنت ناقص نصف الصورة.
+          </Lead>
         </Reveal>
 
-        {/* supporting */}
-        <div className="grid gap-4 sm:grid-cols-2">
-          {modules.map((m, i) => (
-            <Reveal key={m.t} delay={i * 50} className="h-full">
-              <div className="group flex h-full flex-col border-b border-hairline pb-6 transition-colors hover:border-brand/40 sm:border-s sm:border-b-0 sm:ps-6 sm:pb-0">
-                <m.icon className="h-5 w-5 text-brand transition-transform duration-300 group-hover:-translate-y-0.5" />
-                <h3 className="mt-4 font-display text-xl font-semibold text-ink">{m.t}</h3>
-                <p className="mt-2 text-[15px] leading-[1.8] text-ink-soft">{m.d}</p>
+        <Reveal delay={100}>
+          <dl className="divide-y divide-hairline border-t border-hairline">
+            {gaps.map((g) => (
+              <div key={g.q} className="grid gap-1.5 py-5 sm:grid-cols-[minmax(0,13rem)_minmax(0,1fr)] sm:gap-6">
+                <dt className="font-display text-[16px] font-bold text-ink">{g.q}</dt>
+                <dd className="text-[15px] leading-[1.85] text-ink-soft">{g.a}</dd>
               </div>
-            </Reveal>
-          ))}
-        </div>
+            ))}
+          </dl>
+          <p className="mt-7 max-w-lg font-display text-[19px] font-bold leading-[1.6] text-brand">
+            زيرو كشك بيجمع الصورة كلها في مكان واحد — بدون شغل إضافي عليك.
+          </p>
+        </Reveal>
       </div>
     </Section>
   );
 }
 
-/* --------------------------- operational story --------------------------- */
+/* ------------------------------ حلقة التشغيل ------------------------------ */
 
-const flow = [
-  { t: "بيع", d: "الكاشير يعمل فاتورة." },
-  { t: "المخزون يتحدث", d: "الكميات تنقص فورًا في الفرع." },
-  { t: "البيانات تتسجل", d: "الفاتورة تُقيَّد باسم الموظف والوردية." },
-  { t: "التقارير تتحدث", d: "أرقام اليوم والهامش تتحرك في نفس اللحظة." },
-  { t: "النظام يلفت نظرك", d: "صنف قرب يخلص؟ يوصلك تنبيه بأمر شراء مقترح." },
+const loop = [
+  { n: "٠١", t: "بيعة", d: "الكاشير يمسح ويحصّل." },
+  { n: "٠٢", t: "المخزون ينزل", d: "الرصيد يتحدث في نفس اللحظة." },
+  { n: "٠٣", t: "الأرقام تتسجل", d: "الفاتورة تتربط بالفرع والموظف." },
+  { n: "٠٤", t: "التقرير يتحدث", d: "مبيعات وربح ومتوسط فاتورة." },
+  { n: "٠٥", t: "النظام ينبهك", d: "صنف قرب يخلص أو فرع ناقص." },
 ];
 
-export function OperationalStory() {
+export function OperationalLoop() {
   return (
-    <Section className="border-t border-hairline bg-sand-deep/40">
-      <SectionHeader
-        eyebrow="دورة اليوم"
-        title={<>من أول البيعة لحد آخر اليوم.</>}
-        description="زيرو كشك مش مجموعة شاشات منفصلة. البيعة الواحدة بتحرّك النظام كله."
-        align="center"
-      />
-      <ol className="mx-auto mt-14 max-w-3xl">
-        {flow.map((s, i) => (
-          <Reveal as="li" key={s.t} delay={i * 90}>
-            <div className="flex items-start gap-5">
-              <div className="flex flex-col items-center">
-                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-brand/25 bg-card font-display text-sm font-bold text-brand">
-                  {i + 1}
-                </span>
-                {i < flow.length - 1 && <span className="my-1 h-14 w-px bg-gradient-to-b from-brand/40 to-hairline" />}
-              </div>
-              <div className="pt-1.5 pb-6">
-                <h3 className="font-display text-xl font-semibold text-ink md:text-2xl">{s.t}</h3>
-                <p className="mt-1.5 text-[15px] leading-[1.9] text-ink-soft">{s.d}</p>
-              </div>
-              {i < flow.length - 1 && <ArrowDown className="mt-3 hidden h-4 w-4 text-hairline md:block" />}
-            </div>
-          </Reveal>
+    <Section id="how" labelledBy="how-title" tone="card">
+      <Reveal className="max-w-2xl">
+        <Eyebrow>إزاي بيشتغل</Eyebrow>
+        <Heading id="how-title" className="mt-5 text-ink">
+          من أول البيعة لحد آخر اليوم.
+        </Heading>
+        <Lead className="mt-5">
+          كل خطوة بتغذّي اللي بعدها تلقائيًا. مفيش إدخال مرتين، ومفيش تقرير محتاج حد يعمله بإيده.
+        </Lead>
+      </Reveal>
+
+      <ol className="mt-12 grid gap-px overflow-hidden rounded-xl border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-5">
+        {loop.map((s, i) => (
+          <li key={s.t} className="bg-card p-5">
+            <Reveal delay={i * 70}>
+              <span className="font-display text-[13px] font-bold text-brand/70">{s.n}</span>
+              <h3 className="mt-3 font-display text-[17px] font-bold text-ink">{s.t}</h3>
+              <p className="mt-2 text-[14px] leading-[1.8] text-ink-soft">{s.d}</p>
+            </Reveal>
+          </li>
         ))}
       </ol>
     </Section>
   );
 }
 
-/* ---------------------------- dashboard insight ---------------------------- */
+/* -------------------------------- الفروع --------------------------------- */
 
-const insights = [
-  { t: "مبيعات النهارده", d: "الرقم اللحظي لكل الفروع، مقسّم على الورديات." },
-  { t: "مقارنة بأمس", d: "أعلى ولا أقل؟ وبكام في المية؟ من غير حساب يدوي." },
-  { t: "أصناف قربت تخلص", d: "قائمة إعادة الطلب جاهزة بحد أدنى لكل صنف." },
-  { t: "آخر العمليات", d: "بث مباشر للفواتير والمرتجعات باسم الكاشير." },
-  { t: "أداء الموظفين", d: "عدد الفواتير ومتوسط الفاتورة لكل موظف." },
-  { t: "التنبيهات المهمة", d: "الحاجات اللي محتاجة قرار منك النهارده فقط." },
-];
-
-export function InsightSection() {
+export function BranchesSection() {
   return (
-    <Section className="border-t border-hairline">
-      <div className="grid gap-14 lg:grid-cols-2 lg:items-center">
-        <div>
-          <SectionHeader
-            eyebrow="مركز التحكم"
-            title={<>افتح يومك وإنت عارف إيه اللي بيحصل.</>}
-            description="زيرو كشك مش بيخزّن بياناتك وبس — بيساعدك تفهم محلك ويقولك تتصرف في إيه."
-          />
-          <dl className="mt-10 grid gap-x-8 gap-y-6 sm:grid-cols-2">
-            {insights.map((it, i) => (
-              <Reveal key={it.t} delay={i * 50}>
-                <dt className="flex items-center gap-2 font-display text-[17px] font-semibold text-ink">
-                  <span className="h-1.5 w-1.5 rounded-full bg-coral" />
-                  {it.t}
-                </dt>
-                <dd className="mt-1.5 ps-4 text-[14px] leading-[1.85] text-ink-soft">{it.d}</dd>
-              </Reveal>
+    <Section id="branches" labelledBy="branches-title" tone="sand">
+      <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
+        <Reveal>
+          <Eyebrow>النمو</Eyebrow>
+          <Heading id="branches-title" className="mt-5 text-ink">
+            كبّر محلك من غير ما تكبّر اللخبطة.
+          </Heading>
+          <Lead className="mt-5 max-w-md">
+            الفرع التاني ما يبقاش نظام تاني. نفس الأصناف، نفس الأسعار، نفس التقارير — وصلاحيات مختلفة لكل فرع.
+          </Lead>
+          <ul className="mt-7 space-y-3 border-t border-hairline pt-6">
+            {[
+              "مخزون منفصل لكل فرع مع صورة موحّدة للإدارة",
+              "صلاحيات بالدور: كاشير، مسؤول فرع، مالك",
+              "سجل عمليات يوضح مين عمل إيه وامتى",
+            ].map((l) => (
+              <li key={l} className="flex items-start gap-2.5 text-[15px] leading-[1.8] text-ink-soft">
+                <span className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-coral" />
+                {l}
+              </li>
             ))}
-          </dl>
-        </div>
-        <Reveal delay={120}>
-          <DashboardPreview />
+          </ul>
+        </Reveal>
+
+        <Reveal delay={110}>
+          <AppFrame label="شاشة مقارنة الفروع في زيرو كشك" path="zerokiosk.com/branches">
+            <BranchesPanel />
+          </AppFrame>
         </Reveal>
       </div>
     </Section>
   );
 }
 
-/* ------------------------------ multi branch ------------------------------ */
-
-const branchCards = [
-  { name: "فرع الزمالك", city: "القاهرة", pct: 92, value: "٢١٤٫٣ ألف" },
-  { name: "فرع المعادي", city: "القاهرة", pct: 72, value: "١٦٨٫٤ ألف" },
-  { name: "فرع سموحة", city: "الإسكندرية", pct: 52, value: "١٢١٫٥ ألف" },
-];
-
-export function MultiBranch() {
-  return (
-    <Section className="border-t border-hairline bg-sand-deep/40">
-      <SectionHeader
-        eyebrow="النمو"
-        title={<>كبر محلك من غير ما تكبر اللخبطة.</>}
-        description="كل فرع بيشتغل لوحده، وإنت بتشوفهم كلهم من شاشة واحدة: مبيعات، مخزون، وموظفين — بنفس المعايير."
-        align="center"
-      />
-
-      <div className="mx-auto mt-14 max-w-4xl">
-        <Reveal className="rounded-2xl border border-hairline bg-card p-6 md:p-8">
-          <div className="flex items-center justify-between gap-3 border-b border-hairline pb-5">
-            <div className="flex min-w-0 items-center gap-3">
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-brand text-brand-foreground">
-                <Building2 className="h-5 w-5" />
-              </span>
-              <div className="min-w-0">
-                <div className="truncate font-display font-semibold text-ink">نظرة موحّدة على الفروع</div>
-                <div className="truncate text-[12px] text-ink-soft">إجمالي مبيعات الأسبوع · ٥٠٤٫٢ ألف ج.م</div>
-              </div>
-            </div>
-            <span className="shrink-0 rounded-full bg-success/10 px-3 py-1.5 text-[12px] font-semibold text-success">
-              كل الفروع متصلة
-            </span>
-          </div>
-
-          <div className="mt-6 space-y-5">
-            {branchCards.map((b, i) => (
-              <Reveal key={b.name} delay={i * 90}>
-                <div className="flex items-center justify-between text-sm">
-                  <div>
-                    <div className="font-medium text-ink">{b.name}</div>
-                    <div className="text-[12px] text-ink-soft">{b.city}</div>
-                  </div>
-                  <div className="font-display font-bold text-ink">{b.value} ج.م</div>
-                </div>
-                <div className="mt-2.5 h-1.5 overflow-hidden rounded-full bg-sand-deep">
-                  <div
-                    className="h-full rounded-full bg-brand transition-[width] duration-1000 ease-out"
-                    style={{ width: `${b.pct}%` }}
-                  />
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </Reveal>
-      </div>
-    </Section>
-  );
-}
-
-/* ------------------------------- philosophy ------------------------------- */
-
-export function Philosophy() {
-  return (
-    <Section id="about" className="border-t border-hairline">
-      <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:items-start">
-        <SectionHeader
-          eyebrow="عن زيرو كشك"
-          title={<>مصمم للمحلات اللي عايزة تكبر.</>}
-          description="بنينا زيرو كشك بعد ما شوفنا إزاي المحل المصري بيشتغل فعلًا: سرعة على الكاشير، مورّد بيسلّم بدري، صنف بيخلص في نص اليوم، وصاحب محل عايز رقم يثق فيه."
-        />
-        <Reveal delay={100} className="space-y-6">
-          {[
-            { t: "عربي من الأساس", d: "مش ترجمة. الواجهة والأرقام والتقارير كلها من اليمين للشمال وبمصطلحات السوق المصري." },
-            { t: "سرعة قبل أي حاجة", d: "الكاشير مش بيستنى النظام. كل شاشة مبنية على إنها تفتح فورًا." },
-            { t: "بدون تعقيد إداري", d: "مفيش إعدادات مالهاش لازمة. تبدأ في نفس اليوم وتشتغل." },
-          ].map((v) => (
-            <div key={v.t} className="border-s-2 border-brand/25 ps-5">
-              <h3 className="font-display text-xl font-semibold text-ink">{v.t}</h3>
-              <p className="mt-2 text-[15px] leading-[1.9] text-ink-soft">{v.d}</p>
-            </div>
-          ))}
-          <p className="pt-2 text-[14px] leading-[1.9] text-ink-soft/80">
-            بنشتغل حاليًا مع أول مجموعة محلات. مساحة قصص العملاء دي محفوظة لحد ما يبقى عندنا نتايج حقيقية نقدر نحكيها بالاسم.
-          </p>
-        </Reveal>
-      </div>
-    </Section>
-  );
-}
-
-/* --------------------------------- pricing --------------------------------- */
-
-const plans = [
-  { t: "محل واحد", d: "لمحل أو ميني ماركت بكاشير واحد أو اتنين.", f: ["نقطة بيع", "مخزون ومنتجات", "تقارير يومية"] },
-  { t: "متعدد الفروع", d: "لما تبقى بتدير أكتر من فرع بنفس النظام.", f: ["كل مميزات محل واحد", "نظرة موحّدة على الفروع", "صلاحيات لكل فرع"], featured: true },
-  { t: "مؤسسي", d: "لشبكات المحلات اللي محتاجة تخصيص وتكامل.", f: ["أدوار وصلاحيات متقدمة", "سجل تدقيق كامل", "دعم مخصص"] },
-];
-
-export function Pricing() {
-  return (
-    <Section id="pricing" className="border-t border-hairline bg-sand-deep/40">
-      <SectionHeader
-        eyebrow="الأسعار"
-        title={<>خطة على مقاس محلك.</>}
-        description="بنحدد السعر على حسب عدد الفروع ونقاط البيع. تواصل معنا ونرشّحلك الخطة المناسبة من غير مبالغة."
-        align="center"
-      />
-      <div className="mt-14 grid gap-4 md:grid-cols-3">
-        {plans.map((p, i) => (
-          <Reveal key={p.t} delay={i * 80} className="h-full">
-            <div
-              className={`flex h-full flex-col rounded-2xl border p-8 transition-shadow ${
-                p.featured
-                  ? "border-brand/35 bg-card shadow-[0_28px_60px_-40px_rgba(0,109,96,0.45)]"
-                  : "border-hairline bg-card/60 hover:shadow-[0_18px_40px_-32px_rgba(0,55,48,0.4)]"
-              }`}
-            >
-              {p.featured && (
-                <span className="mb-4 inline-flex w-fit rounded-full bg-coral/15 px-3 py-1 text-[12px] font-semibold text-coral">
-                  الأكثر ملاءمة
-                </span>
-              )}
-              <h3 className="font-display text-2xl font-bold text-ink">{p.t}</h3>
-              <p className="mt-2.5 text-[15px] leading-[1.85] text-ink-soft">{p.d}</p>
-              <ul className="mt-6 space-y-2.5">
-                {p.f.map((f) => (
-                  <li key={f} className="flex items-center gap-2.5 text-[15px] text-ink">
-                    <Check className="h-4 w-4 shrink-0 text-brand" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                to="/dashboard"
-                className={`mt-8 inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-[15px] font-semibold transition-colors ${
-                  p.featured
-                    ? "bg-brand text-brand-foreground hover:bg-brand-deep"
-                    : "border border-hairline text-ink hover:bg-sand-deep"
-                }`}
-              >
-                اطلب عرض السعر
-                <ArrowLeft className="h-4 w-4" />
-              </Link>
-            </div>
-          </Reveal>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-/* ---------------------------------- trust ---------------------------------- */
+/* --------------------------------- الثقة --------------------------------- */
 
 const trust = [
-  { icon: KeyRound, t: "صلاحيات دقيقة", d: "كل موظف يشوف الشاشات اللي تخصه بس، ومفيش تعديل من غير صلاحية." },
-  { icon: Building2, t: "تحكم على مستوى الفرع", d: "بيانات كل فرع منفصلة، والإدارة بتشوف الصورة الكاملة." },
-  { icon: ScrollText, t: "سجل تدقيق", d: "كل عملية مسجّلة: مين عملها، إمتى، وإيه اللي اتغير." },
-  { icon: ShieldCheck, t: "بيانات متسقة", d: "المخزون والفواتير مرتبطين، فمفيش رقم بيتناقض مع رقم." },
+  { t: "بيانات محلك ملكك", d: "تقدر تصدّر بياناتك في أي وقت — مبيعات، أصناف، موردين، وحسابات." },
+  { t: "صلاحيات واضحة", d: "كل موظف يشوف اللي يخصه بس. الخصم والمرتجع والتعديل محتاجين إذن." },
+  { t: "كل حركة مسجّلة", d: "سجل عمليات كامل يوضح مين عدّل سعر أو حذف فاتورة أو فتح وردية." },
+  { t: "بنبدأ معاك", d: "بنجهّز أصنافك وأسعارك ونمشي مع الكاشير أول أسبوع لحد ما يشتغل لوحده." },
 ];
 
-export function Trust() {
+export function TrustSection() {
   return (
-    <Section className="border-t border-hairline">
-      <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
-        <SectionHeader
-          eyebrow="الثقة"
-          title={<>بيانات محلك ملكك.</>}
-          description="الوضوح مش بس في الأرقام، كمان في مين بيوصل لإيه. زيرو كشك مبني على صلاحيات وسجل واضح لكل حركة."
-        />
-        <div className="grid gap-x-10 gap-y-8 sm:grid-cols-2">
-          {trust.map((t, i) => (
-            <Reveal key={t.t} delay={i * 60}>
-              <t.icon className="h-5 w-5 text-brand" />
-              <h3 className="mt-3.5 font-display text-lg font-semibold text-ink">{t.t}</h3>
-              <p className="mt-2 text-[15px] leading-[1.85] text-ink-soft">{t.d}</p>
-            </Reveal>
-          ))}
-        </div>
+    <Section labelledBy="trust-title" tone="card">
+      <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+        <Reveal>
+          <Eyebrow>الثقة</Eyebrow>
+          <Heading id="trust-title" className="mt-5 text-ink">
+            نظام تسلّمه محلك بضمير مرتاح.
+          </Heading>
+          <Lead className="mt-5 max-w-sm">
+            إحنا شركة مصرية جديدة، وعارفين إن ده سؤال مشروع. فبنكسب ثقتك بشغل واضح مش بكلام.
+          </Lead>
+        </Reveal>
+        <Reveal delay={100}>
+          <div className="grid gap-px overflow-hidden rounded-xl border border-hairline bg-hairline sm:grid-cols-2">
+            {trust.map((t) => (
+              <div key={t.t} className="bg-card p-6">
+                <h3 className="font-display text-[17px] font-bold text-ink">{t.t}</h3>
+                <p className="mt-2.5 text-[14.5px] leading-[1.85] text-ink-soft">{t.d}</p>
+              </div>
+            ))}
+          </div>
+        </Reveal>
       </div>
     </Section>
   );
 }
 
-/* --------------------------------- final CTA --------------------------------- */
+/* --------------------------------- البداية -------------------------------- */
 
-export function FinalCTA() {
+const steps = [
+  { n: "١", t: "مكالمة ٢٠ دقيقة", d: "نفهم محلك: كام فرع، كام صنف، وإيه اللي بيوجعك." },
+  { n: "٢", t: "بنجهّز النظام", d: "بنرفّع أصنافك وأسعارك وموردينك — إنت مش بتدخل حاجة بإيدك." },
+  { n: "٣", t: "أول يوم بيع", d: "بنقف مع الكاشير أول وردية، وبنسلّمك تقرير أول يوم." },
+];
+
+export function StartSection() {
   return (
-    <section className="relative overflow-hidden bg-brand py-24 text-brand-foreground md:py-32">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-[0.14]">
-        <div className="absolute inset-0 hairline-grid [--hairline:rgba(255,255,255,0.35)]" />
-      </div>
-      <div className="site-container relative text-center">
+    <Section id="start" labelledBy="start-title" tone="sand">
+      <Reveal className="max-w-2xl">
+        <Eyebrow>البداية</Eyebrow>
+        <Heading id="start-title" className="mt-5 text-ink">
+          تبدأ في يوم، مش في شهر.
+        </Heading>
+        <Lead className="mt-5">مش محتاج تجهّز حاجة قبل ما تكلمنا. إحنا اللي بنجهّز.</Lead>
+      </Reveal>
+
+      <ol className="mt-12 grid gap-8 sm:grid-cols-3 sm:gap-10">
+        {steps.map((s, i) => (
+          <li key={s.t} className="border-t border-hairline pt-6">
+            <Reveal delay={i * 80}>
+              <span className="grid h-8 w-8 place-items-center rounded-full bg-brand text-[13px] font-bold text-brand-foreground">
+                {s.n}
+              </span>
+              <h3 className="mt-4 font-display text-[19px] font-bold text-ink">{s.t}</h3>
+              <p className="mt-2.5 text-[15px] leading-[1.85] text-ink-soft">{s.d}</p>
+            </Reveal>
+          </li>
+        ))}
+      </ol>
+    </Section>
+  );
+}
+
+/* --------------------------------- الأسئلة -------------------------------- */
+
+const faqs = [
+  {
+    q: "الإنترنت بيقطع عندي، النظام هيقف؟",
+    a: "لا. نقطة البيع بتكمل شغل والفواتير بتتسجل محليًا، وأول ما النت يرجع كل حاجة بتتزامن مع باقي الفروع.",
+  },
+  {
+    q: "لازم أشتري أجهزة جديدة؟",
+    a: "غالبًا لا. زيرو كشك بيشتغل على الكمبيوتر أو اللابتوب الموجود، وبيدعم قارئ الباركود وطابعة الفواتير المعتادة.",
+  },
+  {
+    q: "موظفيني مش بيعرفوا كمبيوتر كفاية.",
+    a: "شاشة الكاشير مبنية على الباركود ومفتاح واحد للتحصيل. وبنقف معاهم أول وردية لحد ما الشغل يبقى عادي.",
+  },
+  {
+    q: "بياناتي القديمة هتضيع؟",
+    a: "إحنا بنرفّع أصنافك وأسعارك وأرصدتك من أي ملف عندك — إكسل أو حتى قائمة مكتوبة — قبل أول يوم شغل.",
+  },
+  {
+    q: "لو حبيت أمشي، بياناتي معايا؟",
+    a: "أيوه. تقدر تصدّر مبيعاتك وأصنافك وحسابات موردينك في أي وقت من غير ما تطلب إذن من حد.",
+  },
+];
+
+export function Faq() {
+  const [open, setOpen] = useState<number | null>(0);
+  return (
+    <Section id="faq" labelledBy="faq-title" tone="card">
+      <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16">
         <Reveal>
-          <h2 className="mx-auto max-w-3xl font-display text-[clamp(2.25rem,6vw,4rem)] font-bold leading-[1.12] tracking-[-0.02em]">
+          <Eyebrow>أسئلة</Eyebrow>
+          <Heading id="faq-title" className="mt-5 text-ink" size="lg">
+            الأسئلة اللي بتتسأل قبل القرار.
+          </Heading>
+        </Reveal>
+        <Reveal delay={90}>
+          <ul className="divide-y divide-hairline border-y border-hairline">
+            {faqs.map((f, i) => {
+              const on = open === i;
+              return (
+                <li key={f.q}>
+                  <h3>
+                    <button
+                      type="button"
+                      onClick={() => setOpen(on ? null : i)}
+                      aria-expanded={on}
+                      aria-controls={`faq-a-${i}`}
+                      className="flex w-full items-center gap-4 py-5 text-start focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+                    >
+                      <span className="flex-1 font-display text-[17px] font-bold text-ink">{f.q}</span>
+                      <span
+                        aria-hidden="true"
+                        className={`grid h-7 w-7 shrink-0 place-items-center rounded-full border border-hairline text-ink-soft transition-transform ${
+                          on ? "rotate-45 border-brand/40 text-brand" : ""
+                        }`}
+                      >
+                        +
+                      </span>
+                    </button>
+                  </h3>
+                  <div id={`faq-a-${i}`} hidden={!on} className="pb-5">
+                    <p className="max-w-2xl text-[15px] leading-[1.9] text-ink-soft">{f.a}</p>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </Reveal>
+      </div>
+    </Section>
+  );
+}
+
+/* ------------------------------- الدعوة النهائية ------------------------------- */
+
+export function FinalCta() {
+  return (
+    <section aria-labelledby="cta-title" className="bg-brand-deep py-20 text-brand-foreground md:py-28">
+      <div className="site-container">
+        <Reveal className="max-w-2xl">
+          <Eyebrow tone="light">ابدأ</Eyebrow>
+          <Heading id="cta-title" className="mt-5 text-brand-foreground">
             خليك مسيطر على محلك.
-          </h2>
-          <p className="mx-auto mt-6 max-w-xl text-[17px] leading-[1.9] text-brand-foreground/85">
-            ابدأ من مكان واحد. شوف كل حاجة. وخلي زيرو كشك يمسك النظام.
+          </Heading>
+          <p className="mt-5 max-w-xl text-[17px] leading-[1.9] text-brand-foreground/75">
+            ابدأ من مكان واحد، شوف كل حاجة، وخلي زيرو كشك يمسك النظام. مكالمة ٢٠ دقيقة تكفي نعرف إذا كان مناسب لمحلك
+            أو لأ.
           </p>
-          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Link
-              to="/dashboard"
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-sand px-7 py-4 text-base font-semibold text-brand transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sand sm:w-auto"
-            >
-              ابدأ الآن
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <CtaLink to="/dashboard" variant="onDeep" size="lg" className="group">
+              اطلب عرض توضيحي
               <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
-            </Link>
-            <a
-              href="mailto:hello@zerokiosk.com"
-              className="inline-flex w-full items-center justify-center rounded-full border border-white/30 px-7 py-4 text-base font-medium text-brand-foreground transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sand sm:w-auto"
-            >
-              تواصل معنا
-            </a>
+            </CtaLink>
+            <CtaAnchor href="#faq" variant="onDeepOutline" size="lg">
+              عندي سؤال الأول
+            </CtaAnchor>
           </div>
         </Reveal>
       </div>
