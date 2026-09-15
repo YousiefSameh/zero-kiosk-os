@@ -1,24 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteNav } from "@/components/site/site-nav";
 import { Hero } from "@/components/site/hero";
+import { ProductTour } from "@/components/site/product-tour";
 import {
-  ProductShowcase,
   ProblemSection,
-  Pillars,
-  ModuleShowcase,
-  OperationalStory,
-  InsightSection,
-  MultiBranch,
-  Philosophy,
-  Pricing,
-  Trust,
-  FinalCTA,
+  OperationalLoop,
+  BranchesSection,
+  TrustSection,
+  StartSection,
+  Faq,
+  FinalCta,
 } from "@/components/site/sections";
 import { SiteFooter } from "@/components/site/site-footer";
 
 const TITLE = "زيرو كشك | نظام تشغيل المحل";
 const DESC =
-  "زيرو كشك هو نظام تشغيل المحل لإدارة المبيعات، المخزون، المشتريات، الموظفين والتقارير من مكان واحد.";
+  "زيرو كشك هو نظام تشغيل المحل: البيع والمخزون والمشتريات والموظفين والتقارير في مكان واحد — بالعربي ولفروع متعددة.";
+const URL = "https://zero-kiosk-os.lovable.app/";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -28,10 +26,10 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESC },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://zero-kiosk-os.lovable.app/" },
+      { property: "og:url", content: URL },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: "https://zero-kiosk-os.lovable.app/" }],
+    links: [{ rel: "canonical", href: URL }],
     scripts: [
       {
         type: "application/ld+json",
@@ -43,6 +41,7 @@ export const Route = createFileRoute("/")({
           operatingSystem: "Web",
           inLanguage: "ar-EG",
           description: DESC,
+          url: URL,
         }),
       },
     ],
@@ -62,17 +61,14 @@ function LandingPage() {
       <SiteNav />
       <main>
         <Hero />
-        <ProductShowcase />
+        <ProductTour />
         <ProblemSection />
-        <Pillars />
-        <ModuleShowcase />
-        <OperationalStory />
-        <InsightSection />
-        <MultiBranch />
-        <Philosophy />
-        <Pricing />
-        <Trust />
-        <FinalCTA />
+        <OperationalLoop />
+        <BranchesSection />
+        <TrustSection />
+        <StartSection />
+        <Faq />
+        <FinalCta />
       </main>
       <SiteFooter />
     </div>
