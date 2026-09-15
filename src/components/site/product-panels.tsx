@@ -185,12 +185,13 @@ export function ReportsPanel() {
         </div>
         <div className="flex h-28 items-end gap-2" aria-hidden="true">
           {week.map((v, i) => (
-            <div key={days[i]} className="flex flex-1 flex-col items-center gap-1.5">
+            <div key={days[i]} className="flex h-full flex-1 flex-col justify-end gap-1.5">
               <div
                 className={`w-full rounded-t-[3px] ${i === week.length - 2 ? "bg-brand" : "bg-brand/25"}`}
-                style={{ height: `${(v / max) * 100}%` }}
+                style={{ height: `${(v / max) * 82}%` }}
               />
-              <span className="truncate text-[9px] text-ink-soft">{days[i].replace("ال", "")}</span>
+              <span className="truncate text-center text-[9px] text-ink-soft">{days[i].replace("ال", "")}</span>
+
             </div>
           ))}
         </div>
