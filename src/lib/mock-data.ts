@@ -34,7 +34,19 @@ export const branches = [
   { id: "BR-04", name: "فرع سموحة", city: "الإسكندرية", staff: 7, revenue: 121500, status: "قيد التأهيل" },
 ];
 
-export const products = [
+export type SellUnit = "piece" | "kg";
+export type Product = {
+  id: string; name: string; category: string; supplier: string;
+  price: number; cost: number; stock: number; reorder: number; status: string;
+  unit?: SellUnit; plu?: string; scaleBarcode?: boolean;
+};
+
+export const products: Product[] = [
+  { id: "SKU-2001", name: "جبنة رومي", category: "ألبان وأجبان", supplier: "ألبان الشرقية", price: 85, cost: 62, stock: 42.75, reorder: 10, status: "متوفر", unit: "kg", plu: "1045", scaleBarcode: true },
+  { id: "SKU-2002", name: "زيتون أسود مخلل", category: "ألبان وأجبان", supplier: "ألبان الشرقية", price: 70, cost: 48, stock: 18.4, reorder: 8, status: "متوفر", unit: "kg", plu: "1046", scaleBarcode: true },
+  { id: "SKU-2003", name: "طماطم بلدي", category: "خضار وفاكهة", supplier: "سوق العبور", price: 18, cost: 11, stock: 64.2, reorder: 25, status: "متوفر", unit: "kg", plu: "2010", scaleBarcode: true },
+  { id: "SKU-2004", name: "لحم بقري مفروم", category: "لحوم", supplier: "جزارة الأمانة", price: 420, cost: 340, stock: 9.5, reorder: 12, status: "مخزون منخفض", unit: "kg", plu: "3001", scaleBarcode: true },
+  { id: "SKU-2005", name: "مكسرات مشكلة", category: "مكسرات", supplier: "محمصة الفاروق", price: 520, cost: 390, stock: 6.25, reorder: 5, status: "متوفر", unit: "kg", plu: "4002", scaleBarcode: true },
   { id: "SKU-1001", name: "كوكاكولا ٣٣٠ مل", category: "مشروبات", supplier: "كوكاكولا مصر", price: 12, cost: 8.4, stock: 480, reorder: 120, status: "متوفر" },
   { id: "SKU-1002", name: "بيبسي ٢ لتر", category: "مشروبات", supplier: "بيبسيكو مصر", price: 34, cost: 24, stock: 96, reorder: 60, status: "متوفر" },
   { id: "SKU-1003", name: "شيبسي كلاسيك", category: "وجبات خفيفة", supplier: "بيبسيكو مصر", price: 15, cost: 9.6, stock: 42, reorder: 80, status: "مخزون منخفض" },
@@ -164,3 +176,48 @@ export const currency = (n: number) =>
   new Intl.NumberFormat("ar-EG", { style: "currency", currency: "EGP", maximumFractionDigits: 0 }).format(n);
 
 export const num = (n: number) => new Intl.NumberFormat("ar-EG").format(n);
+
+// ---------- Weighted products ----------
+export const isWeighted = (p: { unit?: SellUnit }) => p.unit === "kg";
+export const money2 = (n: number) =>
+  new Intl.NumberFormat("ar-EG", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n) + " ج.م";
+export const kg = (n: number) =>
+  new Intl.NumberFormat("ar-EG", { minimumFractionDigits: 3, maximumFractionDigits: 3 }).format(n) + " كجم";
+/** Quantity in the product's own unit — never "units" for weighted items */
+export const qty = (p: { unit?: SellUnit }, n: number) => (isWeighted(p) ? kg(n) : `${num(n)} قطعة`);
+export const unitPrice = (p: { unit?: SellUnit; price: number }) => `${money2(p.price)} / ${isWeighted(p) ? "كجم" : "قطعة"}`;
+
+export const scaleDevice = {
+  name: "ميزان فرع سيدي بشر",
+  model: "DIGI SM-5300",
+  connection: "USB",
+  prefix: "21",
+  mode: "weight" as "weight" | "price",
+  lastReading: 1.25,
+};
+
+export type ScaleParse =
+  | { ok: true; product: Product; weight: number; total: number }
+  | { ok: false; reason: "invalid" | "unknown" | "weight"; plu?: string };
+
+/** Format: PP LLLL VVVVVV  (prefix · PLU · grams or piasters) */
+export function parseScaleBarcode(raw: string, mode = scaleDevice.mode): ScaleParse | null {
+  const code = raw.replace(/\s|-/g, "");
+  if (!code.startsWith(scaleDevice.prefix)) return null; // not a scale barcode
+  if (!/^\d{12,13}$/.test(code)) return { ok: false, reason: "invalid" };
+  const plu = code.slice(2, 6);
+  const value = Number(code.slice(6, 12));
+  const product = products.find((p) => p.plu === plu);
+  if (!product) return { ok: false, reason: "unknown", plu };
+  const weight = mode === "weight" ? value / 1000 : value / 100 / product.price;
+  if (!weight || weight <= 0 || weight > 50) return { ok: false, reason: "weight" };
+  const w = Math.round(weight * 1000) / 1000;
+  return { ok: true, product, weight: w, total: Math.round(w * product.price * 100) / 100 };
+}
+
+export const weightedSales = [
+  { txn: "TXN-88428", name: "جبنة رومي", weight: 1.25, price: 85, total: 106.25, time: "١٣:٠٢", source: "باركود ميزان" },
+  { txn: "TXN-88428", name: "طماطم بلدي", weight: 2.34, price: 18, total: 42.12, time: "١٣:٠٢", source: "وزن يدوي" },
+  { txn: "TXN-88429", name: "لحم بقري مفروم", weight: 0.75, price: 420, total: 315, time: "١٣:٠٩", source: "باركود ميزان" },
+  { txn: "TXN-88431", name: "مكسرات مشكلة", weight: 0.25, price: 520, total: 130, time: "١٣:١٥", source: "باركود ميزان" },
+];
