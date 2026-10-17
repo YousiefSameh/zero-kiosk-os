@@ -4,13 +4,17 @@ import { AppShell, SectionCard, StatusPill, EmptyState } from "@/components/app-
 import { useDataState, ListSkeleton } from "@/lib/demo-state";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { products, currency, num } from "@/lib/mock-data";
+import { products, num, money2, qty, unitPrice, isWeighted, type Product } from "@/lib/mock-data";
+import { WeightBadge, ProductDetailsDialog, ProductFormDialog } from "@/components/weighing";
 import { Plus, Search, Filter, Download, Package } from "lucide-react";
 
 export const Route = createFileRoute("/products")({ component: ProductsPage });
 
 function ProductsPage() {
   const [q, setQ] = useState("");
+  const [details, setDetails] = useState<Product | null>(null);
+  const [editing, setEditing] = useState<Product | null>(null);
+  const [formOpen, setFormOpen] = useState(false);
   const ds = useDataState();
   const [cat, setCat] = useState("الكل");
   const cats = ["الكل", ...Array.from(new Set(products.map((p) => p.category)))];
@@ -28,7 +32,7 @@ function ProductsPage() {
       actions={
         <>
           <Button variant="outline" size="sm"><Download className="w-4 h-4 ms-1.5" />تصدير CSV</Button>
-          <Button size="sm" className="bg-brand hover:bg-brand/90"><Plus className="w-4 h-4 ms-1.5" />إضافة منتج</Button>
+          <Button size="sm" className="bg-brand hover:bg-brand/90" onClick={() => { setEditing(null); setFormOpen(true); }}><Plus className="w-4 h-4 ms-1.5" />إضافة منتج</Button>
         </>
       }
     >
@@ -81,19 +85,20 @@ function ProductsPage() {
               </thead>
               <tbody>
                 {rows.map((p) => (
-                  <tr key={p.id} className="border-b border-border/60 hover:bg-accent/40">
+                  <tr key={p.id} onClick={() => setDetails(p)} className="border-b border-border/60 hover:bg-accent/40 cursor-pointer">
                     <td className="px-5 py-3">
                       <div className="flex items-center gap-3">
                         <div className="w-9 h-9 rounded-lg bg-muted grid place-items-center text-xs font-medium">{p.name.slice(0, 2)}</div>
                         <span className="font-medium">{p.name}</span>
+                        {isWeighted(p) && <WeightBadge />}
                       </div>
                     </td>
                     <td className="py-3 font-mono text-xs text-muted-foreground">{p.id}</td>
                     <td className="py-3">{p.category}</td>
                     <td className="py-3 text-muted-foreground">{p.supplier}</td>
-                    <td className="py-3 text-left text-muted-foreground">{currency(p.cost)}</td>
-                    <td className="py-3 text-left font-medium">{currency(p.price)}</td>
-                    <td className="py-3 text-left">{num(p.stock)}</td>
+                    <td className="py-3 text-left text-muted-foreground">{money2(p.cost)}</td>
+                    <td className="py-3 text-left font-medium whitespace-nowrap">{unitPrice(p)}</td>
+                    <td className="py-3 text-left whitespace-nowrap">{qty(p, p.stock)}</td>
                     <td className="px-5 py-3"><StatusPill status={p.status} /></td>
                   </tr>
                 ))}
@@ -102,6 +107,8 @@ function ProductsPage() {
           </div>
         )}
       </SectionCard>
+      <ProductDetailsDialog product={details} onClose={() => setDetails(null)} onEdit={(p) => { setDetails(null); setEditing(p); setFormOpen(true); }} />
+      <ProductFormDialog open={formOpen} onOpenChange={setFormOpen} initial={editing} />
     </AppShell>
   );
 }

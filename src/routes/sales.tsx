@@ -4,7 +4,8 @@ import { AppShell, SectionCard, StatusPill, KpiCard, EmptyState } from "@/compon
 import { useDataState, ListSkeleton, KpiSkeleton } from "@/lib/demo-state";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { sales, currency, num } from "@/lib/mock-data";
+import { sales, currency, num, weightedSales, kg, money2 } from "@/lib/mock-data";
+import { WeightBadge } from "@/components/weighing";
 import { Receipt, RotateCcw, Filter, Download, Search } from "lucide-react";
 
 export const Route = createFileRoute("/sales")({ component: SalesPage });
@@ -87,6 +88,22 @@ function SalesPage() {
         </div>
         )}
       </SectionCard>
+
+      {!ds.isLoading && !ds.isEmpty && (
+        <SectionCard className="mt-4" title="أصناف موزونة مباعة اليوم" description="الكمية بالكيلو كما سُجّلت من الميزان أو يدويًا">
+          <ul className="divide-y divide-border">
+            {weightedSales.map((w, i) => (
+              <li key={i} className="flex items-center gap-3 py-3">
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-medium flex items-center gap-2">{w.name}<WeightBadge label={w.source} tone={w.source === "باركود ميزان" ? "brand" : "coral"} /></div>
+                  <div className="text-xs text-muted-foreground">{kg(w.weight)} × {money2(w.price)} · <span className="font-mono">{w.txn}</span> · {w.time}</div>
+                </div>
+                <div className="text-sm font-semibold">{money2(w.total)}</div>
+              </li>
+            ))}
+          </ul>
+        </SectionCard>
+      )}
     </AppShell>
   );
 }
