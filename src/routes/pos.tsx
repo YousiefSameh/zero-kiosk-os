@@ -168,7 +168,7 @@ function PosPage() {
                         <button onClick={() => setCart((c) => c.map((x) => x.key === l.key ? { ...x, qty: x.qty + 1 } : x))} className="w-7 h-7 rounded-md border border-border hover:bg-accent grid place-items-center"><Plus className="w-3 h-3" /></button>
                       </div>
                     )}
-                    <div className="w-24 text-left text-sm font-semibold">{money2(l.price * l.qty)}</div>
+                    <div className="shrink-0 whitespace-nowrap text-left text-sm font-semibold">{money2(l.price * l.qty)}</div>
                     <button onClick={() => setCart((c) => c.filter((x) => x.key !== l.key))} className="text-muted-foreground hover:text-destructive" aria-label="حذف"><Trash2 className="w-4 h-4" /></button>
                   </div>
                 ))
