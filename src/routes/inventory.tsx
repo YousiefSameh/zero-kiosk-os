@@ -4,7 +4,8 @@ import { AppShell, KpiCard, SectionCard, StatusPill, EmptyState } from "@/compon
 import { useDataState, ListSkeleton, KpiSkeleton, ChartSkeleton, RowsSkeleton } from "@/lib/demo-state";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { products, currency, num } from "@/lib/mock-data";
+import { products, currency, num, qty, kg, isWeighted, type Product } from "@/lib/mock-data";
+import { WeightBadge, ReceiveDialog } from "@/components/weighing";
 import { Boxes, AlertTriangle, TrendingDown, PackageCheck, Download, Search, BarChart3, PackagePlus } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
@@ -12,6 +13,9 @@ export const Route = createFileRoute("/inventory")({ component: InventoryPage })
 
 function InventoryPage() {
   const [q, setQ] = useState("");
+  const [receiving, setReceiving] = useState<Product | null>(null);
+  const [added, setAdded] = useState<Record<string, number>>({});
+  const stockOf = (p: Product) => Math.round((p.stock + (added[p.id] ?? 0)) * 1000) / 1000;
   const ds = useDataState();
   const base = ds.rows(products);
   const totalValue = base.reduce((s, p) => s + p.stock * p.cost, 0);
@@ -96,9 +100,9 @@ function InventoryPage() {
                 <div className="w-9 h-9 rounded-lg bg-brand-soft grid place-items-center text-brand text-xs font-medium">{p.name.slice(0, 2)}</div>
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-medium truncate">{p.name}</div>
-                  <div className="text-xs text-muted-foreground">{num(p.stock)} في المخزون · إعادة الطلب {num(p.reorder)}</div>
+                  <div className="text-xs text-muted-foreground">{qty(p, stockOf(p))} في المخزون · إعادة الطلب {qty(p, p.reorder)}</div>
                 </div>
-                <Button size="sm" variant="outline" className="h-8 text-xs">إعادة طلب</Button>
+                <Button size="sm" variant="outline" className="h-8 text-xs" onClick={() => setReceiving(p)}>استلام</Button>
               </li>
             ))}
           </ul>
@@ -129,20 +133,25 @@ function InventoryPage() {
                 <th className="text-right font-medium px-5 py-2.5">المنتج</th>
                 <th className="text-right font-medium py-2.5">التصنيف</th>
                 <th className="text-left font-medium py-2.5">في المخزون</th>
-                <th className="text-left font-medium py-2.5">نقطة إعادة الطلب</th>
+                <th className="text-left font-medium py-2.5">حد التنبيه</th>
                 <th className="text-left font-medium py-2.5">القيمة</th>
-                <th className="text-right font-medium px-5 py-2.5">الحالة</th>
+                <th className="text-right font-medium py-2.5">الحالة</th>
+                <th className="px-5 py-2.5" />
               </tr>
             </thead>
             <tbody>
               {rows.map((p) => (
                 <tr key={p.id} className="border-b border-border/60 hover:bg-accent/40">
-                  <td className="px-5 py-3 font-medium">{p.name}</td>
+                  <td className="px-5 py-3 font-medium"><div className="flex items-center gap-2">{p.name}{isWeighted(p) && <WeightBadge />}</div></td>
                   <td className="py-3 text-muted-foreground">{p.category}</td>
-                  <td className="py-3 text-left">{num(p.stock)}</td>
-                  <td className="py-3 text-left text-muted-foreground">{num(p.reorder)}</td>
-                  <td className="py-3 text-left font-medium">{currency(p.stock * p.cost)}</td>
-                  <td className="px-5 py-3"><StatusPill status={p.status} /></td>
+                  <td className="py-3 text-left font-medium">
+                    {qty(p, stockOf(p))}
+                    {added[p.id] ? <span className="block text-[11px] text-success">+{isWeighted(p) ? kg(added[p.id]!) : num(added[p.id]!)}</span> : null}
+                  </td>
+                  <td className="py-3 text-left text-muted-foreground">{qty(p, p.reorder)}</td>
+                  <td className="py-3 text-left font-medium">{currency(stockOf(p) * p.cost)}</td>
+                  <td className="py-3"><StatusPill status={p.status} /></td>
+                  <td className="px-5 py-3 text-left"><Button size="sm" variant="ghost" className="h-7 text-xs" onClick={() => setReceiving(p)}>استلام</Button></td>
                 </tr>
               ))}
             </tbody>
@@ -150,6 +159,7 @@ function InventoryPage() {
         </div>
         )}
       </SectionCard>
+      <ReceiveDialog product={receiving} onClose={() => setReceiving(null)} onReceive={(p, n) => { setAdded((a) => ({ ...a, [p.id]: (a[p.id] ?? 0) + n })); setReceiving(null); }} />
     </AppShell>
   );
 }

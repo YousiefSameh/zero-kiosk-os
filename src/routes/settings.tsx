@@ -7,6 +7,7 @@ import { Switch } from "@/components/ui/switch";
 import { Building2, SlidersHorizontal, CreditCard } from "lucide-react";
 import { useDataState, FormSkeleton, RowsSkeleton, Shimmer } from "@/lib/demo-state";
 import { RestartTourButton } from "@/lib/onboarding";
+import { ScaleSettings } from "@/components/weighing";
 
 
 export const Route = createFileRoute("/settings")({ component: SettingsPage });
@@ -77,6 +78,8 @@ function SettingsPage() {
           )}
         </SectionCard>
       </div>
+
+      <ScaleSettings />
 
       <SectionCard className="mt-4" title="الاشتراك" description="زيرو كشك برو · ٤ فروع · ٤٢ مستخدم">
         {ds.isLoading ? (
